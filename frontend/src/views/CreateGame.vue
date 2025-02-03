@@ -1,6 +1,6 @@
 <script>
 import { getUserIdentity } from '../services/authProvider';
-import { request, createGame } from '../services/httpClient';
+import {createGame} from '../services/httpClient';
 
 export default {
   name: 'CreateGame',
@@ -92,49 +92,5 @@ export default {
 </template>
 
 <style scoped>
-</style>
 
-
-<style scoped>
-.create-game {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 20px;
-}
-
-.form-group {
-  margin-bottom: 2rem;
-}
-
-.slider {
-  width: 100%;
-  margin: 10px 0;
-}
-
-.range-labels {
-  display: flex;
-  justify-content: space-between;
-  color: #666;
-  font-size: 0.9em;
-}
-
-.submit-button {
-  background-color: #42b983;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1.1em;
-}
-
-.submit-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-.error {
-  color: #ff4444;
-  margin-top: 1rem;
-}
 </style>

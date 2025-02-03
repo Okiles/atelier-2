@@ -69,7 +69,11 @@ const createGame = (timer,distance) => {
 const getGames = () => {
   return request('/game', 'GET', null, true);
 }
-export { request, login, register, createGame, getGames };
+
+const getGameState = (gameId) => {
+  return request(`/game/${gameId}`, 'GET', null, true);
+}
+export { request, login, register, createGame, getGames, getGameState };
 
 
 
