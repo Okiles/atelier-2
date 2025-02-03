@@ -4,7 +4,6 @@ networks:
 
 services:
   gateway.geoquizz:
-    #image: 'canals/php:8.3-cli'
     build:
       context: build
       dockerfile: 8.3-cli.Dockerfile
@@ -20,20 +19,20 @@ services:
     image: ubuntu/apache2:latest
     restart: unless-stopped
     ports:
-      - "42053:80"
+      - "42051:80"
     volumes:
       - ./frontend/dist/:/var/www/html
     networks:
       - geoquizz.net
 
-  qeoquizz.mail:
-    image: 'canals/php:8.3-cli'
+  geoquizz.mail:
+    #image: 'canals/php:8.3-cli'
     restart: unless-stopped
     build:
       context: build
       dockerfile: 8.3-cli.Dockerfile
     ports:
-      - '42054:80'
+      - '42052:80'
     volumes:
       - ./app-mail:/var/php
     working_dir: /var/php
@@ -47,7 +46,7 @@ services:
     image: 'rabbitmq:3-management'
     restart: unless-stopped
     ports:
-      - '42055:15672'
+      - '42053:15672'
     networks:
       - geoquizz.net
 
@@ -56,22 +55,22 @@ services:
     restart: unless-stopped
     env_file: geoquizzdb.env
     ports:
-      - '42051:5432'
+      - '42054:5432'
     networks:
       - geoquizz.net
     volumes:
       - ./app/sql:/var/sql
 
   geoquizz.game:
-    image: 'canals/php:8.3-cli'
+    # image: 'canals/php:8.3-cli'
     restart: unless-stopped
     build:
       context: build
       dockerfile: 8.3-cli.Dockerfile
     ports:
-      - '42054:80'
+      - '42055:80'
     volumes:
-      - ./app-mail:/var/php
+      - ./app-game:/var/php
     working_dir: /var/php
     networks:
       - geoquizz.net
@@ -80,7 +79,7 @@ services:
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   geoquizz.auth:
-    image: 'canals/php:8.3-cli'
+    #image: 'canals/php:8.3-cli'
     restart: unless-stopped
     build:
       context: build
@@ -99,14 +98,13 @@ services:
   directus.db:
     image: 'postgres:latest'
     restart: unless-stopped
-    env_file: ./app/config/directus.env
+    env_file: directusdb.env
     ports:
-      - '42059:80'
+      - '42057:5432'
     networks:
       - geoquizz.net
     volumes:
       - ./app/sql:/var/sql
-
 
   directus:
     image: directus/directus:latest
@@ -115,24 +113,22 @@ services:
     depends_on:
       - directus.db
     environment:
-        DATABASE_CLIENT: postgres
-        DATABASE_HOST: directus.db
-        DATABASE_PORT: 5432
-        DATABASE_NAME: ${DB_NAME}
-        DATABASE_USER: ${DB_USER}
-        DATABASE_PASSWORD: ${DB_PASSWORD}
-        ADMIN_EMAIL: ${ADMIN_EMAIL}
-        ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: directus.db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${DB_NAME}
+      DATABASE_USER: ${DB_USER}
+      DATABASE_PASSWORD: ${DB_PASSWORD}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
     ports:
-          - "42058:8055"
+      - "42058:8055"
     networks:
-          - geoquizz.net
-  #
-  # service administration des bases sql
-  #
+      - geoquizz.net
+
   adminer:
     image: adminer
     ports:
-      - '42052:8080'
+      - '42059:8080'
     networks:
       - geoquizz.net
