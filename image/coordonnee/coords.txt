@@ -18,3 +18,11 @@ Iut Nancy-Brabois: 48.660013,6.1517384
 Faculté des Sciences et Technologies Nancy: 48.6669704,6.1589926
 Polytech Nancy: 48.6598459,6.1885486
 IAE Nancy école Universitaire de management: 48.6975363,6.1718599
+Faculte de Droit sciences economiques et gestion: 48.692992,6.1769844
+centre européen universitaire: 48.6934953,6.1766223
+faculté d'odontologie: 48.6510349,6.1427061
+Ecole Européenne d'Ingénieurs en Génie des Matériaux: 48.6957736,6.1936218
+Institut Européen du Cinéma et de l'Audiovisuel: 48.6971154,6.1721733
+
+Fast food
+
