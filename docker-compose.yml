@@ -116,6 +116,6 @@ services:
   adminer:
     image: adminer
     ports:
-      - '42056:8080'
+      - '42052:8080'
     networks:
       - geoquizz.net
