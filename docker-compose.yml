@@ -14,25 +14,6 @@ services:
       - ./gateway:/var/php
     networks:
       - geoquizz.net
-    depends_on:
-      - api.geoquizz
-    command: php -S 0.0.0.0:80 -t /var/php/public
-
-  api.geoquizz:
-    #  image: 'canals/php:8.3-cli'
-    restart: unless-stopped
-    build:
-      context: build
-      dockerfile: 8.3-cli.Dockerfile
-    ports:
-      - '42052::80'
-    volumes:
-      - ./app:/var/php
-    working_dir: /var/php
-    networks:
-      - geoquizz.net
-    depends_on:
-      - geoquizz.db
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   geoquizz.front:
@@ -41,11 +22,34 @@ services:
     ports:
       - "42053:80"
     volumes:
-      - ./frontendfrontend/dist/:/var/www/html
+      - ./frontend/dist/:/var/www/html
     networks:
       - geoquizz.net.net
+
+  qeoquizz.mail:
+    image: 'canals/php:8.3-cli'
+    restart: unless-stopped
+    build:
+      context: build
+      dockerfile: 8.3-cli.Dockerfile
+    ports:
+      - '42054:80'
+    volumes:
+      - ./app-mail:/var/php
+    working_dir: /var/php
+    networks:
+      - geoquizz.net
     depends_on:
-      - api.geoquizz
+      - geoquizz.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+  geoquizz.rabbitmq:
+    image: 'rabbitmq:3-management'
+    restart: unless-stopped
+    ports:
+      - '42055:15672'
+    networks:
+      - geoquizz.net
 
   geoquizz.db:
     image: 'postgres:latest'
@@ -57,12 +61,13 @@ services:
       - geoquizz.net
     volumes:
       - ./app/sql:/var/sql
+
   #
   # service administration des bases sql
   #
   adminer:
     image: adminer
     ports:
-      - '8080:8080'
+      - '42056:8080'
     networks:
       - geoquizz.net
