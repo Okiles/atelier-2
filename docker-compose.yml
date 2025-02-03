@@ -54,7 +54,7 @@ services:
   geoquizz.db:
     image: 'postgres:latest'
     restart: unless-stopped
-    env_file: ./app/config/geoquizzdb.env
+    env_file: ./app/config/geoquizzdb.env.example
     ports:
       - '42051:5432'
     networks:
@@ -72,6 +72,23 @@ services:
       - '42054:80'
     volumes:
       - ./app-mail:/var/php
+    working_dir: /var/php
+    networks:
+      - geoquizz.net
+    depends_on:
+      - geoquizz.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+  geoquizz.auth:
+    image: 'canals/php:8.3-cli'
+    restart: unless-stopped
+    build:
+      context: build
+      dockerfile: 8.3-cli.Dockerfile
+    ports:
+      - '42056:80'
+    volumes:
+      - ./app-auth:/var/php
     working_dir: /var/php
     networks:
       - geoquizz.net
