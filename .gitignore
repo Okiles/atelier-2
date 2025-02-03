@@ -1,0 +1,6 @@
+.env
+/vendor
+.lock
+.idea
+/gateway/vendor
+gateway/composer.lock
