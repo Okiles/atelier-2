@@ -21,11 +21,4 @@ return [
         ]);
     },
     */
-
-    'auth.client' => function () {
-        return new Client([
-            'base_uri' => 'http://geoquizz.auth',
-            'timeout' => 2.0,
-        ]);
-    },
 ];

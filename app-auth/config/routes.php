@@ -1,9 +1,7 @@
 <?php
 
-use GuzzleHttp\Client;
-use Psr\Container\ContainerInterface;
+use Slim\App;
 use toubeelib\gateway\application\actions\ConsulterPraticienByIdAction;
-use toubeelib\gateway\application\actions\ConsulterPraticienRdvs;
 use toubeelib\gateway\application\actions\ConsulterPraticiensAction;
 use toubeelib\gateway\application\actions\GenericGetPraticienAction;
 use toubeelib\gateway\application\actions\GenericGetRdvsAction;
@@ -11,21 +9,14 @@ use toubeelib\gateway\application\actions\HomeAction;
 use toubeelib\gateway\application\actions\RefreshTokenAction;
 use toubeelib\gateway\application\actions\RegisterAction;
 use toubeelib\gateway\application\actions\SignInAction;
+use toubeelib\gateway\application\middlewares\AuthMiddleware;
 
-return [
-    /* Example of a dependency
-    'toubeelib.client' => function () {
-        return new Client([
-            'base_uri' => 'http://api.toubeelib',
-            'timeout' => 2.0,
-        ]);
-    },
-    */
+return function(App $app): App {
 
-    'auth.client' => function () {
-        return new Client([
-            'base_uri' => 'http://geoquizz.auth',
-            'timeout' => 2.0,
-        ]);
-    },
-];
+    $app->post('/signin', SignInAction::class);
+    $app->post('/register', RegisterAction::class);
+    $app->get('/token/refresh', RefreshTokenAction::class);
+    $app->get('/token/validate', ConsulterPraticiensAction::class);
+
+    return $app;
+};

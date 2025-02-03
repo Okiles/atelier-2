@@ -14,25 +14,6 @@ services:
       - ./gateway:/var/php
     networks:
       - geoquizz.net
-    depends_on:
-      - api.geoquizz
-    command: php -S 0.0.0.0:80 -t /var/php/public
-
-  api.geoquizz:
-    #  image: 'canals/php:8.3-cli'
-    restart: unless-stopped
-    build:
-      context: build
-      dockerfile: 8.3-cli.Dockerfile
-    ports:
-      - '42052::80'
-    volumes:
-      - ./app:/var/php
-    working_dir: /var/php
-    networks:
-      - geoquizz.net
-    depends_on:
-      - geoquizz.db
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   geoquizz.front:
@@ -41,28 +22,117 @@ services:
     ports:
       - "42053:80"
     volumes:
-      - ./frontendfrontend/dist/:/var/www/html
+      - ./frontend/dist/:/var/www/html
     networks:
-      - geoquizz.net.net
+      - geoquizz.net
+
+  qeoquizz.mail:
+    image: 'canals/php:8.3-cli'
+    restart: unless-stopped
+    build:
+      context: build
+      dockerfile: 8.3-cli.Dockerfile
+    ports:
+      - '42054:80'
+    volumes:
+      - ./app-mail:/var/php
+    working_dir: /var/php
+    networks:
+      - geoquizz.net
     depends_on:
-      - api.geoquizz
+      - geoquizz.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+  geoquizz.rabbitmq:
+    image: 'rabbitmq:3-management'
+    restart: unless-stopped
+    ports:
+      - '42055:15672'
+    networks:
+      - geoquizz.net
 
   geoquizz.db:
     image: 'postgres:latest'
     restart: unless-stopped
-    env_file: ./app/config/geoquizzdb.env
+    env_file: geoquizzdb.env
     ports:
       - '42051:5432'
     networks:
       - geoquizz.net
     volumes:
       - ./app/sql:/var/sql
+
+  geoquizz.game:
+    image: 'canals/php:8.3-cli'
+    restart: unless-stopped
+    build:
+      context: build
+      dockerfile: 8.3-cli.Dockerfile
+    ports:
+      - '42054:80'
+    volumes:
+      - ./app-mail:/var/php
+    working_dir: /var/php
+    networks:
+      - geoquizz.net
+    depends_on:
+      - geoquizz.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+  geoquizz.auth:
+    image: 'canals/php:8.3-cli'
+    restart: unless-stopped
+    build:
+      context: build
+      dockerfile: 8.3-cli.Dockerfile
+    ports:
+      - '42056:80'
+    volumes:
+      - ./app-auth:/var/php
+    working_dir: /var/php
+    networks:
+      - geoquizz.net
+    depends_on:
+      - geoquizz.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+  directus.db:
+    image: 'postgres:latest'
+    restart: unless-stopped
+    env_file: ./app/config/directus.env
+    ports:
+      - '42059:80'
+    networks:
+      - geoquizz.net
+    volumes:
+      - ./app/sql:/var/sql
+
+
+  directus:
+    image: directus/directus:latest
+    container_name: directus-app
+    restart: always
+    depends_on:
+      - directus.db
+    environment:
+        DATABASE_CLIENT: postgres
+        DATABASE_HOST: directus.db
+        DATABASE_PORT: 5432
+        DATABASE_NAME: ${DB_NAME}
+        DATABASE_USER: ${DB_USER}
+        DATABASE_PASSWORD: ${DB_PASSWORD}
+        ADMIN_EMAIL: ${ADMIN_EMAIL}
+        ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    ports:
+          - "42058:8055"
+    networks:
+          - geoquizz.net
   #
   # service administration des bases sql
   #
   adminer:
     image: adminer
     ports:
-      - '8080:8080'
+      - '42052:8080'
     networks:
       - geoquizz.net
