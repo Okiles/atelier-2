@@ -1,0 +1,53 @@
+<?php
+
+namespace geoquizz\game\applications\core\dto;
+
+use geoquizz\game\applications\core\dto\DTO;
+
+class InputGameDTO extends DTO
+{
+
+    protected ?string $id;
+    protected string $status;
+
+    protected string $id_user;
+
+    protected int $score;
+
+    protected string $duree;
+
+    protected float $distance;
+
+    public function __construct(?string $id,string $status, string $id_user, int $score, string $duree, float $distance){
+        $this->status = $status;
+        $this->id_user = $id_user;
+        $this->score = $score;
+        $this->duree = $duree;
+        $this->distance = $distance;
+    }
+
+    public function getId() : ?string{
+        return $this->id;
+    }
+
+    public function setId(string $id) : void
+    {
+        $this->id = $id;
+    }
+
+    public function getStatus(): string{
+        return $this->status;
+    }
+    public function getUserId(): string{
+        return $this->id_user;
+    }
+    public function getScore(): float{
+        return $this->score;
+    }
+    public function getDuree(): string{
+        return $this->duree;
+    }
+    public function getDistance(): float{
+        return $this->distance;
+    }
+}
