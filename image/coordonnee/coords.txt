@@ -1,0 +1,20 @@
+Monument 
+
+Arc Héré: 48.694306, 6.182750
+Nancy Saint-Epvre: 48.6965855,6.1803072
+Cathédrale Notre-Dame-de-l'Annonciation: 48.6918687,6.1855486
+Commanderie Saint-Jean-du-Vieil-Aître: 48.686626,6.1675878
+Établissement d'Émile Gallé: 48.679947,6.1793714
+Porte de la Craffe: 48.6986534,6.1779966
+Place Stanislas: 48.6933232,6.1834332
+Temple protestant de Nancy: 48.6898844,6.178198
+Banque Charles Renauld: 48.6893755,6.178285
+Banque SNVB: 48.6896,6.1772529,3
+
+iut
+
+IUT Nancy-Charlemagne: 48.6832288,6.161971
+Iut Nancy-Brabois: 48.660013,6.1517384
+Faculté des Sciences et Technologies Nancy: 48.6669704,6.1589926
+Polytech Nancy: 48.6598459,6.1885486
+IAE Nancy école Universitaire de management: 48.6975363,6.1718599
