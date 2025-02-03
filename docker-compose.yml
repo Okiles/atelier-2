@@ -3,7 +3,6 @@ networks:
     driver: bridge
 
 services:
-  # service gateway.toubeelib : serveur web
   gateway.geoquizz:
     #image: 'canals/php:8.3-cli'
     build:
@@ -48,7 +47,6 @@ services:
     depends_on:
       - api.geoquizz
 
-  # service toubeelib.db : base de données postgresql
   geoquizz.db:
     image: 'postgres:latest'
     restart: unless-stopped
