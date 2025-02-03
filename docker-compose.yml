@@ -62,12 +62,29 @@ services:
     volumes:
       - ./app/sql:/var/sql
 
+  geoquizz.game:
+    image: 'canals/php:8.3-cli'
+    restart: unless-stopped
+    build:
+      context: build
+      dockerfile: 8.3-cli.Dockerfile
+    ports:
+      - '42054:80'
+    volumes:
+      - ./app-mail:/var/php
+    working_dir: /var/php
+    networks:
+      - geoquizz.net
+    depends_on:
+      - geoquizz.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
   directus.db:
     image: 'postgres:latest'
     restart: unless-stopped
     env_file: ./app/config/directus.env
     ports:
-      - '42057:5432'
+      - '42059:80'
     networks:
       - geoquizz.net
     volumes:
