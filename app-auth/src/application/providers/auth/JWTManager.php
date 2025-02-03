@@ -11,7 +11,7 @@ class JWTManager
 
     public function __construct()
     {
-        $this->secret = getenv('JWT_SECRET_KEY');
+        $this->secret = $_ENV['JWT_SECRET_KEY'];
     }
 
     public function createAccessToken(array $payload): string

@@ -19,9 +19,9 @@ class JWTAuthProvider implements AuthProviderInterface
         $this->authService = $authService;
     }
 
-    public function register(CredentialsDTO $credentials, int $role): void
+    public function register(CredentialsDTO $credentials): void
     {
-        $this->authService->createUser($credentials, $role);
+        $this->authService->createUser($credentials);
     }
 
     public function signin(CredentialsDTO $credentials): AuthDTO
@@ -29,13 +29,11 @@ class JWTAuthProvider implements AuthProviderInterface
         $authDTO = $this->authService->byCredentials($credentials);
         $authDTO->setToken($this->jwtManager->createAccessToken([
             'id' => $authDTO->getId(),
-            'email' => $authDTO->getEmail(),
-            'role' => $authDTO->getRole()
+            'email' => $authDTO->getEmail()
         ]));
         $authDTO->setRefreshToken($this->jwtManager->createRefreshToken([
             'id' => $authDTO->getId(),
-            'email' => $authDTO->getEmail(),
-            'role' => $authDTO->getRole()
+            'email' => $authDTO->getEmail()
         ]));
         return $authDTO;
     }
@@ -49,15 +47,14 @@ class JWTAuthProvider implements AuthProviderInterface
     {
         $decodedToken = $this->jwtManager->decodeToken($token);
 
-        if (empty($decodedToken['id']) || empty($decodedToken['email']) || empty($decodedToken['role'])) {
+        if (empty($decodedToken['id']) || empty($decodedToken['email'])) {
             throw new \Exception('Invalid token data');
         }
 
         $id = $decodedToken['id'];
         $email = $decodedToken['email'];
-        $role = $decodedToken['role'];
 
-        $user = new User($email, $role);
+        $user = new User($email);
         $user->setId($id);
 
         return new AuthDTO($user);

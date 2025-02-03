@@ -14,7 +14,7 @@ class PDOUserRepository implements UserRepositoryInterface
 
     public function __construct()
     {
-        $dbCredentials = parse_ini_file(__DIR__ . '/../../../config/geoquizzdb.env.example');
+        $dbCredentials = parse_ini_file(__DIR__ . '/../../../config/geoquizzdb.env');
         try {
             $this->pdo = new PDO(
                 'pgsql:host=geoquizz.db;dbname=auth',
@@ -43,16 +43,15 @@ class PDOUserRepository implements UserRepositoryInterface
     public function save(User $user): string
     {
         $stmt = $this->pdo->prepare(
-            'INSERT INTO USERS (id, email, password, role) 
-             VALUES (:id, :email, :password, :role) 
+            'INSERT INTO USERS (id, email, password) 
+             VALUES (:id, :email, :password) 
              ON CONFLICT (id) 
-             DO UPDATE SET email = EXCLUDED.email, password = EXCLUDED.password, role = EXCLUDED.role'
+             DO UPDATE SET email = EXCLUDED.email, password = EXCLUDED.password'
         );
         $stmt->execute([
             'id' => $user->getId(),
             'email' => $user->getEmail(),
-            'password' => $user->getPassword(),
-            'role' => $user->getRole()
+            'password' => $user->getPassword()
         ]);
 
         return $user->getId();
@@ -73,8 +72,7 @@ class PDOUserRepository implements UserRepositoryInterface
 
     private function hydrateUser(array $data): User
     {
-        $user = new User($data['email'], $data['role']);
-        $user->setPassword($data['password']);
+        $user = new User($data['email'], $data['password']);
         $user->setId($data['id']);
         return $user;
     }

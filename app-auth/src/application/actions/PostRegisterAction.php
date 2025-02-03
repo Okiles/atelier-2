@@ -26,7 +26,7 @@ class PostRegisterAction extends AbstractAction
 
         $credentialsDTO = new CredentialsDTO($email, $password);
 
-        $this->authProvider->register($credentialsDTO, 3);
+        $this->authProvider->register($credentialsDTO);
 
         $rs->getBody()->write(json_encode([
             'message' => 'User registered successfully'

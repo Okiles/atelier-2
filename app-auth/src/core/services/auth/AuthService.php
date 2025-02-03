@@ -18,9 +18,9 @@ class AuthService implements AuthServiceInterface
         $this->userRepository = $userRepository;
     }
 
-    public function createUser(CredentialsDTO $credentials, int $role): string
+    public function createUser(CredentialsDTO $credentials): string
     {
-        $user = new User($credentials->getEmail(),password_hash($credentials->getPassword(), PASSWORD_DEFAULT) , $role);
+        $user = new User($credentials->getEmail(),password_hash($credentials->getPassword(), PASSWORD_DEFAULT));
         $user->setId(Uuid::uuid4()->toString());
         return $this->userRepository->save($user);
     }

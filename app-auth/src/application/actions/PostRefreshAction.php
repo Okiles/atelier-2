@@ -2,12 +2,14 @@
 
 namespace geoquizz\auth\application\actions;
 
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
 use geoquizz\auth\core\dto\CredentialsDTO;
 use geoquizz\auth\core\services\auth\AuthServiceBadDataException;
-use geoquizz\auth\providers\auth\AuthProviderInterface;
+use geoquizz\auth\application\providers\auth\AuthProviderInterface;
+
 
 class PostRefreshAction extends AbstractAction
 {
