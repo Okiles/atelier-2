@@ -26,3 +26,13 @@ Institut Européen du Cinéma et de l'Audiovisuel: 48.6971154,6.1721733
 
 Fast food
 
+made in france: 48.6966367,6.1792033
+foodies burger: 48.6896406,6.1854075
+Voyou Delivery: 48.6900766,6.1837812
+Rice and Curry: 48.6903745,6.1728704
+Bonidé: 48.6740372,6.1711804
+Green Kebab: 48.6886593,6.1840356
+Asia Wok: 48.6904101,6.1843143
+Burger Kebab:48.6893167,6.1761438
+Pokawa: 48.6893391,6.1815256
+Five Guys: 48.6898507,6.1830834
