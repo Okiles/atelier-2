@@ -57,6 +57,39 @@ services:
       - geoquizz.net
     volumes:
       - ./app/sql:/var/sql
+
+  directus.db:
+    image: 'postgres:latest'
+    restart: unless-stopped
+    env_file: ./app/config/directus.env
+    ports:
+      - '42057:5432'
+    networks:
+      - geoquizz.net
+    volumes:
+      - ./app/sql:/var/sql
+
+
+  directus:
+    image: directus/directus:latest
+    container_name: directus-app
+    restart: always
+    depends_on:
+      - directus.db
+    environment:
+        DATABASE_CLIENT: postgres
+        DATABASE_HOST: directus.db
+        DATABASE_PORT: 5432
+        DATABASE_NAME: ${DB_NAME}
+        DATABASE_USER: ${DB_USER}
+        DATABASE_PASSWORD: ${DB_PASSWORD}
+        ADMIN_EMAIL: ${ADMIN_EMAIL}
+        ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    ports:
+          - "42058:8055"
+    networks:
+          - geoquizz.net
+
   #
   # service administration des bases sql
   #
