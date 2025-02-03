@@ -24,7 +24,7 @@ services:
     volumes:
       - ./frontend/dist/:/var/www/html
     networks:
-      - geoquizz.net.net
+      - geoquizz.net
 
   qeoquizz.mail:
     image: 'canals/php:8.3-cli'
@@ -54,7 +54,7 @@ services:
   geoquizz.db:
     image: 'postgres:latest'
     restart: unless-stopped
-    env_file: ./app/config/geoquizzdb.env.example
+    env_file: geoquizzdb.env
     ports:
       - '42051:5432'
     networks:
