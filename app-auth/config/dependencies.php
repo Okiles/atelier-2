@@ -1,24 +1,34 @@
 <?php
 
-use GuzzleHttp\Client;
+use geoquizz\auth\application\providers\auth\AuthProviderInterface;
+use geoquizz\auth\application\providers\auth\JWTAuthProvider;
+use geoquizz\auth\application\providers\auth\JWTManager;
+use geoquizz\auth\core\repositoryInterfaces\UserRepositoryInterface;
+use geoquizz\auth\core\services\auth\AuthService;
+use geoquizz\auth\core\services\auth\AuthServiceInterface;
+use geoquizz\auth\infrastructure\repositories\PDOUserRepository;
 use Psr\Container\ContainerInterface;
-use toubeelib\gateway\application\actions\ConsulterPraticienByIdAction;
-use toubeelib\gateway\application\actions\ConsulterPraticienRdvs;
-use toubeelib\gateway\application\actions\ConsulterPraticiensAction;
-use toubeelib\gateway\application\actions\GenericGetPraticienAction;
-use toubeelib\gateway\application\actions\GenericGetRdvsAction;
-use toubeelib\gateway\application\actions\HomeAction;
-use toubeelib\gateway\application\actions\RefreshTokenAction;
-use toubeelib\gateway\application\actions\RegisterAction;
-use toubeelib\gateway\application\actions\SignInAction;
+
 
 return [
-    /* Example of a dependency
-    'toubeelib.client' => function () {
-        return new Client([
-            'base_uri' => 'http://api.toubeelib',
-            'timeout' => 2.0,
-        ]);
+    JWTManager::class => function(ContainerInterface $container) {
+        return new JWTManager();
     },
-    */
+
+    UserRepositoryInterface::class => function(ContainerInterface $container) {
+        return $container->get(PDOUserRepository::class);
+    },
+
+    AuthServiceInterface::class => function(ContainerInterface $container) {
+        return new AuthService(
+            $container->get(UserRepositoryInterface::class)
+        );
+    },
+
+    AuthProviderInterface::class => function(ContainerInterface $container) {
+        return new JWTAuthProvider(
+            $container->get(JWTManager::class),
+            $container->get(AuthServiceInterface::class)
+        );
+    },
 ];

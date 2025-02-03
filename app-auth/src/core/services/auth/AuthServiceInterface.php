@@ -7,6 +7,6 @@ use geoquizz\auth\core\dto\CredentialsDTO;
 
 interface AuthServiceInterface
 {
-    public function createUser(CredentialsDTO $credentials, int $role): string;
+    public function createUser(CredentialsDTO $credentials): string;
     public function byCredentials(CredentialsDTO $credentials): AuthDTO;
 }

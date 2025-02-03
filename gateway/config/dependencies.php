@@ -1,16 +1,9 @@
 <?php
 
+use geoquizz\gateway\application\actions\PostRegisterAction;
+use geoquizz\gateway\application\actions\PostSignInAction;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
-use toubeelib\gateway\application\actions\ConsulterPraticienByIdAction;
-use toubeelib\gateway\application\actions\ConsulterPraticienRdvs;
-use toubeelib\gateway\application\actions\ConsulterPraticiensAction;
-use toubeelib\gateway\application\actions\GenericGetPraticienAction;
-use toubeelib\gateway\application\actions\GenericGetRdvsAction;
-use toubeelib\gateway\application\actions\HomeAction;
-use toubeelib\gateway\application\actions\RefreshTokenAction;
-use toubeelib\gateway\application\actions\RegisterAction;
-use toubeelib\gateway\application\actions\SignInAction;
 
 return [
     /* Example of a dependency
@@ -27,5 +20,19 @@ return [
             'base_uri' => 'http://geoquizz.auth',
             'timeout' => 2.0,
         ]);
+    },
+
+    // Actions
+
+    PostRegisterAction::class => function (ContainerInterface $c) {
+        return new PostRegisterAction(
+            $c->get('auth.client')
+        );
+    },
+
+    PostSignInAction::class => function (ContainerInterface $c) {
+        return new PostSignInAction(
+            $c->get('auth.client')
+        );
     },
 ];

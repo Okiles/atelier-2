@@ -6,14 +6,14 @@ use geoquizz\auth\core\dto\AuthDTO;
 
 class User extends Entity
 {
+
     protected string $email;
     protected string $password;
-    protected int $role;
 
-    public function __construct(string $email, int $role)
+    public function __construct(string $email, $password)
     {
         $this->email = $email;
-        $this->role = $role;
+        $this->password = $password;
     }
 
     public function getEmail(): string
@@ -26,11 +26,6 @@ class User extends Entity
         return $this->password;
     }
 
-    public function getRole(): int
-    {
-        return $this->role;
-    }
-
     public function setEmail(string $email): void
     {
         $this->email = $email;
@@ -39,11 +34,6 @@ class User extends Entity
     public function setPassword(string $password): void
     {
         $this->password = $password;
-    }
-
-    public function setRole(int $role): void
-    {
-        $this->role = $role;
     }
 
     public function toDTO(): AuthDTO

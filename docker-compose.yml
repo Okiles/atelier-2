@@ -4,6 +4,7 @@ networks:
 
 services:
   gateway.geoquizz:
+    #image: 'canals/php:8.3-cli'
     build:
       context: build
       dockerfile: 8.3-cli.Dockerfile
