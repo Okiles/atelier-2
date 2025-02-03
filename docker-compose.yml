@@ -72,6 +72,8 @@ services:
       - '42055:80'
     volumes:
       - ./app-game:/var/php
+      - ./dbgame.env:/var/dbgame.env
+      - ./geoquizzdb.env:/var/geoquizzdb.env
     working_dir: /var/php
     networks:
       - geoquizz.net
