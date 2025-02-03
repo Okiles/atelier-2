@@ -36,6 +36,18 @@ services:
       - geoquizz.db
     command: php -S 0.0.0.0:80 -t /var/php/public
 
+  geoquizz.front:
+    image: ubuntu/apache2:latest
+    restart: unless-stopped
+    ports:
+      - "42053:80"
+    volumes:
+      - ./app-front/dist/:/var/www/html
+    networks:
+      - geoquizz.net.net
+    depends_on:
+      - api.geoquizz
+
   # service toubeelib.db : base de données postgresql
   geoquizz.db:
     image: 'postgres:latest'
