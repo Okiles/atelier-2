@@ -36,7 +36,6 @@ const request = async (
       return;
     }
 
-
     if (!response.ok) {
       const errorBody = await response.json();
       throw new Error(errorBody.message || 'Quelque chose a mal tourné');
@@ -57,14 +56,20 @@ const request = async (
 
 
 const login = (username, email, password) => {
-  return request('/login', 'POST', { username, email, password }, false);
+  return request('/login', 'POST', {email, password }, false);
 };
 const register = (username, email, password) => {
-  return request('/register', 'POST', { username, email, password }, false);
+  return request('/register', 'POST', {email, password }, false);
 };
 
+const createGame = (timer,distance) => {
+  return request('/game', 'POST', {timer,distance }, true);
+};
 
-export { request, login, register};
+const getGames = () => {
+  return request('/game', 'GET', null, true);
+}
+export { request, login, register, createGame, getGames };
 
 
 

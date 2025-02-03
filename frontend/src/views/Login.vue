@@ -6,7 +6,7 @@ export default {
   name: 'Login',
   data() {
     return {
-      username: '',
+      email : '',
       password: '',
       error: null,
     };
@@ -14,7 +14,7 @@ export default {
   methods: {
     async handleLogin() {
       try {
-        const response = await login(this.username, this.password);
+        const response = await login(this.email, this.password);
         setToken(response.token);
         this.$router.push('/dashboard');
       } catch (err) {
@@ -31,12 +31,12 @@ export default {
     <h1>Connexion</h1>
     <form @submit.prevent="handleLogin">
       <div>
-        <label for="username">Nom d'utilisateur :</label>
+        <label for="email">email :</label>
         <input
           type="text"
-          id="username"
-          v-model="username"
-          placeholder="Entrez votre nom d'utilisateur"
+          id="email"
+          v-model="email"
+          placeholder="Entrez votre email"
         />
       </div>
       <div>

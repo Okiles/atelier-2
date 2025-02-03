@@ -14,12 +14,13 @@ export default {
       removeToken();
       this.$router.push('/login');
     },
+
+    navigateToCreateGame() {
+      this.$router.push('/create-game');
+    },
   },
   async mounted() {
     this.user = getUserIdentity();
-    if(!this.user){
-      this.$router.push('/login');
-    }
   }
 }
 </script>
@@ -29,7 +30,8 @@ export default {
     <h1>Bienvenue sur le Dashboard</h1>
     <div v-if="user">
       <p>Connecté en tant que : <strong>{{ user.username }}</strong></p>
-      <button @click="logout" class="logout-button">Se déconnecter</button>
+      <button @click="navigateToCreateGame" class="create-game-button">Créer une partie</button>
+      <button @click="handleLogout" class="logout-button">Se déconnecter</button>
     </div>
 
     <p v-if="error" class="error">{{ error }}</p>

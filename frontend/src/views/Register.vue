@@ -5,7 +5,6 @@ export default {
   name: 'Register',
   data() {
     return {
-      username: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -20,7 +19,7 @@ export default {
       }
 
       try {
-        await register(this.username,this.email, this.password);
+        await register(this.email, this.password);
         this.$router.push('/login');
       } catch (err) {
         this.error = err.message || 'Une erreur est survenue.';
@@ -35,12 +34,12 @@ export default {
     <h1>Inscription</h1>
     <form @submit.prevent="handleRegister">
       <div>
-        <label for="username">Nom d'utilisateur :</label>
+        <label for="email">Email :</label>
         <input
           type="text"
-          id="username"
-          v-model="username"
-          placeholder="Entrez votre nom d'utilisateur"
+          id="email"
+          v-model="email"
+          placeholder="Entrez votre email"
         />
       </div>
       <div>
