@@ -10,7 +10,7 @@ services:
       context: build
       dockerfile: 8.3-cli.Dockerfile
     ports:
-      - '6081:80'
+      - '42050:80'
     volumes:
       - ./gateway:/var/php
     networks:
@@ -26,7 +26,7 @@ services:
       context: build
       dockerfile: 8.3-cli.Dockerfile
     ports:
-      - '6080:80'
+      - '42052::80'
     volumes:
       - ./app:/var/php
     working_dir: /var/php
@@ -42,7 +42,7 @@ services:
     ports:
       - "42053:80"
     volumes:
-      - ./app-front/dist/:/var/www/html
+      - ./frontendfrontend/dist/:/var/www/html
     networks:
       - geoquizz.net.net
     depends_on:
@@ -52,11 +52,11 @@ services:
   geoquizz.db:
     image: 'postgres:latest'
     restart: unless-stopped
-    env_file: ./app/config/toubeelibdb.env
+    env_file: ./app/config/geoquizzdb.env
     ports:
-      - '5432:5432'
+      - '42051:5432'
     networks:
-      - toubeelib.net
+      - geoquizz.net
     volumes:
       - ./app/sql:/var/sql
   #
