@@ -16,7 +16,7 @@ class GameDTO extends DTO
 
     protected int $score;
 
-    protected float $duree;
+    protected int $duree;
 
     protected float $distance;
 

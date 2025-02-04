@@ -10,22 +10,20 @@ use Slim\Exception\HttpNotFoundException;
 
 class GetGamesAction extends AbstractGatewayAction
 {
+    private ClientInterface $gameService;
 
-    private ClientInterface $authService;
-
-    public function __construct(ClientInterface $container)
+    public function __construct(ClientInterface $gameService)
     {
-        $this->authService = $container;
+        $this->gameService = $gameService;
     }
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
         try {
-            $response = $this->authService->get('/games');
+            $response = $this->gameService->get('/games');
             return $response;
         } catch (ClientException $e) {
             throw new HttpNotFoundException($rq, "Games not found");
         }
     }
 }
-

@@ -69,6 +69,7 @@ const getGames = () => {
   return request('/game', 'GET', null, false);
 }
 
+
 const getGameState = (gameId) => {
   return request(`/game/${gameId}`, 'GET', null, false);
 }

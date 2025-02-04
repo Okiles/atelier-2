@@ -21,7 +21,7 @@ class GetGamesAction extends AbstractAction
     {
         try {
             $gamesDTO = $this->gameService->getGames();
-
+            $resultat["Game"]  = [];
             foreach ($gamesDTO as $game) {
                 $resultat["Game"][] = [
                     'ID' => $game->ID,

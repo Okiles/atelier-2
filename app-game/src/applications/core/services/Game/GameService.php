@@ -30,9 +30,9 @@ class GameService implements GameServiceInterface
     public function getGames(): array
     {
         $games = $this->gameRepository->getGames();
+        $gameDTOs = [];
         foreach ($games as $game){
-            $gameDTO = new GameDTO($game);
-            $gameDTOs[] = $gameDTO;
+            $gameDTOs[] = new GameDTO($game);
         }
         return $gameDTOs;
     }

@@ -12,11 +12,11 @@ class Game extends Entity
 
     private string $id_user;
 
-    private string $duree;
+    private int $duree;
 
     private float $distance;
 
-    public function __construct(int $score, string $status, string $id_user, string $duree, string $distance)
+    public function __construct(int $score, string $status, string $id_user, int $duree, string $distance)
     {
         $this->score = $score;
         $this->status = $status;

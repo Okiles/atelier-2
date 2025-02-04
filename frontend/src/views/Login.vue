@@ -18,7 +18,7 @@ export default {
         setToken(response.token);
         this.$router.push('/');
       } catch (err) {
-        this.error = err.message || 'Une erreur est survenue.';
+        this.error = 'Email ou mot de passe incorrect.';
       }
     },
   },

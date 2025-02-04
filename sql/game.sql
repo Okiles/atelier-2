@@ -17,7 +17,7 @@ CREATE TABLE games
     score INTEGER NOT NULL,
     status VARCHAR(50) NOT NULL,
     id_user VARCHAR(255) NOT NULL,
-    duree INTERVAL NOT NULL,
+    duree INT NOT NULL,
     distance REAL NOT NULL,
     FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE
 );

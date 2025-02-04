@@ -40,14 +40,20 @@ class GameRepository implements GameRepositoryInterface
         $query = $this->pdo->prepare('SELECT * FROM GAMES');
         $query->execute();
         $rows = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$rows) {
+            throw new \Exception("No games found");
+        }
+
         $games = [];
-        foreach($rows as $game){
-            $game = new Game($game['score'],$game['status'],$game['id_user'],$game['duree'],$game['distance']);
-            $game->setId($game['id']);
+        foreach($rows as $row){
+            $game = new Game($row['score'], $row['status'], $row['id_user'], $row['duree'], $row['distance']);
+            $game->setId($row['id']);
             $games[] = $game;
         }
         return $games;
     }
+
 
 
 
