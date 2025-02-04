@@ -33,7 +33,7 @@ class CreateGameAction extends AbstractAction
         $game_id = $this->gameService->createGame(new InputGameDTO(null,$status, $id_user,$score, $duree, $distance));
 
         $rs->getBody()->write(json_encode([
-            'ID du User' => $game_id,
+            'ID de la Game' => $game_id,
         ]));
 
         return $rs->withHeader('Content-Type', 'application/json')->withStatus(200);

@@ -1,5 +1,6 @@
 <?php
 
+use geoquizz\game\applications\actions\GetUserAction;
 use geoquizz\game\applications\actions\CreateUserAction;
 use geoquizz\game\applications\actions\CreateGameAction;
 use geoquizz\game\applications\actions\GetGamesAction;
@@ -8,11 +9,12 @@ use geoquizz\game\applications\core\services\Game\GameService;
 use geoquizz\game\applications\core\services\User\UserService;
 use geoquizz\game\applications\core\services\User\UserServiceInterface;
 use geoquizz\game\applications\infrastructure\repositories\Game\GameRepository;
-use geoquizz\game\applications\infrastructure\repositories\UserRepository;
+use geoquizz\game\applications\infrastructure\repositories\user\UserRepository;
 use Psr\Container\ContainerInterface;
 use geoquizz\game\applications\core\repositoryInterfaces\GameRepositoryInterface;
 use geoquizz\game\applications\core\services\Game\GameServiceInterface;
 use geoquizz\game\applications\actions\UpdateGameAction;
+use geoquizz\game\applications\actions\GetGamesByID;
 
 return[
     PDO::class => function () {
@@ -53,6 +55,14 @@ return[
 
     GetGamesAction::class => function (ContainerInterface $c) {
         return new GetGamesAction($c->get(GameServiceInterface::class));
+    },
+
+    GetUserAction::class => function (ContainerInterface $c) {
+        return new GetUserAction($c->get(UserServiceInterface::class));
+    },
+
+    GetGamesByID::class => function (ContainerInterface $c) {
+        return new GetGamesByID($c->get(GameServiceInterface::class));
     }
 
 

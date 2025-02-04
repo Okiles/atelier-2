@@ -2,6 +2,7 @@
 
 namespace geoquizz\game\applications\core\dto;
 
+use geoquizz\game\applications\core\domain\entities\User\User;
 use geoquizz\game\applications\core\dto\DTO;
 
 class UserDTO extends DTO
@@ -13,13 +14,13 @@ class UserDTO extends DTO
     private ?string $username;
     private ?string $profilepic;
 
-    public function __construct(string $id,  string $email, ?string $name = null, ?string $lastname = null, ?string $username = null, ?string $profilepic = null) {
-        $this->name = $name;
-        $this->lastname = $lastname;
-        $this->email = $email;
-        $this->username = $username;
-        $this->profilepic = $profilepic;
-        $this->id = $id;
+    public function __construct(User $user) {
+        $this->id = $user->getId();
+        $this->name = $user->getName();
+        $this->lastname = $user->getLastname();
+        $this->email = $user->getEmail();
+        $this->username = $user->getUsername();
+        $this->profilepic = $user->getProfilepic();
     }
 
     // Getters
@@ -58,5 +59,17 @@ class UserDTO extends DTO
 
     public function setUsername(?string $username): void {
         $this->username = $username;
+    }
+
+    public function setProfilepic(?string $profilepic): void {
+        $this->profilepic = $profilepic;
+    }
+
+    public function getId(): string {
+        return $this->id;
+    }
+
+    public function setId(string $id): void {
+        $this->id = $id;
     }
 }

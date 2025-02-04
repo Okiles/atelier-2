@@ -48,7 +48,7 @@ class GameRepository implements GameRepositoryInterface
         $games = [];
         foreach($rows as $row){
             $game = new Game($row['score'], $row['status'], $row['id_user'], $row['duree'], $row['distance']);
-            $game->setId($row['id']);
+            $game->setID($row['id']);
             $games[] = $game;
         }
         return $games;
@@ -66,5 +66,17 @@ class GameRepository implements GameRepositoryInterface
             'score'=>$game->getScore(),
             'id'=>$game->getGameId()
         ]);
+    }
+
+    public function getGameById(string $id): GameDTO
+    {
+     $query = $this->pdo->prepare('SELECT * FROM GAMES WHERE id=:id');
+     $query->execute([
+         'id'=>$id
+     ]);
+     $row = $query->fetch(PDO::FETCH_ASSOC);
+     $game = new Game($row['score'], $row['status'], $row['id_user'], $row['duree'], $row['distance']);
+     $game->setID($row['id']);
+     return new GameDTO($game);
     }
 }

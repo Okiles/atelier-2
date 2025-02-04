@@ -8,7 +8,7 @@ use geoquizz\game\applications\core\dto\DTO;
 class GameDTO extends DTO
 {
 
-    protected string $id;
+    protected string $ID;
 
     protected string $status;
 
@@ -22,12 +22,13 @@ class GameDTO extends DTO
 
     public function __construct(Game $game)
     {
-        $this->id = $game->getID();
+        $this->ID= $game->getID();
         $this->status = $game->getStatus();
         $this->id_user = $game->getUserId();
         $this->score = $game->getScore();
         $this->duree = $game->getDuree();
         $this->distance = $game->getDistance();
     }
+
 
 }

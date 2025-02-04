@@ -14,4 +14,6 @@ interface UserServiceInterface
 
     public function createUser(string $id, string $email): bool;
 
+    public function updateUser(UserDTO $userDTO): void;
+
 }

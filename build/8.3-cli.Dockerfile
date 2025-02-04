@@ -1,4 +1,4 @@
-# Use an official PHP runtime as a base image
+# Use an official PHP runtime as a base images
 FROM php:8.3-cli
 
 # basic update

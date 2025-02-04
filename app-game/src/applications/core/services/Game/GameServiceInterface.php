@@ -20,6 +20,8 @@ interface GameServiceInterface
 
     public function getUserInGame(GameDTO $game): UserDTO;
 
+    public function getGameById(string $id): GameDTO;
+
 
 
 }
