@@ -18,21 +18,19 @@ class UserRepository implements UserRepositoryInterface
 
     public function getUser(string $id): User
     {
-        $query = $this->pdo->prepare("SELECT * FROM `users` WHERE `id` = :id");
+        $query = $this->pdo->prepare("SELECT * FROM users WHERE id = :id");
         $query->execute(['id' => $id]);
 
         $row = $query->fetch(PDO::FETCH_ASSOC);
         if (!$row) {
-            throw new RepositoryEntityNotFoundException("User with $id not found");
+            throw new RepositoryEntityNotFoundException("User with ID $id not found");
         }
-
-// Création de l'objet User avec des valeurs par défaut vides si null
         $user = new User(
             $row['email'],
-            $row['name'] ?? '',       // Valeur vide si NULL
+            $row['name'] ?? '',
             $row['lastname'] ?? '',
             $row['username'] ?? '',
-            $row['profilepic'] ?? ''
+            $row['profile_picture'] ?? ''
         );
         $user->setId($id);
         return $user;
@@ -40,20 +38,19 @@ class UserRepository implements UserRepositoryInterface
 
     public function createUser(User $user): bool
     {
-        // Correction de la syntaxe de la requête pour PostgreSQL
+
         $query = $this->pdo->prepare(
             "INSERT INTO \"users\" (\"id\", \"name\", \"lastname\", \"email\", \"username\", \"profile_picture\") 
         VALUES (:id, :name, :lastname, :email, :username, :profilepic)"
         );
 
-        // Envoi des valeurs en vérifiant les champs vides ou nulls
         $query->execute([
             'id' => $user->getId(),
-            'name' => $user->getName() ?: null,  // Si name est vide, on envoie null
-            'lastname' => $user->getLastname() ?: null,  // Si lastname est vide, on envoie null
+            'name' => $user->getName() ?: null,
+            'lastname' => $user->getLastname() ?: null,
             'email' => $user->getEmail(),
-            'username' => $user->getUsername() ?: null,  // Si username est vide, on envoie null
-            'profilepic' => $user->getProfilepic() ?: null  // Si profilepic est vide, on envoie null
+            'username' => $user->getUsername() ?: null,
+            'profilepic' => $user->getProfilepic() ?: "/images/users/default.jfif"
         ]);
 
         return $query->rowCount() > 0;
@@ -61,24 +58,43 @@ class UserRepository implements UserRepositoryInterface
 
     public function save(User $user): void
     {
+        $fields = [];
+        $params = ['id' => $user->getId()];
+
+        if ($user->getName() !== null) {
+            $fields[] = 'name = :name';
+            $params['name'] = $user->getName();
+        }
+
+        if ($user->getLastname() !== null) {
+            $fields[] = 'lastname = :lastname';
+            $params['lastname'] = $user->getLastname();
+        }
+
+        if ($user->getEmail() !== null) {
+            $fields[] = 'email = :email';
+            $params['email'] = $user->getEmail();
+        }
+
+        if ($user->getUsername() !== null) {
+            $fields[] = 'username = :username';
+            $params['username'] = $user->getUsername();
+        }
+
+        if ($user->getProfilepic() !== null) {
+            $fields[] = 'profile_picture = :profile_picture';
+            $params['profile_picture'] = $user->getProfilepic();
+        }
+
+        if (empty($fields)) {
+            return;
+        }
+
         $query = $this->pdo->prepare(
-            "UPDATE `users` SET
-        `name` = :name,
-        `lastname` = :lastname,
-        `email` = :email,
-        `username` = :username,
-        `profile_picture` = :profilepic
-        WHERE `id` = :id"
+            "UPDATE users SET " . implode(', ', $fields) . " WHERE id = :id"
         );
 
-        $query->execute([
-            'id' => $user->getId(),
-            'name' => $user->getName() ?: null,  // Si name est vide, on envoie null
-            'lastname' => $user->getLastname() ?: null,  // Si lastname est vide, on envoie null
-            'email' => $user->getEmail(),
-            'username' => $user->getUsername() ?: null,  // Si username est vide, on envoie null
-            'profilepic' => $user->getProfilepic() ?: null  // Si profilepic est vide, on envoie null
-        ]);
+        $query->execute($params);
     }
 
     public function deleteUser(string $id): bool
