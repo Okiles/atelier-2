@@ -1,7 +1,6 @@
 import { removeToken } from "./authProvider";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
+const BASE_URL = "http://localhost:42050";
 
 const request = async (
   endpoint,
@@ -55,10 +54,10 @@ const request = async (
 };
 
 
-const login = (username, email, password) => {
-  return request('/login', 'POST', {email, password }, false);
+const login = (email, password) => {
+  return request('/signin', 'POST', {email, password }, false);
 };
-const register = (username, email, password) => {
+const register = (email, password) => {
   return request('/register', 'POST', {email, password }, false);
 };
 

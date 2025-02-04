@@ -54,10 +54,6 @@ export default {
             class="slider"
           >
         </label>
-        <div class="range-labels">
-          <span>5m</span>
-          <span>1km</span>
-        </div>
       </div>
 
       <div class="form-group">
@@ -72,10 +68,6 @@ export default {
             class="slider"
           >
         </label>
-        <div class="range-labels">
-          <span>2s</span>
-          <span>30s</span>
-        </div>
       </div>
 
       <button
