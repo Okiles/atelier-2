@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
+import CreateGame from '../views/CreateGame.vue'
 
 import { isAuthenticated } from '../services/authProvider.js';
 
@@ -23,7 +24,16 @@ const routes = [
     name: 'Dashboard',
     component: Dashboard,
     meta: { requiresAuth: false },
+  },
+  {
+    path: '/createGame',
+    name: 'CreateGame',
+    component: CreateGame,
+    meta: { requiresAuth: true },
+
   }
+
+
 ]
 
 const router = createRouter({

@@ -30,17 +30,26 @@ return [
         ]);
     },
 
+    "mail.client" => function () {
+        return new Client([
+            'base_uri' => 'http://geoquizz.mail',
+            'timeout' => 10.0,
+        ]);
+    },
+
     // Actions
 
     PostRegisterAction::class => function (ContainerInterface $c) {
         return new PostRegisterAction(
-            $c->get('auth.client')
+            $c->get('auth.client'),
+            $c->get('mail.client')
         );
     },
 
     PostSignInAction::class => function (ContainerInterface $c) {
         return new PostSignInAction(
-            $c->get('auth.client')
+            $c->get('auth.client'),
+            $c->get('mail.client')
         );
     },
 

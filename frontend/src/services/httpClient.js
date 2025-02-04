@@ -1,7 +1,6 @@
 import { removeToken } from "./authProvider";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
+const BASE_URL = "http://localhost:42050";
 
 const request = async (
   endpoint,
@@ -36,7 +35,6 @@ const request = async (
       return;
     }
 
-
     if (!response.ok) {
       const errorBody = await response.json();
       throw new Error(errorBody.message || 'Quelque chose a mal tourné');
@@ -56,15 +54,25 @@ const request = async (
 };
 
 
-const login = (username, email, password) => {
-  return request('/login', 'POST', { username, email, password }, false);
+const login = (email, password) => {
+  return request('/signin', 'POST', {email, password }, false);
 };
-const register = (username, email, password) => {
-  return request('/register', 'POST', { username, email, password }, false);
+const register = (email, password) => {
+  return request('/register', 'POST', {email, password }, false);
 };
 
+const createGame = (timer,distance) => {
+  return request('/game', 'POST', {timer,distance }, true);
+};
 
-export { request, login, register};
+const getGames = () => {
+  return request('/game', 'GET', null, true);
+}
+
+const getGameState = (gameId) => {
+  return request(`/game/${gameId}`, 'GET', null, true);
+}
+export { request, login, register, createGame, getGames, getGameState };
 
 
 

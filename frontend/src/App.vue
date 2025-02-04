@@ -16,6 +16,13 @@ import {RouterLink ,RouterView} from 'vue-router';
 </template>
 
 <style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #f8f9fa;
+}
+
 #wrapper {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

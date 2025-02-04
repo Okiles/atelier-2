@@ -19,9 +19,9 @@ class JWTAuthProvider implements AuthProviderInterface
         $this->authService = $authService;
     }
 
-    public function register(CredentialsDTO $credentials): void
+    public function register(CredentialsDTO $credentials): string
     {
-        $this->authService->createUser($credentials);
+       return $this->authService->createUser($credentials);
     }
 
     public function signin(CredentialsDTO $credentials): AuthDTO
@@ -40,7 +40,19 @@ class JWTAuthProvider implements AuthProviderInterface
 
     public function refresh(string $token): AuthDTO
     {
-        // TODO: Implement refresh() method.
+        $decodedToken = $this->jwtManager->decodeToken($token);
+
+        if (empty($decodedToken['id']) || empty($decodedToken['email'])) {
+            throw new \Exception('Invalid token data');
+        }
+
+        $id = $decodedToken['id'];
+        $email = $decodedToken['email'];
+
+        $user = new User($email);
+        $user->setId($id);
+
+        return new AuthDTO($user);
     }
 
     public function getSignedInUser(string $token): AuthDTO
