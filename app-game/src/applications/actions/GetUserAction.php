@@ -32,12 +32,12 @@ class GetUserAction extends AbstractAction
         }
 
         $json = [
-            'id' => $user->getId(),
-            'name' => $user->getName(),
-            'lastname' => $user->getLastname(),
-            'email' => $user->getEmail(),
-            'username' => $user->getUsername(),
-            'profile_picture' => $user->getProfilepic()
+            'id' => $user->getId() ?? null,
+            'name' => $user->getName() ?? null,
+            'lastname' => $user->getLastname() ?? null,
+            'email' => $user->getEmail() ?? null,
+            'username' => $user->getUsername() ?? null,
+            'profile_picture' => $user->getProfilepic() ?? null
         ];
 
         return $this->jsonResponse($rs, $json, 200);
