@@ -25,8 +25,6 @@ class Userrepository
         $user = new User($row['name'], $row['lastname'],$row['email'], $row['password']);
         $user->setId($id);
         return $user;
-
-
     }
 
 

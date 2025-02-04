@@ -1,5 +1,6 @@
 <?php
 
+use geoquizz\gateway\application\actions\GetGamesAction;
 use geoquizz\gateway\application\actions\PostRegisterAction;
 use geoquizz\gateway\application\actions\PostSignInAction;
 use geoquizz\gateway\application\actions\CreateGameAction;
@@ -46,6 +47,12 @@ return [
 
     CreateGameAction::class => function (ContainerInterface $c) {
         return new CreateGameAction(
+            $c->get('game.client')
+        );
+    },
+
+    GetGamesAction::class => function (ContainerInterface $c) {
+        return new GetGamesAction(
             $c->get('game.client')
         );
     }

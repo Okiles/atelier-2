@@ -6,6 +6,7 @@ use geoquizz\game\applications\core\dto\InputGameDTO;
 use geoquizz\game\applications\core\domain\entities\Game\Game;
 use geoquizz\game\applications\core\dto\GameDTO;
 use geoquizz\game\applications\core\repositoryInterfaces\GameRepositoryInterface;
+use geoquizz\game\applications\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 use PDO;
 use Ramsey\Uuid\Uuid;
 
@@ -33,5 +34,21 @@ class GameRepository implements GameRepositoryInterface
         return $game->getID();
 
     }
+
+    public function getGames() : array {
+        $query = $this->pdo->prepare('SELECT * FROM GAMES');
+        $query->execute();
+        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
+        $games = [];
+        foreach($rows as $game){
+            $game = new Game($game['score'],$game['status'],$game['id_user'],$game['duree'],$game['distance']);
+            $game->setId($game['id']);
+            $games[] = $game;
+        }
+        return $games;
+    }
+
+
+
 
 }

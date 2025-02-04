@@ -66,13 +66,17 @@ const createGame = (timer,distance) => {
 };
 
 const getGames = () => {
-  return request('/game', 'GET', null, true);
+  return request('/game', 'GET', null, false);
 }
 
 const getGameState = (gameId) => {
-  return request(`/game/${gameId}`, 'GET', null, true);
+  return request(`/game/${gameId}`, 'GET', null, false);
 }
-export { request, login, register, createGame, getGames, getGameState };
+
+const giveCoordinates = (gameId,x,y) => {
+  return request(`/game/${gameId}/coordinates`, 'POST', {x,y}, true);
+}
+export { request, login, register, createGame, getGames, getGameState, giveCoordinates };
 
 
 

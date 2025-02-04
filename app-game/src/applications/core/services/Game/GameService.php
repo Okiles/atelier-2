@@ -26,6 +26,16 @@ class GameService implements GameServiceInterface
         // TODO: Implement stockGame() method.
     }
 
+    public function getGames(): array
+    {
+        $games = $this->gameRepository->getGames();
+        foreach ($games as $game){
+            $gameDTO = new GameDTO($game);
+            $gameDTOs[] = $gameDTO;
+        }
+        return $gameDTOs;
+    }
+
     public function getGame(): GameDTO
     {
         // TODO: Implement getGame() method.

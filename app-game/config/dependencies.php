@@ -1,6 +1,7 @@
 <?php
 
 use geoquizz\game\applications\actions\CreateGameAction;
+use geoquizz\game\applications\actions\GetGamesAction;
 use geoquizz\game\applications\core\services\Game\GameService;
 use geoquizz\game\applications\infrastructure\repositories\Game\GameRepository;
 use Psr\Container\ContainerInterface;
@@ -26,5 +27,9 @@ return[
 
     CreateGameAction::class => function (ContainerInterface $c) {
         return new CreateGameAction($c->get(GameServiceInterface::class));
-    }
+    },
+
+    GetGamesAction::class => function (ContainerInterface $c) {
+        return new GetGamesAction($c->get(GameServiceInterface::class));
+    },
 ];
