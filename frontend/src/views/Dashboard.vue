@@ -1,15 +1,29 @@
 <script>
 import { getUserIdentity, removeToken } from '../services/authProvider';
+import { getUser } from '../services/httpClient';
 
 export default {
   name: 'Dashboard',
   data() {
     return {
       user: null,
+      id: null,
       error: null,
     };
   },
   methods: {
+    async fetchUser() {
+      try {
+        const response = await getUser();
+        console.log (response);
+        this.id = response.id;
+        this.user = { ...this.user, email: response.email };
+      } catch (error) {
+        this.error = error.message;
+        console.error('Error fetching user:', error);
+      }
+    },
+
     async handleLogout() {
       removeToken();
       this.$router.push('/login');
@@ -28,8 +42,12 @@ export default {
     },
   },
   async mounted() {
-    this.user = getUserIdentity();
-  }
+    const userIdentity = getUserIdentity();
+    if (userIdentity) {
+      this.user = userIdentity;
+      await this.fetchUser();
+    }
+  },
 };
 </script>
 

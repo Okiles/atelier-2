@@ -15,6 +15,4 @@ const getUserIdentity = () => {
   return localStorage.getItem('token');
 }
 
-
-
 export { isAuthenticated, removeToken, setToken, getUserIdentity };

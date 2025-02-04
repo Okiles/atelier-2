@@ -61,6 +61,10 @@ const register = (email, password) => {
   return request('/register', 'POST', {email, password }, false);
 };
 
+const getUser = () => {
+  return request('/user', 'GET', null, true);
+}
+
 const createGame = (timer, distance, userId) => {
   return request('/game', 'POST', {
     score: 0,
@@ -82,9 +86,9 @@ const getGameState = (gameId) => {
 }
 
 const giveCoordinates = (gameId,x,y) => {
-  return request(`/game/${gameId}/coordinates`, 'POST', {x,y}, true);
+  return request(`/game/${gameId}/coordinates`, 'POST', {x,y}, false);
 }
-export { request, login, register, createGame, getGames, getGameState, giveCoordinates };
+export { request, login, getUser ,register, createGame, getGames, getGameState, giveCoordinates };
 
 
 
