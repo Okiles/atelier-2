@@ -7,6 +7,7 @@ use geoquizz\gateway\application\actions\PostSignInAction;
 use geoquizz\gateway\application\actions\CreateGameAction;
 use geoquizz\gateway\application\actions\UpdateGameAction;
 use geoquizz\game\applications\actions\GetGamesByID;
+use geoquizz\gateway\application\actions\UpdateUserInfo;
 use geoquizz\gateway\application\middlewares\AuthMiddleware;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
@@ -86,5 +87,9 @@ return [
 
     GetUserAction::class => function (ContainerInterface $c) {
         return new GetUserAction($c->get('game.client'), $c->get('auth.client'));
+    },
+
+    UpdateUserInfo::class => function (ContainerInterface $c) {
+        return new UpdateUserInfo($c->get('auth.client'), $c->get('game.client'));
     }
 ];

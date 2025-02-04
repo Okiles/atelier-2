@@ -9,4 +9,5 @@ interface UserRepositoryInterface
     public function getUserById(string $id): User;
     public function save(User $user): string;
     public function getUserByEmail(string $email): User;
+    public function update(User $user): void;
 }

@@ -34,4 +34,15 @@ class AuthService implements AuthServiceInterface
             throw new AuthServiceBadDataException('Erreur 400 : Email ou mot de passe incorrect', 400);
         }
     }
+
+    public function updatePassword(string $email, string $password, string $newPassword): void
+    {
+        $user = $this->userRepository->getUserByEmail($email);
+        if ($user && password_verify($password, $user->getPassword())) {
+            $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
+            $this->userRepository->update($user);
+        } else {
+            throw new AuthServiceBadDataException('Erreur 400 : Email ou mot de passe incorrect', 400);
+        }
+    }
 }

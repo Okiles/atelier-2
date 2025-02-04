@@ -72,4 +72,9 @@ class UserDTO extends DTO
     public function setId(string $id): void {
         $this->id = $id;
     }
+
+    public function setProfilePicture(string $profilepic)
+    {
+        $this->profilepic = $profilepic;
+    }
 }
