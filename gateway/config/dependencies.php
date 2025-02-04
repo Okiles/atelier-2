@@ -3,6 +3,7 @@
 use geoquizz\gateway\application\actions\PostRegisterAction;
 use geoquizz\gateway\application\actions\PostSignInAction;
 use geoquizz\gateway\application\actions\CreateGameAction;
+use geoquizz\gateway\application\actions\UpdateGameAction;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 
@@ -57,5 +58,9 @@ return [
         return new CreateGameAction(
             $c->get('game.client')
         );
+    },
+
+    UpdateGameAction::class => function (ContainerInterface $c) {
+        return new UpdateGameAction($c->get('game.client'));
     }
 ];
