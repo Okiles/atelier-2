@@ -50,7 +50,15 @@ Le comptoir Irlandais: 48.6884899,6.1841596
 Snipes: 48.69012,6.1802466
 Jass: 48.6933388,6.1805757
 
+Parc
 
-
+Parc de la Pépinière: 48.6979955,6.1851428
+Parc Sainte-Marie de Nancy: 48.6815382,6.170953
+Parc Charles III: 48.6890104,6.189867
+Jardin d'eau: 48.6936363,6.1938402
+Jardin du Belvédère: 48.6908079,6.154209
+Domaine et Château du Charmois: 48.6684332,6.1742817
+Jardin Dominique Alexandre Godron: 48.6947803,6.1896376
+La Roseraie: 48.6984113,6.183001
 
 

@@ -1,0 +1,435 @@
+<?xml version='1.0'?>
+<data>
+    <data>
+        <categorie>Monument</categorie>
+        <latitude>6.18275</latitude>
+        <longitude>48.694306</longitude>
+        <ville>Nancy</ville>
+        <nom>Arc Héré</nom>
+        <id>101</id>
+        <photo>14f03df7-dda8-4d1e-aef2-5698944f9c02</photo>
+    </data>
+    <data>
+        <categorie>Monument</categorie>
+        <latitude>6.1803072</latitude>
+        <longitude>48.6965855</longitude>
+        <ville>Nancy</ville>
+        <nom>Nancy Saint-Epvre</nom>
+        <id>102</id>
+        <photo>99cd0d76-14b7-41b4-8f6d-0b38fbde5712</photo>
+    </data>
+    <data>
+        <categorie>Monument</categorie>
+        <latitude>6.1855486</latitude>
+        <longitude>48.6918687</longitude>
+        <ville>Nancy</ville>
+        <nom>Cathédrale Notre-Dame-de-l'Annonciation</nom>
+        <id>103</id>
+        <photo>489dfb46-9464-4f17-9a49-8e77bc730983</photo>
+    </data>
+    <data>
+        <categorie>Monument</categorie>
+        <latitude>6.1675878</latitude>
+        <longitude>48.686626</longitude>
+        <ville>Nancy</ville>
+        <nom>Commanderie Saint-Jean-du-Vieil-Aître</nom>
+        <id>104</id>
+        <photo>94bab414-f9e2-431e-87ae-881afb857afc</photo>
+    </data>
+    <data>
+        <categorie>Monument</categorie>
+        <latitude>6.1793714</latitude>
+        <longitude>48.679947</longitude>
+        <ville>Nancy</ville>
+        <nom>Établissement d'Émile Gallé</nom>
+        <id>105</id>
+        <photo>67ddd7a9-97e3-47a3-94c8-ceaed134f35c</photo>
+    </data>
+    <data>
+        <categorie>Monument</categorie>
+        <latitude>6.1779966</latitude>
+        <longitude>48.6986534</longitude>
+        <ville>Nancy</ville>
+        <nom>Porte de la Craffe</nom>
+        <id>106</id>
+        <photo>5bea344a-280a-45bc-9840-c463b33d5b90</photo>
+    </data>
+    <data>
+        <categorie>Monument</categorie>
+        <latitude>6.1834332</latitude>
+        <longitude>48.6933232</longitude>
+        <ville>Nancy</ville>
+        <nom>Place Stanislas</nom>
+        <id>107</id>
+        <photo>5545091e-8d26-4bfa-b131-aa53c7fb67c9</photo>
+    </data>
+    <data>
+        <categorie>Monument</categorie>
+        <latitude>6.178198</latitude>
+        <longitude>48.6898844</longitude>
+        <ville>Nancy</ville>
+        <nom>Temple protestant de Nancy</nom>
+        <id>108</id>
+        <photo>c4832c24-9698-43dc-8e50-d15a45ee1336</photo>
+    </data>
+    <data>
+        <categorie>Monument</categorie>
+        <latitude>6.178285</latitude>
+        <longitude>48.6893755</longitude>
+        <ville>Nancy</ville>
+        <nom>Banque Charles Renauld</nom>
+        <id>109</id>
+        <photo>59631fa0-a309-4f18-acb4-b1ec2bfbc4a5</photo>
+    </data>
+    <data>
+        <categorie>Monument</categorie>
+        <latitude>6.1772529</latitude>
+        <longitude>48.6896</longitude>
+        <ville>Nancy</ville>
+        <nom>Banque SNVB</nom>
+        <id>110</id>
+        <photo>22358cd8-e79a-49e9-bad5-6ee35a1889a9</photo>
+    </data>
+    <data>
+        <categorie>ecole</categorie>
+        <latitude>6.161971</latitude>
+        <longitude>48.6832288</longitude>
+        <ville>Nancy</ville>
+        <nom>IUT Nancy-Charlemagne</nom>
+        <id>111</id>
+        <photo>fc063e1f-d35c-430a-b868-e9b2b4745b42</photo>
+    </data>
+    <data>
+        <categorie>ecole</categorie>
+        <latitude>6.1517384</latitude>
+        <longitude>48.660013</longitude>
+        <ville>Nancy</ville>
+        <nom>Iut Nancy-Brabois</nom>
+        <id>112</id>
+        <photo>e9b09631-5310-43de-a7d2-1bb91984e9d6</photo>
+    </data>
+    <data>
+        <categorie>ecole</categorie>
+        <latitude>6.1885486</latitude>
+        <longitude>48.6598459</longitude>
+        <ville>Nancy</ville>
+        <nom>Polytech Nancy</nom>
+        <id>113</id>
+        <photo>4dc52e53-4c63-49ff-863f-256ed6e2c056</photo>
+    </data>
+    <data>
+        <categorie>ecole</categorie>
+        <latitude>6.1589926</latitude>
+        <longitude>48.6669704</longitude>
+        <ville>Nancy</ville>
+        <nom>Faculté des Sciences et Technologies Nancy</nom>
+        <id>114</id>
+        <photo>5cc505d6-3e7f-4b2e-93ee-2eee2447ff71</photo>
+    </data>
+    <data>
+        <categorie>ecole</categorie>
+        <latitude>6.1718599</latitude>
+        <longitude>48.6975363</longitude>
+        <ville>Nancy</ville>
+        <nom>IAE Nancy école Universitaire de management</nom>
+        <id>115</id>
+        <photo>25a30137-d1a0-4856-9b31-d002c7e50e60</photo>
+    </data>
+    <data>
+        <categorie>ecole</categorie>
+        <latitude>6.1769844</latitude>
+        <longitude>48.692992</longitude>
+        <ville>Nancy</ville>
+        <nom>Faculte de Droit sciences economiques et gestion</nom>
+        <id>116</id>
+        <photo>52892347-a74a-46c7-a0a3-2219a30e4fdc</photo>
+    </data>
+    <data>
+        <categorie>ecole</categorie>
+        <latitude>6.1766223</latitude>
+        <longitude>48.6934953</longitude>
+        <ville>Nancy</ville>
+        <nom>centre européen universitaire</nom>
+        <id>117</id>
+        <photo>fa675599-f786-4306-9bd6-664137ffb922</photo>
+    </data>
+    <data>
+        <categorie>ecole</categorie>
+        <latitude>6.1427061</latitude>
+        <longitude>48.6510349</longitude>
+        <ville>Nancy</ville>
+        <nom>faculté d'odontologie</nom>
+        <id>118</id>
+        <photo>83b05c46-5321-4e34-905c-31060b5b3160</photo>
+    </data>
+    <data>
+        <categorie>ecole</categorie>
+        <latitude>6.1936218</latitude>
+        <longitude>48.6957736</longitude>
+        <ville>Nancy</ville>
+        <nom>Ecole Européenne d'Ingénieurs en Génie des Matériaux</nom>
+        <id>119</id>
+        <photo>742dbc3a-63f2-4c39-b89c-b7f894291b58</photo>
+    </data>
+    <data>
+        <categorie>ecole</categorie>
+        <latitude>6.1721733</latitude>
+        <longitude>48.6971154</longitude>
+        <ville>Nancy</ville>
+        <nom>Institut Européen du Cinéma et de l'Audiovisuel</nom>
+        <id>120</id>
+        <photo>0c8b2c7c-e955-4cdf-a02e-57d276d4fa3c</photo>
+    </data>
+    <data>
+        <categorie>Fast food</categorie>
+        <latitude>6.1854075</latitude>
+        <longitude>48.6896406</longitude>
+        <ville>Nancy</ville>
+        <nom>foodies burger</nom>
+        <id>121</id>
+        <photo>122bc606-115b-4e86-b1d8-d33cf2ba29d6</photo>
+    </data>
+    <data>
+        <categorie>Fast food</categorie>
+        <latitude>6.1837812</latitude>
+        <longitude>48.6900766</longitude>
+        <ville>Nancy</ville>
+        <nom>Voyou Delivery</nom>
+        <id>122</id>
+        <photo>72337474-2a73-47d8-8ddd-5a5bf69fbfd0</photo>
+    </data>
+    <data>
+        <categorie>Fast food</categorie>
+        <latitude>6.1728704</latitude>
+        <longitude>48.6903745</longitude>
+        <ville>Nancy</ville>
+        <nom>Rice and Curry</nom>
+        <id>123</id>
+        <photo>2b276d9b-e80e-467e-9135-005b9405d577</photo>
+    </data>
+    <data>
+        <categorie>Fast food</categorie>
+        <latitude>6.1711804</latitude>
+        <longitude>48.6740372</longitude>
+        <ville>Nancy</ville>
+        <nom>Bonidé</nom>
+        <id>124</id>
+        <photo>efa297e9-21cd-4563-9b77-922eeeea0621</photo>
+    </data>
+    <data>
+        <categorie>Fast food</categorie>
+        <latitude>6.1840356</latitude>
+        <longitude>48.6886593</longitude>
+        <ville>Nancy</ville>
+        <nom>Green Kebab</nom>
+        <id>125</id>
+        <photo>8f3a9b81-bc84-4b25-9a51-7f7eacbff11a</photo>
+    </data>
+    <data>
+        <categorie>Fast food</categorie>
+        <latitude>6.1843143</latitude>
+        <longitude>48.6904101</longitude>
+        <ville>Nancy</ville>
+        <nom>Asia Wok</nom>
+        <id>126</id>
+        <photo>a8e9d0c6-11c2-4f43-a9fd-57323c12269b</photo>
+    </data>
+    <data>
+        <categorie>Fast food</categorie>
+        <latitude>6.1761438</latitude>
+        <longitude>48.6893167</longitude>
+        <ville>Nancy</ville>
+        <nom>Burger Kebab</nom>
+        <id>127</id>
+        <photo>050431d1-b685-47b6-bc86-28e24c787b49</photo>
+    </data>
+    <data>
+        <categorie>Fast food</categorie>
+        <latitude>6.1815256</latitude>
+        <longitude>48.6893391</longitude>
+        <ville>Nancy</ville>
+        <nom>Pokawa</nom>
+        <id>128</id>
+        <photo>c0cdf2c4-24ce-4362-af79-211145aa4aea</photo>
+    </data>
+    <data>
+        <categorie>Fast food</categorie>
+        <latitude>6.1792033</latitude>
+        <longitude>48.6966367</longitude>
+        <ville>Nancy</ville>
+        <nom>made in france</nom>
+        <id>129</id>
+        <photo>2ede127a-52f9-49e9-b405-82609c6b7f2a</photo>
+    </data>
+    <data>
+        <categorie>Fast food</categorie>
+        <latitude>6.1830834</latitude>
+        <longitude>48.6898507</longitude>
+        <ville>Nancy</ville>
+        <nom>Five Guys</nom>
+        <id>130</id>
+        <photo>a33dee66-aced-429d-bd22-c4367ce2edee</photo>
+    </data>
+    <data>
+        <categorie>Magasin</categorie>
+        <latitude>6.1814435</latitude>
+        <longitude>48.6888106</longitude>
+        <ville>Nancy</ville>
+        <nom>Saint Sébastien</nom>
+        <id>131</id>
+        <photo>2c1a6434-f0a1-45c3-82e1-0aab4d96ad10</photo>
+    </data>
+    <data>
+        <categorie>Magasin</categorie>
+        <latitude>6.2207768</latitude>
+        <longitude>48.6855104</longitude>
+        <ville>Nancy</ville>
+        <nom>Auchan Hypermarché</nom>
+        <id>132</id>
+        <photo>e56e9582-d66b-46ac-95d0-779145727ada</photo>
+    </data>
+    <data>
+        <categorie>Magasin</categorie>
+        <latitude>6.1761183</latitude>
+        <longitude>48.6613595</longitude>
+        <ville>Nancy</ville>
+        <nom>centre commerciale les nations</nom>
+        <id>133</id>
+        <photo>5d186183-5096-40f0-8679-ab82696188ca</photo>
+    </data>
+    <data>
+        <categorie>Magasin</categorie>
+        <latitude>6.1763422</latitude>
+        <longitude>48.6894079</longitude>
+        <ville>Nancy</ville>
+        <nom>Printemps Nancy</nom>
+        <id>134</id>
+        <photo>a6f4983b-2eb2-42fd-8513-0cfa55952187</photo>
+    </data>
+    <data>
+        <categorie>Magasin</categorie>
+        <latitude>6.1839106</latitude>
+        <longitude>48.6901134</longitude>
+        <ville>Nancy</ville>
+        <nom>La Caverne du Gobelin</nom>
+        <id>135</id>
+        <photo>a6313630-0671-42be-8782-bf5e41555cb0</photo>
+    </data>
+    <data>
+        <categorie>Magasin</categorie>
+        <latitude>6.1828913</latitude>
+        <longitude>48.6909836</longitude>
+        <ville>Nancy</ville>
+        <nom>The LEGO® Certified Store</nom>
+        <id>136</id>
+        <photo>2fb281df-3080-4197-87b0-d27902df3a36</photo>
+    </data>
+    <data>
+        <categorie>Magasin</categorie>
+        <latitude>6.1841596</latitude>
+        <longitude>48.6884899</longitude>
+        <ville>Nancy</ville>
+        <nom>Le comptoir Irlandais</nom>
+        <id>137</id>
+        <photo>76f9072d-40b4-43a2-9e24-068f25581fd3</photo>
+    </data>
+    <data>
+        <categorie>Magasin</categorie>
+        <latitude>6.1816782</latitude>
+        <longitude>48.6899451</longitude>
+        <ville>Nancy</ville>
+        <nom>À l'Ombre des Marques</nom>
+        <id>138</id>
+        <photo>87d3ec91-82a4-4503-b4cd-21ee8585d213</photo>
+    </data>
+    <data>
+        <categorie>Magasin</categorie>
+        <latitude>6.1802466</latitude>
+        <longitude>48.69012</longitude>
+        <ville>Nancy</ville>
+        <nom>Snipes</nom>
+        <id>139</id>
+        <photo>fc75649c-f1cc-472d-a92a-3caef25d7853</photo>
+    </data>
+    <data>
+        <categorie>Magasin</categorie>
+        <latitude>6.1805757</latitude>
+        <longitude>48.6933388</longitude>
+        <ville>Nancy</ville>
+        <nom>Jass</nom>
+        <id>140</id>
+        <photo>3c236859-6b54-4002-b397-821925d7fc8a</photo>
+    </data>
+    <data>
+        <categorie>Parc</categorie>
+        <latitude>6.1896376</latitude>
+        <longitude>48.6947803</longitude>
+        <ville>Nancy</ville>
+        <nom>Jardin Dominique Alexandre Godron</nom>
+        <id>141</id>
+        <photo>4fd0b67a-8cfb-4949-be8c-f6284bd028f4</photo>
+    </data>
+    <data>
+        <categorie>Parc</categorie>
+        <latitude>6.1851428</latitude>
+        <longitude>48.6979955</longitude>
+        <ville>Nancy</ville>
+        <nom>Parc de la Pépinière</nom>
+        <id>142</id>
+        <photo>574c9d08-7956-4838-9633-adc7088c601b</photo>
+    </data>
+    <data>
+        <categorie>Parc</categorie>
+        <latitude>6.170953</latitude>
+        <longitude>48.6815382</longitude>
+        <ville>Nancy</ville>
+        <nom>Parc Sainte-Marie de Nancy</nom>
+        <id>144</id>
+        <photo>6da593d3-8a2d-4c69-b396-92415fafe9ab</photo>
+    </data>
+    <data>
+        <categorie>Parc</categorie>
+        <latitude>6.189867</latitude>
+        <longitude>48.6890104</longitude>
+        <ville>Nancy</ville>
+        <nom>Parc Charles III</nom>
+        <id>145</id>
+        <photo>95430208-1b1a-49a4-9b6c-316972d5a8f5</photo>
+    </data>
+    <data>
+        <categorie>Parc</categorie>
+        <latitude>6.1938402</latitude>
+        <longitude>48.6936363</longitude>
+        <ville>Nancy</ville>
+        <nom>Jardin d'eau</nom>
+        <id>146</id>
+        <photo>8ff1309b-db1a-423a-b141-8587a1fc8a8f</photo>
+    </data>
+    <data>
+        <categorie>Parc</categorie>
+        <latitude>6.154209</latitude>
+        <longitude>48.6908079</longitude>
+        <ville>Nancy</ville>
+        <nom>Jardin du Belvédère</nom>
+        <id>147</id>
+        <photo>c4fe7a4b-a220-4b4f-8ca6-9b24c642c484</photo>
+    </data>
+    <data>
+        <categorie>Parc</categorie>
+        <latitude>6.1742817</latitude>
+        <longitude>48.6684332</longitude>
+        <ville>Nancy</ville>
+        <nom>Domaine et Château du Charmois</nom>
+        <id>148</id>
+        <photo>922be24e-e697-4dd7-a3fb-a2c07a8daa07</photo>
+    </data>
+    <data>
+        <categorie>Parc</categorie>
+        <latitude>6.183001</latitude>
+        <longitude>48.6984113</longitude>
+        <ville>Nancy</ville>
+        <nom>La Roseraie</nom>
+        <id>149</id>
+        <photo>d1c42a28-7f10-4f0c-875d-e79d6b9c9cac</photo>
+    </data>
+</data>
