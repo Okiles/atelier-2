@@ -8,6 +8,6 @@ interface UserRepositoryInterface
 {
     public function getUser(string $id) : User;
     public function save(User $user) : void;
-    public function createUser(User $user) : void;
+    public function createUser(User $user) : bool;
     public function deleteUser(string $id) : bool;
 }

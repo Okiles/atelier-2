@@ -1,6 +1,6 @@
 <?php
 
-use applications\actions\CreateUserAcion;
+use geoquizz\game\applications\actions\CreateUserAction;
 use geoquizz\game\applications\actions\CreateGameAction;
 use geoquizz\game\applications\core\repositoryInterfaces\UserRepositoryInterface;
 use geoquizz\game\applications\core\services\Game\GameService;
@@ -42,8 +42,8 @@ return[
         return new UserService($c->get(UserRepositoryInterface::class));
     },
 
-    CreateUserAcion::class => function (ContainerInterface $c) {
-        return new CreateUserAcion($c->get(UserServiceInterface::class));
+    CreateUserAction::class => function (ContainerInterface $c) {
+        return new CreateUserAction($c->get(UserServiceInterface::class));
     },
 
     UpdateGameAction::class => function (ContainerInterface $c) {

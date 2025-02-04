@@ -31,6 +31,6 @@ class UserService implements UserServiceInterface
     {
         $user = new User(email: $email);
         $user->setId($id);
-        $this->userRepository->createUser($user);
+        return $this->userRepository->createUser($user);
     }
 }

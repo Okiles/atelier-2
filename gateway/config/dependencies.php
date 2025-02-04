@@ -44,7 +44,8 @@ return [
     PostRegisterAction::class => function (ContainerInterface $c) {
         return new PostRegisterAction(
             $c->get('auth.client'),
-            $c->get('mail.client')
+            $c->get('mail.client'),
+            $c->get('game.client')
         );
     },
 

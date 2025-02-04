@@ -13,7 +13,7 @@ class UserDTO extends DTO
     private ?string $username;
     private ?string $profilepic;
 
-    public function __construct(string $id, ?string $name = null, ?string $lastname = null, string $email, ?string $username = null, ?string $profilepic = null) {
+    public function __construct(string $id,  string $email, ?string $name = null, ?string $lastname = null, ?string $username = null, ?string $profilepic = null) {
         $this->name = $name;
         $this->lastname = $lastname;
         $this->email = $email;

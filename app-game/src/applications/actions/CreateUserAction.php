@@ -1,14 +1,13 @@
 <?php
 
-namespace applications\actions;
+namespace geoquizz\game\applications\actions;
 
-use geoquizz\game\applications\actions\AbstractAction;
 use geoquizz\game\applications\core\services\User\UserServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 
-class CreateUserAcion extends AbstractAction
+class CreateUserAction extends AbstractAction
 {
     private UserServiceInterface $userService;
 
@@ -41,7 +40,8 @@ class CreateUserAcion extends AbstractAction
         } catch (\InvalidArgumentException $e) {
             return $this->createJsonResponse($rs, ['error' => $e->getMessage()], 400);
         } catch (Throwable $e) {
-            return $this->createJsonResponse($rs, ['error' => 'Une erreur interne est survenue.'], 500);
+            echo $e->getMessage();
+            return $this->createJsonResponse($rs, ['error' => 'Une erreur est survenue.'], 500);
         }
     }
 
