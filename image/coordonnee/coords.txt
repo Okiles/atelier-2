@@ -36,3 +36,21 @@ Asia Wok: 48.6904101,6.1843143
 Burger Kebab:48.6893167,6.1761438
 Pokawa: 48.6893391,6.1815256
 Five Guys: 48.6898507,6.1830834
+
+Magasin
+
+Saint Sébastien: 48.6888106,6.1814435
+centre commerciale les nations: 48.6613595,6.1761183
+Printemps Nancy: 48.6894079,6.1763422
+La Caverne du Gobelin: 48.6901134,6.1839106
+Auchan Hypermarché: 48.6855104,6.2207768
+The LEGO® Certified Store: 48.6909836,6.1828913
+Le comptoir Irlandais: 48.6884899,6.1841596
+À l'Ombre des Marques: 48.6899451,6.1816782
+Snipes: 48.69012,6.1802466
+Jass: 48.6933388,6.1805757
+
+
+
+
+
