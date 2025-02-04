@@ -11,6 +11,7 @@ use geoquizz\game\applications\infrastructure\repositories\UserRepository;
 use Psr\Container\ContainerInterface;
 use geoquizz\game\applications\core\repositoryInterfaces\GameRepositoryInterface;
 use geoquizz\game\applications\core\services\Game\GameServiceInterface;
+use geoquizz\game\applications\actions\UpdateGameAction;
 
 return[
     PDO::class => function () {
@@ -44,5 +45,8 @@ return[
     CreateUserAcion::class => function (ContainerInterface $c) {
         return new CreateUserAcion($c->get(UserServiceInterface::class));
     },
-
+    
+    UpdateGameAction::class => function (ContainerInterface $c) {
+        return new UpdateGameAction($c->get(GameServiceInterface::class));
+    }
 ];
