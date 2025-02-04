@@ -13,6 +13,6 @@ class CreateUserAcion extends AbstractAction
     {
         $data = $rq->getParsedBody();
         $id = $data['id'] ?? null;
-
+        $email = $data['email'] ?? null;
     }
 }
