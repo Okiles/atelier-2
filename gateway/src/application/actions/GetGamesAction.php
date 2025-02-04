@@ -23,6 +23,8 @@ class GetGamesAction extends AbstractGatewayAction
             $response = $this->gameService->get('/games');
             return $response;
         } catch (ClientException $e) {
+            var_dump($e->getMessage()); // Affiche le message d'erreur de l'exception
+            var_dump($e->getResponse()->getBody()->getContents());
             throw new HttpNotFoundException($rq, "Games not found");
         }
     }

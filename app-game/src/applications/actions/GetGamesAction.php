@@ -25,11 +25,11 @@ class GetGamesAction extends AbstractAction
             foreach ($gamesDTO as $game) {
                 $resultat["Game"][] = [
                     'ID' => $game->ID,
-                    'Score' => $game->Score,
-                    'Status' => $game->Status,
-                    'ID User' => $game->ID_User,
-                    'Duree' => $game->Duree,
-                    'Distance' => $game->Distance,
+                    'Score' => $game->score,
+                    'Status' => $game->status,
+                    'ID User' => $game->id_user,
+                    'Duree' => $game->duree,
+                    'Distance' => $game->distance,
                 ];
             }
             $rs->getBody()->write(json_encode($resultat));

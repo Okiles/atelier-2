@@ -12,4 +12,6 @@ interface GameRepositoryInterface
 
     public function updateGame(UpdateGameDTO $game): void;
 
+    public function getGames(): array;
+
 }
