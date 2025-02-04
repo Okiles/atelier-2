@@ -4,6 +4,7 @@ use geoquizz\gateway\application\actions\GetGamesAction;
 use geoquizz\gateway\application\actions\PostRegisterAction;
 use geoquizz\gateway\application\actions\PostSignInAction;
 use geoquizz\gateway\application\actions\CreateGameAction;
+use geoquizz\gateway\application\actions\UpdateGameAction;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 
@@ -31,17 +32,26 @@ return [
         ]);
     },
 
+    "mail.client" => function () {
+        return new Client([
+            'base_uri' => 'http://geoquizz.mail',
+            'timeout' => 10.0,
+        ]);
+    },
+
     // Actions
 
     PostRegisterAction::class => function (ContainerInterface $c) {
         return new PostRegisterAction(
-            $c->get('auth.client')
+            $c->get('auth.client'),
+            $c->get('mail.client')
         );
     },
 
     PostSignInAction::class => function (ContainerInterface $c) {
         return new PostSignInAction(
-            $c->get('auth.client')
+            $c->get('auth.client'),
+            $c->get('mail.client')
         );
     },
 
@@ -55,5 +65,9 @@ return [
         return new GetGamesAction(
             $c->get('game.client')
         );
+    },
+
+    UpdateGameAction::class => function (ContainerInterface $c) {
+        return new UpdateGameAction($c->get('game.client'));
     }
 ];

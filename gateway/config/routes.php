@@ -4,6 +4,7 @@ use geoquizz\gateway\application\actions\GetGamesAction;
 use geoquizz\gateway\application\actions\PostRegisterAction;
 use geoquizz\gateway\application\actions\PostSignInAction;
 use geoquizz\gateway\application\actions\CreateGameAction;
+use geoquizz\gateway\application\actions\UpdateGameAction;
 use Slim\App;
 
 return function(App $app): App {
@@ -12,6 +13,7 @@ return function(App $app): App {
     $app->post('/register', PostRegisterAction::class);
     $app->post('/game', CreateGameAction::class);
     $app->get('/games', GetGamesAction::class);
+    $app->patch('/game', UpdateGameAction::class);
     // $app->get('/token/refresh', RefreshTokenAction::class);
 
 

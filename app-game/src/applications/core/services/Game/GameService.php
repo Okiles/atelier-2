@@ -4,6 +4,7 @@ namespace geoquizz\game\applications\core\services\Game;
 
 use geoquizz\game\applications\core\dto\InputGameDTO;
 use geoquizz\game\applications\core\dto\GameDTO;
+use geoquizz\game\applications\core\dto\UpdateGameDTO;
 use geoquizz\game\applications\core\dto\UserDTO;
 use geoquizz\game\applications\core\repositoryInterfaces\GameRepositoryInterface;
 
@@ -21,9 +22,9 @@ class GameService implements GameServiceInterface
         // TODO: Implement startGame() method.
     }
 
-    public function stockGame(GameDTO $g): void
+    public function updateGame(string $id, int $score): void
     {
-        // TODO: Implement stockGame() method.
+        $this->gameRepository->updateGame(new UpdateGameDTO($id, $score));
     }
 
     public function getGames(): array

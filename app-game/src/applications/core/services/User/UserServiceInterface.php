@@ -12,4 +12,6 @@ interface UserServiceInterface
 
     public function getGameByUserId(string $id): array;
 
+    public function createUser(string $id, string $email): bool;
+
 }

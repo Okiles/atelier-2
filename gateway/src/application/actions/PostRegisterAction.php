@@ -11,10 +11,12 @@ use Slim\Exception\HttpNotFoundException;
 class PostRegisterAction extends AbstractGatewayAction
 {
     private ClientInterface $authService;
+    private ClientInterface $mailService;
 
-    public function __construct(ClientInterface $container)
+    public function __construct(ClientInterface $authService, ClientInterface $mailService)
     {
-        $this->authService = $container;
+        $this->authService = $authService;
+        $this->mailService = $mailService;
     }
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
@@ -22,6 +24,12 @@ class PostRegisterAction extends AbstractGatewayAction
         try {
             $data = $rq->getParsedBody();
             $this->authService->post('/register', ['json' => $data]);
+            $mailData = [
+                'message' => 'Inscription réussie ! Amusez-vous bien !',
+                'email' => $data['email'],
+                'subject' => 'Bienvenue chez GeoQuizz'
+            ];
+            $this->mailService->post('/send', ['json' => $mailData]);
         } catch (ClientException $e) {
             throw new HttpNotFoundException($rq, "User not found");
         }

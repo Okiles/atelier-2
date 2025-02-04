@@ -5,6 +5,7 @@ namespace geoquizz\game\applications\infrastructure\repositories\Game;
 use geoquizz\game\applications\core\dto\InputGameDTO;
 use geoquizz\game\applications\core\domain\entities\Game\Game;
 use geoquizz\game\applications\core\dto\GameDTO;
+use geoquizz\game\applications\core\dto\UpdateGameDTO;
 use geoquizz\game\applications\core\repositoryInterfaces\GameRepositoryInterface;
 use geoquizz\game\applications\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 use PDO;
@@ -51,4 +52,13 @@ class GameRepository implements GameRepositoryInterface
 
 
 
+    public function updateGame(UpdateGameDTO $game): void
+    {
+        $query = $this->pdo->prepare('UPDATE GAMES SET status=:status, score=:score WHERE id=:id');
+        $query->execute([
+            'status'=>'finished',
+            'score'=>$game->getScore(),
+            'id'=>$game->getGameId()
+        ]);
+    }
 }
