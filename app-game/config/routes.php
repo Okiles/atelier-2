@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use geoquizz\game\applications\actions\GetUserAction;
 use geoquizz\game\applications\actions\CreateUserAction;
 use geoquizz\game\applications\actions\CreateGameAction;
 use geoquizz\game\applications\actions\GetGamesAction;
@@ -17,7 +18,7 @@ return function (App $app) {
     $app->get('/game/{id}',GetGamesByID::class);
     $app->post('/createUser', CreateUserAction::class);
     $app->post('/updateUser', UpdateUserAction::class);
-
+    $app->post('/user', GetUserAction::class);
     return $app;
 };
 

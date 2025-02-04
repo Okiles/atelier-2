@@ -1,11 +1,13 @@
 <?php
 
 use geoquizz\gateway\application\actions\GetGamesAction;
+use geoquizz\gateway\application\actions\GetUserAction;
 use geoquizz\gateway\application\actions\PostRegisterAction;
 use geoquizz\gateway\application\actions\PostSignInAction;
 use geoquizz\gateway\application\actions\CreateGameAction;
 use geoquizz\gateway\application\actions\UpdateGameAction;
 use geoquizz\game\applications\actions\GetGamesByID;
+use geoquizz\gateway\application\middlewares\AuthMiddleware;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 
@@ -41,6 +43,12 @@ return [
 
     // Actions
 
+    AuthMiddleware::class => function (ContainerInterface $c) {
+        return new AuthMiddleware(
+            $c->get('auth.client')
+        );
+    },
+
     PostRegisterAction::class => function (ContainerInterface $c) {
         return new PostRegisterAction(
             $c->get('auth.client'),
@@ -74,6 +82,9 @@ return [
 
     GetGamesByID::class => function (ContainerInterface $c) {
     return new GetGamesByID($c->get('game.client'));
-    }
+    },
 
+    GetUserAction::class => function (ContainerInterface $c) {
+        return new GetUserAction($c->get('game.client'), $c->get('auth.client'));
+    }
 ];
