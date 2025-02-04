@@ -61,9 +61,16 @@ const register = (email, password) => {
   return request('/register', 'POST', {email, password }, false);
 };
 
-const createGame = (timer,distance) => {
-  return request('/game', 'POST', {timer,distance }, true);
+const createGame = (timer, distance, userId) => {
+  return request('/game', 'POST', {
+    score: 0,
+    status: "en cours",
+    duree: timer,
+    distance: distance,
+    id_user: userId
+  }, true);
 };
+
 
 const getGames = () => {
   return request('/game', 'GET', null, false);
