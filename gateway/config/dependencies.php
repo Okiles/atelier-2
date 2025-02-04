@@ -5,6 +5,7 @@ use geoquizz\gateway\application\actions\PostRegisterAction;
 use geoquizz\gateway\application\actions\PostSignInAction;
 use geoquizz\gateway\application\actions\CreateGameAction;
 use geoquizz\gateway\application\actions\UpdateGameAction;
+use geoquizz\game\applications\actions\GetGamesByID;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 
@@ -29,6 +30,13 @@ return [
             'base_uri' => 'http://geoquizz.mail',
             'timeout' => 10.0,
         ]);
+    },
+
+    'directus.client' => function () {
+    return new Client([
+        'base_uri' => 'http://directus',
+        'timeout' => 10.0,
+    ]);
     },
 
     // Actions
@@ -62,5 +70,10 @@ return [
 
     UpdateGameAction::class => function (ContainerInterface $c) {
         return new UpdateGameAction($c->get('game.client'));
+    },
+
+    GetGamesByID::class => function (ContainerInterface $c) {
+    return new GetGamesByID($c->get('game.client'));
     }
+
 ];

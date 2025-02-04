@@ -13,6 +13,7 @@ use Psr\Container\ContainerInterface;
 use geoquizz\game\applications\core\repositoryInterfaces\GameRepositoryInterface;
 use geoquizz\game\applications\core\services\Game\GameServiceInterface;
 use geoquizz\game\applications\actions\UpdateGameAction;
+use geoquizz\game\applications\actions\GetGamesByID;
 
 return[
     PDO::class => function () {
@@ -53,6 +54,10 @@ return[
 
     GetGamesAction::class => function (ContainerInterface $c) {
         return new GetGamesAction($c->get(GameServiceInterface::class));
+    },
+
+    GetGamesByID::class => function (ContainerInterface $c) {
+        return new GetGamesByID($c->get(GameServiceInterface::class));
     }
 
 

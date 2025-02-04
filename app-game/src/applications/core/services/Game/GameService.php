@@ -52,4 +52,10 @@ class GameService implements GameServiceInterface
     {
         // TODO: Implement getUserInGame() method.
     }
+
+    public function getGameById(string $id): GameDTO
+    {
+        $game = $this->gameRepository->getGameById($id);
+        return $game;
+    }
 }
