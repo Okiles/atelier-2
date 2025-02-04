@@ -70,7 +70,7 @@ class PDOUserRepository implements UserRepositoryInterface
         return $this->hydrateUser($PDOuser);
     }
 
-    private function update(User $user): void
+    public function update(User $user): void
     {
         $stmt = $this->pdo->prepare(
             'UPDATE USERS SET password = :password WHERE id = :id'
