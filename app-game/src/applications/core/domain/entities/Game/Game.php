@@ -36,7 +36,7 @@ class Game extends Entity
         return $this->id_user;
     }
 
-    public function getDuree(): string{
+    public function getDuree(): int{
         return $this->duree;
     }
 

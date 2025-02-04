@@ -1,10 +1,14 @@
 <?php
 
 use geoquizz\gateway\application\actions\GetGamesAction;
+use geoquizz\gateway\application\actions\GetUserAction;
 use geoquizz\gateway\application\actions\PostRegisterAction;
 use geoquizz\gateway\application\actions\PostSignInAction;
 use geoquizz\gateway\application\actions\CreateGameAction;
 use geoquizz\gateway\application\actions\UpdateGameAction;
+use geoquizz\game\applications\actions\GetGamesByID;
+use geoquizz\gateway\application\actions\UpdateUserInfo;
+use geoquizz\gateway\application\middlewares\AuthMiddleware;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 
@@ -31,7 +35,20 @@ return [
         ]);
     },
 
+    'directus.client' => function () {
+    return new Client([
+        'base_uri' => 'http://directus',
+        'timeout' => 10.0,
+    ]);
+    },
+
     // Actions
+
+    AuthMiddleware::class => function (ContainerInterface $c) {
+        return new AuthMiddleware(
+            $c->get('auth.client')
+        );
+    },
 
     PostRegisterAction::class => function (ContainerInterface $c) {
         return new PostRegisterAction(
@@ -62,5 +79,17 @@ return [
 
     UpdateGameAction::class => function (ContainerInterface $c) {
         return new UpdateGameAction($c->get('game.client'));
+    },
+
+    GetGamesByID::class => function (ContainerInterface $c) {
+    return new GetGamesByID($c->get('game.client'));
+    },
+
+    GetUserAction::class => function (ContainerInterface $c) {
+        return new GetUserAction($c->get('game.client'), $c->get('auth.client'));
+    },
+
+    UpdateUserInfo::class => function (ContainerInterface $c) {
+        return new UpdateUserInfo($c->get('auth.client'), $c->get('game.client'));
     }
 ];

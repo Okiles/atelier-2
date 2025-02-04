@@ -1,5 +1,6 @@
 <?php
 
+use geoquizz\auth\application\actions\PostUpdateCredentials;
 use geoquizz\auth\application\providers\auth\AuthProviderInterface;
 use geoquizz\auth\application\providers\auth\JWTAuthProvider;
 use geoquizz\auth\application\providers\auth\JWTManager;
@@ -29,6 +30,12 @@ return [
         return new JWTAuthProvider(
             $container->get(JWTManager::class),
             $container->get(AuthServiceInterface::class)
+        );
+    },
+
+    PostUpdateCredentials::class => function(ContainerInterface $container) {
+        return new PostUpdateCredentials(
+            $container->get(AuthProviderInterface::class)
         );
     },
 ];

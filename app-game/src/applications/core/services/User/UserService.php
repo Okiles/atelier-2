@@ -19,12 +19,13 @@ class UserService implements UserServiceInterface
 
     public function getUser(string $id): UserDTO
     {
-        // TODO: Implement getUser() method.
+        return new UserDTO($this->userRepository->getUser($id));
     }
 
     public function getGameByUserId(string $id): array
     {
         // TODO: Implement getGameByUserId() method.
+        return [];
     }
 
     public function createUser(string $id, string $email): bool
@@ -33,4 +34,19 @@ class UserService implements UserServiceInterface
         $user->setId($id);
         return $this->userRepository->createUser($user);
     }
+
+    public function updateUser(UserDTO $userDTO): void
+    {
+        $user = new User(
+            $userDTO->getEmail(),
+            $userDTO->getName(),
+            $userDTO->getLastname(),
+            $userDTO->getUsername(),
+            $userDTO->getProfilepic()
+        );
+        $user->setId($userDTO->getId());
+        $this->userRepository->save($user);
+    }
+
+
 }

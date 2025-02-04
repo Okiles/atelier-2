@@ -12,4 +12,6 @@ interface AuthProviderInterface
     public function signin(CredentialsDTO $credentials): AuthDTO;
     public function refresh(string $token): AuthDTO;
     public function getSignedInUser(string $token): AuthDTO;
+
+    public function updatePassword(string $email, string $password, string $newPassword): void;
 }

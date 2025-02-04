@@ -4,6 +4,7 @@ use geoquizz\auth\application\actions\GetValidateTokenAction;
 use geoquizz\auth\application\actions\PostRefreshAction;
 use geoquizz\auth\application\actions\PostRegisterAction;
 use geoquizz\auth\application\actions\PostSigninAction;
+use geoquizz\auth\application\actions\PostUpdateCredentials;
 use Slim\App;
 
 return function(App $app): App {
@@ -12,6 +13,7 @@ return function(App $app): App {
     $app->post('/register', PostRegisterAction::class)->setName('register');
     $app->get('/token/refresh', PostRefreshAction::class)->setName('refresh');
     $app->get('/token/validate', GetValidateTokenAction::class)->setName('validate');
+    $app->post('/update', PostUpdateCredentials::class)->setName('update');
 
     return $app;
 };

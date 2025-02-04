@@ -30,7 +30,7 @@ export default {
   async mounted() {
     this.user = getUserIdentity();
   }
-}
+};
 </script>
 
 <template>
@@ -39,7 +39,7 @@ export default {
       <div class="navbar-brand">GeoQuizz</div>
       <div class="navbar-menu">
         <div v-if="user" class="navbar-user">
-          <span>{{ user.username }}</span>
+          <span>{{user.id}}</span>
           <button @click="navigateToCreateGame" class="nav-button create-game-button">
             Créer une partie
           </button>

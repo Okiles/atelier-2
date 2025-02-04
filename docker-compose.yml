@@ -4,7 +4,7 @@ networks:
 
 services:
   gateway.geoquizz:
-    #image: 'canals/php:8.3-cli'
+    #images: 'canals/php:8.3-cli'
     build:
       context: build
       dockerfile: 8.3-cli.Dockerfile
@@ -27,7 +27,7 @@ services:
       - geoquizz.net
 
   geoquizz.mail:
-    #image: 'canals/php:8.3-cli'
+    #images: 'canals/php:8.3-cli'
     restart: unless-stopped
     build:
       context: build
@@ -63,7 +63,7 @@ services:
       - ./app/sql:/var/sql
 
   geoquizz.game:
-    # image: 'canals/php:8.3-cli'
+    # images: 'canals/php:8.3-cli'
     restart: unless-stopped
     build:
       context: build
@@ -72,8 +72,8 @@ services:
       - '42055:80'
     volumes:
       - ./app-game:/var/php
-      - ./dbgame.env:/var/dbgame.env
       - ./geoquizzdb.env:/var/geoquizzdb.env
+      - ./dbgame.env:/var/dbgame.env
     working_dir: /var/php
     networks:
       - geoquizz.net
@@ -82,7 +82,7 @@ services:
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   geoquizz.auth:
-    #image: 'canals/php:8.3-cli'
+    #images: 'canals/php:8.3-cli'
     restart: unless-stopped
     build:
       context: build
