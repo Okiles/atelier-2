@@ -26,10 +26,10 @@ class PostRegisterAction extends AbstractAction
 
         $credentialsDTO = new CredentialsDTO($email, $password);
 
-        $this->authProvider->register($credentialsDTO);
+        $id = $this->authProvider->register($credentialsDTO);
 
         $rs->getBody()->write(json_encode([
-            'message' => 'User registered successfully'
+            'id' => $id
         ]));
 
         return $rs->withHeader('Content-Type', 'application/json')->withStatus($rs->getStatusCode());
