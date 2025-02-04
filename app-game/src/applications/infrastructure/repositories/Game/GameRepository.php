@@ -48,7 +48,7 @@ class GameRepository implements GameRepositoryInterface
         $games = [];
         foreach($rows as $row){
             $game = new Game($row['score'], $row['status'], $row['id_user'], $row['duree'], $row['distance']);
-            $game->setId($row['id']);
+            $game->setID($row['id']);
             $games[] = $game;
         }
         return $games;

@@ -14,11 +14,11 @@ class InputGameDTO extends DTO
 
     protected int $score;
 
-    protected string $duree;
+    protected int $duree;
 
     protected float $distance;
 
-    public function __construct(?string $id,string $status, string $id_user, int $score, string $duree, float $distance){
+    public function __construct(?string $id,string $status, string $id_user, int $score, int $duree, float $distance){
         $this->status = $status;
         $this->id_user = $id_user;
         $this->score = $score;
@@ -44,7 +44,7 @@ class InputGameDTO extends DTO
     public function getScore(): float{
         return $this->score;
     }
-    public function getDuree(): string{
+    public function getDuree(): int{
         return $this->duree;
     }
     public function getDistance(): float{
