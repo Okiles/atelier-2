@@ -2,6 +2,7 @@
 
 use geoquizz\game\applications\actions\CreateUserAction;
 use geoquizz\game\applications\actions\CreateGameAction;
+use geoquizz\game\applications\actions\GetGamesAction;
 use geoquizz\game\applications\core\repositoryInterfaces\UserRepositoryInterface;
 use geoquizz\game\applications\core\services\Game\GameService;
 use geoquizz\game\applications\core\services\User\UserService;
@@ -48,5 +49,11 @@ return[
 
     UpdateGameAction::class => function (ContainerInterface $c) {
         return new UpdateGameAction($c->get(GameServiceInterface::class));
+    },
+
+    GetGamesAction::class => function (ContainerInterface $c) {
+        return new GetGamesAction($c->get(GameServiceInterface::class));
     }
+
+
 ];
