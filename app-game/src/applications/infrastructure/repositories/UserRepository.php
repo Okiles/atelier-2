@@ -29,25 +29,29 @@ class UserRepository implements UserRepositoryInterface
     }
 
 
-    public function createUser(User $user): User
+    public function createUser(User $user): void
     {
-        $this->pdo->prepare("INSERT INTO `users` (`id`, `email`) VALUES (:id, :email)")
+        $this->pdo->prepare("INSERT INTO `users` (`id`, `name`, `lastname`, `email`, `username`, 'profilepic') VALUES (:id, :name, :lastname, :email, :username, :profilepic)")
             ->execute([
                 'id' => $user->getId(),
+                'name' => $user->getName(),
+                'lastname' => $user->getLastname(),
                 'email' => $user->getEmail(),
+                'username' => $user->getUsername(),
+                'profilepic' => $user->getProfilePic()
             ]);
     }
 
-    public function updateUser(User $user): User
+    public function save(User $user): void
     {
-        $email = "email : $user->getEmail()," ?? '';
-        $username = "username : $user->getUsername()," ?? '';
-        $name = "name : $user->getName()," ?? '';
-        $lastname = "lastname : $user->getLastname()," ?? '';
-        $profile_picture = "profile_picture : $user->getProfilePicture()," ?? '';
-        $this->pdo->prepare("UPDATE `users` SET $email $username $name $lastname $profile_picture WHERE `id` = :id")
+        $this->pdo->prepare("UPDATE `users` SET `name` = :name, `lastname` = :lastname, `email` = :email, `username` = :username, `profilepic` = :profilepic WHERE `id` = :id")
             ->execute([
                 'id' => $user->getId(),
+                'name' => $user->getName(),
+                'lastname' => $user->getLastname(),
+                'email' => $user->getEmail(),
+                'username' => $user->getUsername(),
+                'profilepic' => $user->getProfilePic()
             ]);
     }
 
