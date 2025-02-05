@@ -1,4 +1,5 @@
 <script>
+import HeaderComponent from '@/components/HeaderComponent.vue';
 import { useUserStore } from "../stores/userStore";
 import { storeToRefs } from "pinia";
 
@@ -6,11 +7,12 @@ export default {
   name: "Dashboard",
   setup() {
     const userStore = useUserStore();
-    const { user, error } = storeToRefs(userStore);
+    const { user, error, loading } = storeToRefs(userStore);
 
     return {
       user,
       error,
+      loading,
       fetchUser: userStore.fetchUser,
       handleLogout: () => {
         userStore.logout();
@@ -18,65 +20,53 @@ export default {
       },
     };
   },
+
   async mounted() {
-    await this.fetchUser();
+    if (!this.user) {
+      await this.fetchUser();
+    }
   },
+
   methods: {
-    async navigateToCreateGame() {
+    navigateToCreateGame() {
       this.$router.push("/createGame");
     },
-    async handleLogin() {
+
+    handleLogin() {
       this.$router.push("/login");
     },
-    async handleRegister() {
+
+    handleRegister() {
       this.$router.push("/register");
     },
+  },
+
+  components: {
+    HeaderComponent,
   },
 };
 </script>
 
 <template>
   <div class="app-container">
-    <nav class="navbar">
-      <div v-if="user" class="navbar-user-info">
-        <img
-          :src="'http://localhost:42055' + user.profile_picture"
-          alt="Photo de profil"
-          class="navbar-user-image"
-        />
-        <span>Bienvenue, {{ user.username }}</span>
-      </div>
-      <div class="navbar-brand">GeoQuizz</div>
-      <div class="navbar-menu">
-        <div v-if="user" class="navbar-user">
-          <button @click="navigateToCreateGame" class="nav-button create-game-button">
-            Créer une partie
-          </button>
-          <button @click="handleLogout" class="nav-button logout-button">
-            Se déconnecter
-          </button>
-        </div>
-        <div v-else class="navbar-auth">
-          <button @click="handleRegister" class="nav-button register-button">
-            S'inscrire
-          </button>
-          <button @click="handleLogin" class="nav-button login-button">
-            Se connecter
-          </button>
-        </div>
-      </div>
-    </nav>
+    <HeaderComponent
+      v-if="user"
+      :user="user"
+      @createGame="navigateToCreateGame"
+      @logout="handleLogout"
+      @register="handleRegister"
+      @login="handleLogin"
+    />
 
     <main class="main-content">
       <div class="login-card">
+        <div v-if="loading" class="loading">Chargement...</div>
         <h1 class="login-title">Tableau de Bord</h1>
         <p v-if="error" class="error-message">{{ error }}</p>
       </div>
     </main>
   </div>
 </template>
-
-
 
 <style scoped>
 .app-container {

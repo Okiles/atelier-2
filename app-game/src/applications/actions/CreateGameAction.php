@@ -5,6 +5,7 @@ namespace geoquizz\game\applications\actions;
 use geoquizz\game\applications\actions\AbstractAction;
 use geoquizz\game\applications\core\dto\InputGameDTO;
 use geoquizz\game\applications\core\services\Game\GameServiceInterface;
+use geoquizz\game\applications\providers\GameProviderInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -31,10 +32,13 @@ class CreateGameAction extends AbstractAction
 
 
         $game_id = $this->gameService->createGame(new InputGameDTO(null,$status, $id_user,$score, $duree, $distance));
-
+        $token = $this->gameService->createToken($game_id, $id_user);
         $rs->getBody()->write(json_encode([
             'ID de la Game' => $game_id,
+            'token' => $token,
         ]));
+
+
 
         return $rs->withHeader('Content-Type', 'application/json')->withStatus(200);
 

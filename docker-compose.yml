@@ -74,6 +74,7 @@ services:
       - ./app-game:/var/php
       - ./geoquizzdb.env:/var/geoquizzdb.env
       - ./dbgame.env:/var/dbgame.env
+      - ./.env:/var/.env
     working_dir: /var/php
     networks:
       - geoquizz.net
