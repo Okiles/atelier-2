@@ -19,7 +19,7 @@ interface GameServiceInterface
 
     public function createGame(InputGameDTO $g): string;
 
-    public function getUserInGame(GameDTO $game): UserDTO;
+    public function getGameByUserId(string $id): array;
 
     public function getGameById(string $id): GameDTO;
 

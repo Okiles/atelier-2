@@ -13,7 +13,7 @@ use Slim\App;
 return function (App $app) {
 
     $app->post('/game', CreateGameAction::class);
-    $app->get('/games', GetGamesAction::class);
+    $app->get('/games[/{id}]', GetGamesAction::class);
     $app->patch('/game', UpdateGameAction::class);
     $app->get('/game/{id}',GetGamesByID::class);
     $app->post('/createUser', CreateUserAction::class);

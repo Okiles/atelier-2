@@ -20,9 +20,15 @@ class GetGamesAction extends AbstractAction
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
         try {
-            $gamesDTO = $this->gameService->getGames();
+            $user_id = $args['id'] ?? null;
+
+            if($user_id){
+                $games = $this->gameService->getGameByUserId($user_id);
+            }else{
+                $games = $this->gameService->getGames();
+            }
             $resultat["Game"]  = [];
-            foreach ($gamesDTO as $game) {
+            foreach ($games as $game) {
                 $resultat["Game"][] = [
                     'ID' => $game->ID,
                     'Score' => $game->score,
