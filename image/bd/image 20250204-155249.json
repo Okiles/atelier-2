@@ -5,7 +5,6 @@
 		"longitude": "48.694306",
 		"ville": "Nancy",
 		"nom": "Arc Héré",
-		"id": 101,
 		"photo": "14f03df7-dda8-4d1e-aef2-5698944f9c02"
 	},
 	{
@@ -14,7 +13,6 @@
 		"longitude": "48.6965855",
 		"ville": "Nancy",
 		"nom": "Nancy Saint-Epvre",
-		"id": 102,
 		"photo": "99cd0d76-14b7-41b4-8f6d-0b38fbde5712"
 	},
 	{
@@ -23,7 +21,6 @@
 		"longitude": "48.6918687",
 		"ville": "Nancy",
 		"nom": "Cathédrale Notre-Dame-de-l'Annonciation",
-		"id": 103,
 		"photo": "489dfb46-9464-4f17-9a49-8e77bc730983"
 	},
 	{
@@ -32,7 +29,6 @@
 		"longitude": "48.686626",
 		"ville": "Nancy",
 		"nom": "Commanderie Saint-Jean-du-Vieil-Aître",
-		"id": 104,
 		"photo": "94bab414-f9e2-431e-87ae-881afb857afc"
 	},
 	{
@@ -41,7 +37,6 @@
 		"longitude": "48.679947",
 		"ville": "Nancy",
 		"nom": "Établissement d'Émile Gallé",
-		"id": 105,
 		"photo": "67ddd7a9-97e3-47a3-94c8-ceaed134f35c"
 	},
 	{
@@ -50,7 +45,6 @@
 		"longitude": "48.6986534",
 		"ville": "Nancy",
 		"nom": "Porte de la Craffe",
-		"id": 106,
 		"photo": "5bea344a-280a-45bc-9840-c463b33d5b90"
 	},
 	{
@@ -59,7 +53,6 @@
 		"longitude": "48.6933232",
 		"ville": "Nancy",
 		"nom": "Place Stanislas",
-		"id": 107,
 		"photo": "5545091e-8d26-4bfa-b131-aa53c7fb67c9"
 	},
 	{
@@ -68,7 +61,6 @@
 		"longitude": "48.6898844",
 		"ville": "Nancy",
 		"nom": "Temple protestant de Nancy",
-		"id": 108,
 		"photo": "c4832c24-9698-43dc-8e50-d15a45ee1336"
 	},
 	{
@@ -77,7 +69,6 @@
 		"longitude": "48.6893755",
 		"ville": "Nancy",
 		"nom": "Banque Charles Renauld",
-		"id": 109,
 		"photo": "59631fa0-a309-4f18-acb4-b1ec2bfbc4a5"
 	},
 	{
@@ -86,7 +77,6 @@
 		"longitude": "48.6896",
 		"ville": "Nancy",
 		"nom": "Banque SNVB",
-		"id": 110,
 		"photo": "22358cd8-e79a-49e9-bad5-6ee35a1889a9"
 	},
 	{
@@ -95,7 +85,6 @@
 		"longitude": "48.6832288",
 		"ville": "Nancy",
 		"nom": "IUT Nancy-Charlemagne",
-		"id": 111,
 		"photo": "fc063e1f-d35c-430a-b868-e9b2b4745b42"
 	},
 	{
@@ -104,7 +93,6 @@
 		"longitude": "48.660013",
 		"ville": "Nancy",
 		"nom": "Iut Nancy-Brabois",
-		"id": 112,
 		"photo": "e9b09631-5310-43de-a7d2-1bb91984e9d6"
 	},
 	{
@@ -113,7 +101,6 @@
 		"longitude": "48.6598459",
 		"ville": "Nancy",
 		"nom": "Polytech Nancy",
-		"id": 113,
 		"photo": "4dc52e53-4c63-49ff-863f-256ed6e2c056"
 	},
 	{
@@ -122,7 +109,6 @@
 		"longitude": "48.6669704",
 		"ville": "Nancy",
 		"nom": "Faculté des Sciences et Technologies Nancy",
-		"id": 114,
 		"photo": "5cc505d6-3e7f-4b2e-93ee-2eee2447ff71"
 	},
 	{
@@ -131,7 +117,6 @@
 		"longitude": "48.6975363",
 		"ville": "Nancy",
 		"nom": "IAE Nancy école Universitaire de management",
-		"id": 115,
 		"photo": "25a30137-d1a0-4856-9b31-d002c7e50e60"
 	},
 	{
@@ -140,7 +125,6 @@
 		"longitude": "48.692992",
 		"ville": "Nancy",
 		"nom": "Faculte de Droit sciences economiques et gestion",
-		"id": 116,
 		"photo": "52892347-a74a-46c7-a0a3-2219a30e4fdc"
 	},
 	{
@@ -149,7 +133,6 @@
 		"longitude": "48.6934953",
 		"ville": "Nancy",
 		"nom": "centre européen universitaire",
-		"id": 117,
 		"photo": "fa675599-f786-4306-9bd6-664137ffb922"
 	},
 	{
@@ -158,7 +141,6 @@
 		"longitude": "48.6510349",
 		"ville": "Nancy",
 		"nom": "faculté d'odontologie",
-		"id": 118,
 		"photo": "83b05c46-5321-4e34-905c-31060b5b3160"
 	},
 	{
@@ -167,7 +149,6 @@
 		"longitude": "48.6957736",
 		"ville": "Nancy",
 		"nom": "Ecole Européenne d'Ingénieurs en Génie des Matériaux",
-		"id": 119,
 		"photo": "742dbc3a-63f2-4c39-b89c-b7f894291b58"
 	},
 	{
@@ -176,7 +157,6 @@
 		"longitude": "48.6971154",
 		"ville": "Nancy",
 		"nom": "Institut Européen du Cinéma et de l'Audiovisuel",
-		"id": 120,
 		"photo": "0c8b2c7c-e955-4cdf-a02e-57d276d4fa3c"
 	},
 	{
@@ -185,7 +165,6 @@
 		"longitude": "48.6896406",
 		"ville": "Nancy",
 		"nom": "foodies burger",
-		"id": 121,
 		"photo": "122bc606-115b-4e86-b1d8-d33cf2ba29d6"
 	},
 	{
@@ -194,7 +173,6 @@
 		"longitude": "48.6900766",
 		"ville": "Nancy",
 		"nom": "Voyou Delivery",
-		"id": 122,
 		"photo": "72337474-2a73-47d8-8ddd-5a5bf69fbfd0"
 	},
 	{
@@ -203,7 +181,6 @@
 		"longitude": "48.6903745",
 		"ville": "Nancy",
 		"nom": "Rice and Curry",
-		"id": 123,
 		"photo": "2b276d9b-e80e-467e-9135-005b9405d577"
 	},
 	{
@@ -212,7 +189,6 @@
 		"longitude": "48.6740372",
 		"ville": "Nancy",
 		"nom": "Bonidé",
-		"id": 124,
 		"photo": "efa297e9-21cd-4563-9b77-922eeeea0621"
 	},
 	{
@@ -221,7 +197,6 @@
 		"longitude": "48.6886593",
 		"ville": "Nancy",
 		"nom": "Green Kebab",
-		"id": 125,
 		"photo": "8f3a9b81-bc84-4b25-9a51-7f7eacbff11a"
 	},
 	{
@@ -230,7 +205,6 @@
 		"longitude": "48.6904101",
 		"ville": "Nancy",
 		"nom": "Asia Wok",
-		"id": 126,
 		"photo": "a8e9d0c6-11c2-4f43-a9fd-57323c12269b"
 	},
 	{
@@ -239,7 +213,6 @@
 		"longitude": "48.6893167",
 		"ville": "Nancy",
 		"nom": "Burger Kebab",
-		"id": 127,
 		"photo": "050431d1-b685-47b6-bc86-28e24c787b49"
 	},
 	{
@@ -248,7 +221,6 @@
 		"longitude": "48.6893391",
 		"ville": "Nancy",
 		"nom": "Pokawa",
-		"id": 128,
 		"photo": "c0cdf2c4-24ce-4362-af79-211145aa4aea"
 	},
 	{
@@ -257,7 +229,6 @@
 		"longitude": "48.6966367",
 		"ville": "Nancy",
 		"nom": "made in france",
-		"id": 129,
 		"photo": "2ede127a-52f9-49e9-b405-82609c6b7f2a"
 	},
 	{
@@ -266,7 +237,6 @@
 		"longitude": "48.6898507",
 		"ville": "Nancy",
 		"nom": "Five Guys",
-		"id": 130,
 		"photo": "a33dee66-aced-429d-bd22-c4367ce2edee"
 	},
 	{
@@ -275,7 +245,6 @@
 		"longitude": "48.6888106",
 		"ville": "Nancy",
 		"nom": "Saint Sébastien",
-		"id": 131,
 		"photo": "2c1a6434-f0a1-45c3-82e1-0aab4d96ad10"
 	},
 	{
@@ -284,7 +253,6 @@
 		"longitude": "48.6855104",
 		"ville": "Nancy",
 		"nom": "Auchan Hypermarché",
-		"id": 132,
 		"photo": "e56e9582-d66b-46ac-95d0-779145727ada"
 	},
 	{
@@ -293,7 +261,6 @@
 		"longitude": "48.6613595",
 		"ville": "Nancy",
 		"nom": "centre commerciale les nations",
-		"id": 133,
 		"photo": "5d186183-5096-40f0-8679-ab82696188ca"
 	},
 	{
@@ -302,7 +269,6 @@
 		"longitude": "48.6894079",
 		"ville": "Nancy",
 		"nom": "Printemps Nancy",
-		"id": 134,
 		"photo": "a6f4983b-2eb2-42fd-8513-0cfa55952187"
 	},
 	{
@@ -311,7 +277,6 @@
 		"longitude": "48.6901134",
 		"ville": "Nancy",
 		"nom": "La Caverne du Gobelin",
-		"id": 135,
 		"photo": "a6313630-0671-42be-8782-bf5e41555cb0"
 	},
 	{
@@ -320,7 +285,6 @@
 		"longitude": "48.6909836",
 		"ville": "Nancy",
 		"nom": "The LEGO® Certified Store",
-		"id": 136,
 		"photo": "2fb281df-3080-4197-87b0-d27902df3a36"
 	},
 	{
@@ -329,7 +293,6 @@
 		"longitude": "48.6884899",
 		"ville": "Nancy",
 		"nom": "Le comptoir Irlandais",
-		"id": 137,
 		"photo": "76f9072d-40b4-43a2-9e24-068f25581fd3"
 	},
 	{
@@ -338,7 +301,6 @@
 		"longitude": "48.6899451",
 		"ville": "Nancy",
 		"nom": "À l'Ombre des Marques",
-		"id": 138,
 		"photo": "87d3ec91-82a4-4503-b4cd-21ee8585d213"
 	},
 	{
@@ -347,7 +309,6 @@
 		"longitude": "48.69012",
 		"ville": "Nancy",
 		"nom": "Snipes",
-		"id": 139,
 		"photo": "fc75649c-f1cc-472d-a92a-3caef25d7853"
 	},
 	{
@@ -356,7 +317,6 @@
 		"longitude": "48.6933388",
 		"ville": "Nancy",
 		"nom": "Jass",
-		"id": 140,
 		"photo": "3c236859-6b54-4002-b397-821925d7fc8a"
 	},
 	{
@@ -365,7 +325,6 @@
 		"longitude": "48.6947803",
 		"ville": "Nancy",
 		"nom": "Jardin Dominique Alexandre Godron",
-		"id": 141,
 		"photo": "4fd0b67a-8cfb-4949-be8c-f6284bd028f4"
 	},
 	{
@@ -374,7 +333,6 @@
 		"longitude": "48.6979955",
 		"ville": "Nancy",
 		"nom": "Parc de la Pépinière",
-		"id": 142,
 		"photo": "574c9d08-7956-4838-9633-adc7088c601b"
 	},
 	{
@@ -383,7 +341,6 @@
 		"longitude": "48.6815382",
 		"ville": "Nancy",
 		"nom": "Parc Sainte-Marie de Nancy",
-		"id": 144,
 		"photo": "6da593d3-8a2d-4c69-b396-92415fafe9ab"
 	},
 	{
@@ -392,7 +349,6 @@
 		"longitude": "48.6890104",
 		"ville": "Nancy",
 		"nom": "Parc Charles III",
-		"id": 145,
 		"photo": "95430208-1b1a-49a4-9b6c-316972d5a8f5"
 	},
 	{
@@ -401,7 +357,6 @@
 		"longitude": "48.6936363",
 		"ville": "Nancy",
 		"nom": "Jardin d'eau",
-		"id": 146,
 		"photo": "8ff1309b-db1a-423a-b141-8587a1fc8a8f"
 	},
 	{
@@ -410,7 +365,6 @@
 		"longitude": "48.6908079",
 		"ville": "Nancy",
 		"nom": "Jardin du Belvédère",
-		"id": 147,
 		"photo": "c4fe7a4b-a220-4b4f-8ca6-9b24c642c484"
 	},
 	{
@@ -419,7 +373,6 @@
 		"longitude": "48.6684332",
 		"ville": "Nancy",
 		"nom": "Domaine et Château du Charmois",
-		"id": 148,
 		"photo": "922be24e-e697-4dd7-a3fb-a2c07a8daa07"
 	},
 	{
@@ -428,7 +381,6 @@
 		"longitude": "48.6984113",
 		"ville": "Nancy",
 		"nom": "La Roseraie",
-		"id": 149,
 		"photo": "d1c42a28-7f10-4f0c-875d-e79d6b9c9cac"
 	}
 ]
