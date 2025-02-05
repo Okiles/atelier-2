@@ -25,8 +25,8 @@ export default {
       this.error = null;
 
       try {
-        const response = await createGame(this.selectedTime, this.selectedDistance);
-        this.$router.push(`/game/${response.gameId}`);
+        const response = await createGame(this.selectedTime, this.selectedDistance,this.user.id);
+        this.$router.push(`/game/${response["ID de la Game"]}`);
       } catch (error) {
         this.error = error.message || 'Erreur lors de la création de la partie';
       } finally {

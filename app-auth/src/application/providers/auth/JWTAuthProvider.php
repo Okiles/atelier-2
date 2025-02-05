@@ -71,4 +71,9 @@ class JWTAuthProvider implements AuthProviderInterface
 
         return new AuthDTO($user);
     }
+
+    public function updatePassword(string $email, string $password, string $newPassword): void
+    {
+        $this->authService->updatePassword($email, $password, $newPassword);
+    }
 }

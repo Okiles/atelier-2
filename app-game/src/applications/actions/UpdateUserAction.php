@@ -38,9 +38,9 @@ class UpdateUserAction extends AbstractAction
             $userDTO->setUsername($data['username'] ?? $userDTO->getUsername());
 
             // Gestion de l'image
-            if (!empty($data['images'])) {
+            if (!empty($data['image'])) {
                 try {
-                    $profilepic = $this->storeImage($data['images'], $id);
+                    $profilepic = $this->storeImage($data['image'], $id);
                     $userDTO->setProfilePicture($profilepic);
                 } catch (\Exception $e) {
                     return $this->jsonResponse($rs, ['error' => $e->getMessage()], 400);

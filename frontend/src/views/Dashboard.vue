@@ -1,5 +1,6 @@
 <script>
 import { getUserIdentity, removeToken } from '../services/authProvider';
+import { getUser } from '../services/httpClient';
 
 export default {
   name: 'Dashboard',
@@ -10,6 +11,17 @@ export default {
     };
   },
   methods: {
+    async fetchUser() {
+      try {
+        const response = await getUser();
+        console.log(response);
+        this.user = response;
+      } catch (error) {
+        this.error = error.message;
+        console.error('Error fetching user:', error);
+      }
+    },
+
     async handleLogout() {
       removeToken();
       this.$router.push('/login');
@@ -28,18 +40,25 @@ export default {
     },
   },
   async mounted() {
-    this.user = getUserIdentity();
-  }
-}
+    const userIdentity = getUserIdentity();
+    if (userIdentity) {
+      this.user = userIdentity;
+      await this.fetchUser();
+    }
+  },
+};
 </script>
 
 <template>
   <div class="app-container">
     <nav class="navbar">
+        <div v-if="user" class="navbar-user-info">
+          <img :src="'http://localhost:42055' + user.profile_picture" alt="Photo de profil" class="navbar-user-image">
+          <span>Bienvenue, {{ user.username }}</span>
+        </div>
       <div class="navbar-brand">GeoQuizz</div>
       <div class="navbar-menu">
         <div v-if="user" class="navbar-user">
-          <span>{{ user.username }}</span>
           <button @click="navigateToCreateGame" class="nav-button create-game-button">
             Créer une partie
           </button>
@@ -157,5 +176,11 @@ export default {
 .error-message {
   color: #ff4757;
   margin-top: 20px;
+}
+
+.navbar-user-image {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
 }
 </style>
