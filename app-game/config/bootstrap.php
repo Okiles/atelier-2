@@ -13,7 +13,7 @@ $c = $builder->build();
 $app = AppFactory::createFromContainer($c);
 
 try {
-    $envFiles = ['/var/dbgame.env', '/var/geoquizzdb.env'];
+    $envFiles = ['/var/dbgame.env', '/var/geoquizzdb.env', '/var/.env'];
 
     foreach ($envFiles as $file) {
         $dotenv = Dotenv::createImmutable(dirname($file), basename($file));
