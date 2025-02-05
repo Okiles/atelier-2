@@ -15,7 +15,6 @@ export const useUserStore = defineStore("user", {
       this.loading = true;
       try {
         const response = await getUser();
-        // Combine decoded token data with additional user data from API
         this.user = {
           ...getUserIdentity(),
           ...response

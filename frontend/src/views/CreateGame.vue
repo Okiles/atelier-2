@@ -48,7 +48,7 @@ export default {
       selectedDistance,
       selectedTime,
       isSubmitting,
-      error, // ✅ Retourne error pour l'utiliser dans le template
+      error,
       formatDistance,
       handleSubmit,
     };

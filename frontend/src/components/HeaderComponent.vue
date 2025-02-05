@@ -1,3 +1,4 @@
+// HeaderComponent.vue
 <template>
   <nav v-if="user" class="navbar">
     <div class="navbar-user-info">
@@ -11,7 +12,7 @@
       <button @click="$emit('createGame')" class="nav-button create-game-button">
         Créer une partie
       </button>
-      <button @click="$emit('logout')" class="nav-button logout-button">
+      <button @click="handleLogout" class="nav-button logout-button">
         Se déconnecter
       </button>
     </div>
@@ -37,12 +38,24 @@
 </template>
 
 <script>
+import { useUserStore } from "../stores/userStore";
+import { storeToRefs } from "pinia";
+
 export default {
-  props: {
-    user: Object
-  }
+  name: 'HeaderComponent',
+
+  setup() {
+    const userStore = useUserStore();
+    const { user } = storeToRefs(userStore);
+    console.log(user);
+    return {
+      user,
+    };
+  },
 };
 </script>
+
+
 
 <style scoped>
 .navbar {

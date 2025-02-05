@@ -30,6 +30,7 @@ export default {
   methods: {
     navigateToCreateGame() {
       this.$router.push("/createGame");
+      console.log(this.user);
     },
 
     handleLogin() {
