@@ -1,4 +1,5 @@
 <script>
+import HeaderComponent from '@/components/HeaderComponent.vue';
 import { getUserIdentity, removeToken } from '../services/authProvider';
 import { getUser } from '../services/httpClient';
 
@@ -46,36 +47,23 @@ export default {
       await this.fetchUser();
     }
   },
+  components: {
+    HeaderComponent,
+  },
 };
 </script>
 
 <template>
   <div class="app-container">
-    <nav class="navbar">
-        <div v-if="user" class="navbar-user-info">
-          <img :src="'http://localhost:42055' + user.profile_picture" alt="Photo de profil" class="navbar-user-image">
-          <span>Bienvenue, {{ user.username }}</span>
-        </div>
-      <div class="navbar-brand">GeoQuizz</div>
-      <div class="navbar-menu">
-        <div v-if="user" class="navbar-user">
-          <button @click="navigateToCreateGame" class="nav-button create-game-button">
-            Créer une partie
-          </button>
-          <button @click="handleLogout" class="nav-button logout-button">
-            Se déconnecter
-          </button>
-        </div>
-        <div v-else class="navbar-auth">
-          <button @click="handleRegister" class="nav-button register-button">
-            S'inscrire
-          </button>
-          <button @click="handleLogin" class="nav-button login-button">
-            Se connecter
-          </button>
-        </div>
-      </div>
-    </nav>
+
+      <HeaderComponent
+    :user="user"
+    @createGame="navigateToCreateGame"
+    @logout="handleLogout"
+    @register="handleRegister"
+    @login="handleLogin"
+  />
+
 
     <main class="main-content">
       <div class="login-card">
@@ -91,62 +79,6 @@ export default {
   font-family: 'Arial', sans-serif;
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 5%;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-.navbar-brand {
-  color: white;
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.navbar-menu {
-  display: flex;
-  align-items: center;
-}
-
-.navbar-user, .navbar-auth {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.navbar-user span {
-  color: white;
-  margin-right: 15px;
-}
-
-.nav-button {
-  background: linear-gradient(to right, #667eea, #764ba2);
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.nav-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
-}
-
-.create-game-button {
-  background: linear-gradient(to right, #48bb78, #38b2ac);
-}
-
-.logout-button {
-  background: linear-gradient(to right, #f56565, #ed64a6);
 }
 
 .main-content {
@@ -178,9 +110,4 @@ export default {
   margin-top: 20px;
 }
 
-.navbar-user-image {
-  width: 75px;
-  height: 75px;
-  border-radius: 50%;
-}
 </style>
