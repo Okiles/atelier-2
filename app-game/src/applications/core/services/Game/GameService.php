@@ -53,11 +53,6 @@ class GameService implements GameServiceInterface
         return $gameId;
     }
 
-    public function getUserInGame(GameDTO $game): UserDTO
-    {
-        // TODO: Implement getUserInGame() method.
-    }
-
     public function getGameById(string $id): GameDTO
     {
         $game = $this->gameRepository->getGameById($id);
@@ -69,5 +64,15 @@ class GameService implements GameServiceInterface
         $dto = new TokenGameDTO($gameId, $userId);
         $token = $this->gameProvider->createGameToken($dto);
         return $token;
+    }
+
+    public function getGameByUserId(string $id): array
+    {
+        $games = $this->gameRepository->getGameByUserId($id);
+        $gamesDto = [];
+        foreach ($games as $game){
+            $gamesDto[] = new GameDTO($game);
+        }
+        return $gamesDto;
     }
 }

@@ -17,4 +17,6 @@ interface GameRepositoryInterface
 
     public function getGameById(string $id): GameDTO;
 
+    public function getGameByUserId(string $userId): array;
+
 }
