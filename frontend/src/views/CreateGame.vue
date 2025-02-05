@@ -1,44 +1,62 @@
 <script>
-import { getUserIdentity } from '../services/authProvider';
-import { createGame } from '../services/httpClient';
+import { useUserStore } from "../stores/userStore";
+import { storeToRefs } from "pinia";
+import { createGame } from "../services/httpClient";
+import { ref } from "vue";
 
 export default {
-  name: 'CreateGame',
-  data() {
-    return {
-      user: null,
-      error: null,
-      selectedDistance: 100,
-      selectedTime: 10,
-      isSubmitting: false
+  name: "CreateGame",
+  setup() {
+    const userStore = useUserStore();
+    const { user } = storeToRefs(userStore);
+
+    const selectedDistance = ref(100);
+    const selectedTime = ref(10);
+    const isSubmitting = ref(false);
+    const error = ref(null); //
+
+    const formatDistance = (value) => {
+      return value >= 1000 ? `${value / 1000}km` : `${value}m`;
     };
-  },
-  async mounted() {
-    this.user = getUserIdentity();
-  },
-  methods: {
-    formatDistance(value) {
-      return value >= 1000 ? `${value/1000}km` : `${value}m`;
-    },
-    async handleSubmit() {
-      this.isSubmitting = true;
-      this.error = null;
+
+    const handleSubmit = async () => {
+      isSubmitting.value = true;
+      error.value = null;
+
+      if (!user.value) {
+        error.value = "Utilisateur non connecté.";
+        isSubmitting.value = false;
+        return;
+      }
 
       try {
-        const response = await createGame(this.selectedTime, this.selectedDistance,this.user.id);
-        this.$router.push(`/game/${response["ID de la Game"]}`);
-      } catch (error) {
-        this.error = error.message || 'Erreur lors de la création de la partie';
+        const response = await createGame(
+          selectedTime.value,
+          selectedDistance.value,
+          user.value.id
+        );
+        console.log(response);
+      } catch (err) {
+        error.value = err.message || "Erreur lors de la création de la partie";
       } finally {
-        this.isSubmitting = false;
+        isSubmitting.value = false;
       }
-    },
-    navigateDashboard() {
-      this.$router.push('/');
-    }
-  }
-}
+    };
+
+    return {
+      user,
+      selectedDistance,
+      selectedTime,
+      isSubmitting,
+      error, // ✅ Retourne error pour l'utiliser dans le template
+      formatDistance,
+      handleSubmit,
+    };
+  },
+};
 </script>
+
+
 
 <template>
   <div class="app-container">

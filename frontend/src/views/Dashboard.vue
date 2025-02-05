@@ -1,50 +1,36 @@
 <script>
-import { getUserIdentity, removeToken } from '../services/authProvider';
-import { getUser } from '../services/httpClient';
+import { useUserStore } from "../stores/userStore";
+import { storeToRefs } from "pinia";
 
 export default {
-  name: 'Dashboard',
-  data() {
+  name: "Dashboard",
+  setup() {
+    const userStore = useUserStore();
+    const { user, error } = storeToRefs(userStore);
+
     return {
-      user: null,
-      error: null,
+      user,
+      error,
+      fetchUser: userStore.fetchUser,
+      handleLogout: () => {
+        userStore.logout();
+        window.location.reload();
+      },
     };
   },
-  methods: {
-    async fetchUser() {
-      try {
-        const response = await getUser();
-        console.log(response);
-        this.user = response;
-      } catch (error) {
-        this.error = error.message;
-        console.error('Error fetching user:', error);
-      }
-    },
-
-    async handleLogout() {
-      removeToken();
-      this.$router.push('/login');
-    },
-
-    async handleLogin() {
-      this.$router.push('/login');
-    },
-
-    async handleRegister() {
-      this.$router.push('/register');
-    },
-
-    async navigateToCreateGame() {
-      this.$router.push('/createGame');
-    },
-  },
   async mounted() {
-    const userIdentity = getUserIdentity();
-    if (userIdentity) {
-      this.user = userIdentity;
-      await this.fetchUser();
-    }
+    await this.fetchUser();
+  },
+  methods: {
+    async navigateToCreateGame() {
+      this.$router.push("/createGame");
+    },
+    async handleLogin() {
+      this.$router.push("/login");
+    },
+    async handleRegister() {
+      this.$router.push("/register");
+    },
   },
 };
 </script>
@@ -52,10 +38,14 @@ export default {
 <template>
   <div class="app-container">
     <nav class="navbar">
-        <div v-if="user" class="navbar-user-info">
-          <img :src="'http://localhost:42055' + user.profile_picture" alt="Photo de profil" class="navbar-user-image">
-          <span>Bienvenue, {{ user.username }}</span>
-        </div>
+      <div v-if="user" class="navbar-user-info">
+        <img
+          :src="'http://localhost:42055' + user.profile_picture"
+          alt="Photo de profil"
+          class="navbar-user-image"
+        />
+        <span>Bienvenue, {{ user.username }}</span>
+      </div>
       <div class="navbar-brand">GeoQuizz</div>
       <div class="navbar-menu">
         <div v-if="user" class="navbar-user">
@@ -85,6 +75,8 @@ export default {
     </main>
   </div>
 </template>
+
+
 
 <style scoped>
 .app-container {

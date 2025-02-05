@@ -9,7 +9,7 @@ use geoquizz\game\applications\core\services\Game\GameService;
 use geoquizz\game\applications\core\services\User\UserService;
 use geoquizz\game\applications\core\services\User\UserServiceInterface;
 use geoquizz\game\applications\infrastructure\repositories\Game\GameRepository;
-use geoquizz\game\applications\infrastructure\repositories\user\UserRepository;
+use geoquizz\game\applications\infrastructure\repositories\User\UserRepository;
 use Psr\Container\ContainerInterface;
 use geoquizz\game\applications\core\repositoryInterfaces\GameRepositoryInterface;
 use geoquizz\game\applications\core\services\Game\GameServiceInterface;

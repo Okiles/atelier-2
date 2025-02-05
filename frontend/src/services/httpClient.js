@@ -25,32 +25,24 @@ const request = async (
   };
 
   try {
-
     const response = await fetch(`${BASE_URL}${endpoint}`, config);
 
-
-    if (response.status === 403 || response.status === 401) {
-      removeToken();
-      window.location.href = '/login';
-      return;
-    }
 
     if (!response.ok) {
       const errorBody = await response.json();
       throw new Error(errorBody.message || 'Quelque chose a mal tourné');
     }
 
-
     const contentType = response.headers.get('content-type');
-    return contentType && contentType.includes('application/json')
+    const result = contentType && contentType.includes('application/json')
       ? await response.json()
       : null;
-
+    return result;
   } catch (error) {
-
-    console.error('Erreur API:', error);
+    console.error("❌ Erreur API attrapée :", error);
     throw error;
   }
+
 };
 
 
@@ -65,14 +57,18 @@ const getUser = () => {
   return request('/user', 'GET', null, true);
 }
 
-const createGame = (timer, distance, userId) => {
-  return request('/game', 'POST', {
+const createGame = async (timer, distance, userId) => {
+  const body = {
     score: 0,
     status: "en cours",
     duree: timer,
     distance: distance,
     id_user: userId
-  }, true);
+  };
+
+  console.log("🛠️ Envoi de la requête createGame avec le corps :", body);
+
+  return request('/game', 'POST', body, true);
 };
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace geoquizz\game\applications\infrastructure\repositories\user;
+namespace geoquizz\game\applications\infrastructure\repositories\User;
 
 use geoquizz\game\applications\core\domain\entities\User\User;
 use geoquizz\game\applications\core\repositoryInterfaces\RepositoryEntityNotFoundException;
