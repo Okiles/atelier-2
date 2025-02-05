@@ -12,6 +12,7 @@ class TokenGameDTO extends DTO
 
     public function __construct(string $game_id, string $user_id){
         $this->game_id = $game_id;
+        $this->user_id = $user_id;
 }
 
     public function getGameId(): string{
@@ -25,8 +26,8 @@ class TokenGameDTO extends DTO
     public function toArray()
     {
         return[
-            'game_id' => $this->game_id,
-            'user_id' => $this->user_id
+            'game_id' => $this->getGameId(),
+            'user_id' => $this->getUserId()
         ];
     }
 }
