@@ -7,7 +7,6 @@ export default {
   data() {
     return {
       user: null,
-      id: null,
       error: null,
     };
   },
@@ -15,9 +14,8 @@ export default {
     async fetchUser() {
       try {
         const response = await getUser();
-        console.log (response);
-        this.id = response.id;
-        this.user = { ...this.user, email: response.email };
+        console.log(response);
+        this.user = response;
       } catch (error) {
         this.error = error.message;
         console.error('Error fetching user:', error);
@@ -54,10 +52,13 @@ export default {
 <template>
   <div class="app-container">
     <nav class="navbar">
+        <div v-if="user" class="navbar-user-info">
+          <img :src="'http://localhost:42055' + user.profile_picture" alt="Photo de profil" class="navbar-user-image">
+          <span>Bienvenue, {{ user.username }}</span>
+        </div>
       <div class="navbar-brand">GeoQuizz</div>
       <div class="navbar-menu">
         <div v-if="user" class="navbar-user">
-          <span>{{user.id}}</span>
           <button @click="navigateToCreateGame" class="nav-button create-game-button">
             Créer une partie
           </button>
@@ -175,5 +176,11 @@ export default {
 .error-message {
   color: #ff4757;
   margin-top: 20px;
+}
+
+.navbar-user-image {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
 }
 </style>
