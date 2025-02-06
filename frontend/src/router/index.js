@@ -6,6 +6,7 @@ import CreateGame from '../views/CreateGame.vue'
 import Game from '../views/Game.vue'
 
 import { isAuthenticated } from '../services/authProvider.js';
+import Profile from '@/views/Profile.vue'
 
 const routes = [
   {
@@ -36,6 +37,12 @@ const routes = [
     path: '/game/:id',
     name: 'Game',
     component: Game,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
     meta: { requiresAuth: true },
   }
 

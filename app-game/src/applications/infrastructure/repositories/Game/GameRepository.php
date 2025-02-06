@@ -79,4 +79,21 @@ class GameRepository implements GameRepositoryInterface
      $game->setID($row['id']);
      return new GameDTO($game);
     }
+
+    public function getGameByUserId(string $userId): array
+    {
+        $query = $this->pdo->prepare('SELECT * FROM GAMES WHERE id_user=:id_user AND status=:status');
+        $query->execute([
+            'id_user'=>$userId,
+            'status'=>'finished'
+        ]);
+        $rows = $query->fetchAll(PDO::FETCH_ASSOC);
+        $games = [];
+        foreach($rows as $row){
+            $game = new Game($row['score'], $row['status'], $row['id_user'], $row['duree'], $row['distance']);
+            $game->setID($row['id']);
+            $games[] = $game;
+        }
+        return $games;
+    }
 }

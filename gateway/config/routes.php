@@ -15,7 +15,7 @@ return function(App $app): App {
     $app->post('/signin', PostSignInAction::class);
     $app->post('/register', PostRegisterAction::class);
     $app->post('/game', CreateGameAction::class);
-    $app->get('/games', GetGamesAction::class);
+    $app->get('/games[/{id}]', GetGamesAction::class);
     $app->patch('/game', UpdateGameAction::class);
     $app->get('/user', GetUserAction::class)->add(AuthMiddleware::class);
     $app->post("/updateUser", UpdateUserInfo::class)->add(AuthMiddleware::class);

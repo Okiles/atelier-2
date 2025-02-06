@@ -20,7 +20,12 @@ class GetGamesAction extends AbstractGatewayAction
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
         try {
-            $response = $this->gameService->get('/games');
+            $user_id = $args['id'] ?? null;
+            if($user_id){
+                $response = $this->gameService->get('/games/' . $user_id);
+            }else{
+                $response = $this->gameService->get('/games');
+            }
             return $response;
         } catch (ClientException $e) {
             throw new HttpNotFoundException($rq, "Games not found");

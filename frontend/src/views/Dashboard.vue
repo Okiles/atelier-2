@@ -1,83 +1,67 @@
 <script>
-import { getUserIdentity, removeToken } from '../services/authProvider';
-import { getUser } from '../services/httpClient';
+import HeaderComponent from '@/components/HeaderComponent.vue';
+import { useUserStore } from "../stores/userStore";
+import { storeToRefs } from "pinia";
 
 export default {
-  name: 'Dashboard',
-  data() {
+  name: "Dashboard",
+  setup() {
+    const userStore = useUserStore();
+    const { user, error, loading } = storeToRefs(userStore);
+
     return {
-      user: null,
-      id: null,
-      error: null,
+      user,
+      error,
+      loading,
+      fetchUser: userStore.fetchUser,
+      handleLogout: () => {
+        userStore.logout();
+        window.location.reload();
+      },
     };
   },
-  methods: {
-    async fetchUser() {
-      try {
-        const response = await getUser();
-        console.log (response);
-        this.id = response.id;
-        this.user = { ...this.user, email: response.email };
-      } catch (error) {
-        this.error = error.message;
-        console.error('Error fetching user:', error);
-      }
-    },
 
-    async handleLogout() {
-      removeToken();
-      this.$router.push('/login');
-    },
-
-    async handleLogin() {
-      this.$router.push('/login');
-    },
-
-    async handleRegister() {
-      this.$router.push('/register');
-    },
-
-    async navigateToCreateGame() {
-      this.$router.push('/createGame');
-    },
-  },
   async mounted() {
-    const userIdentity = getUserIdentity();
-    if (userIdentity) {
-      this.user = userIdentity;
+    if (!this.user) {
       await this.fetchUser();
     }
+  },
+
+  methods: {
+    navigateToCreateGame() {
+      this.$router.push("/createGame");
+      console.log(this.user);
+    },
+
+    handleLogin() {
+      this.$router.push("/login");
+    },
+
+    handleRegister() {
+      this.$router.push("/register");
+    },
+  },
+
+  components: {
+    HeaderComponent,
   },
 };
 </script>
 
 <template>
   <div class="app-container">
-    <nav class="navbar">
-      <div class="navbar-brand">GeoQuizz</div>
-      <div class="navbar-menu">
-        <div v-if="user" class="navbar-user">
-          <span>{{user.id}}</span>
-          <button @click="navigateToCreateGame" class="nav-button create-game-button">
-            Créer une partie
-          </button>
-          <button @click="handleLogout" class="nav-button logout-button">
-            Se déconnecter
-          </button>
-        </div>
-        <div v-else class="navbar-auth">
-          <button @click="handleRegister" class="nav-button register-button">
-            S'inscrire
-          </button>
-          <button @click="handleLogin" class="nav-button login-button">
-            Se connecter
-          </button>
-        </div>
-      </div>
-    </nav>
+    <HeaderComponent
+      v-if="user"
+      :user="user"
+      @createGame="navigateToCreateGame"
+      @logout="handleLogout"
+      @register="handleRegister"
+      @login="handleLogin"
+    />
 
     <main class="main-content">
       <div class="login-card">
+        <div v-if="loading" class="loading">Chargement...</div>
         <h1 class="login-title">Tableau de Bord</h1>
         <p v-if="error" class="error-message">{{ error }}</p>
       </div>
@@ -175,5 +159,11 @@ export default {
 .error-message {
   color: #ff4757;
   margin-top: 20px;
+}
+
+.navbar-user-image {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
 }
 </style>
