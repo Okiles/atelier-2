@@ -18,6 +18,7 @@ class UpdateUserAction extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
+        // Récupérer les données du corps de la requête
         $data = $rq->getParsedBody();
         $id = $data['id'] ?? null;
 
@@ -31,23 +32,24 @@ class UpdateUserAction extends AbstractAction
                 return $this->jsonResponse($rs, ['error' => 'User not found'], 404);
             }
 
-            // Mise à jour des champs
+            // Mettre à jour les informations de l'utilisateur
             $userDTO->setEmail($data['email'] ?? $userDTO->getEmail());
             $userDTO->setName($data['name'] ?? $userDTO->getName());
             $userDTO->setLastname($data['lastname'] ?? $userDTO->getLastname());
             $userDTO->setUsername($data['username'] ?? $userDTO->getUsername());
 
             // Gestion de l'image
-            if (!empty($data['image'])) {
+            $uploadedFiles = $rq->getUploadedFiles();
+            if (!empty($uploadedFiles['image'])) {
                 try {
-                    $profilepic = $this->storeImage($data['image'], $id);
+                    $profilepic = $this->storeImage($uploadedFiles['image'], $id);
                     $userDTO->setProfilePicture($profilepic);
                 } catch (\Exception $e) {
                     return $this->jsonResponse($rs, ['error' => $e->getMessage()], 400);
                 }
             }
 
-            // Sauvegarde des modifications
+            // Sauvegarder les modifications
             $this->userService->updateUser($userDTO);
 
             return $this->jsonResponse($rs, ['message' => 'User updated successfully'], 200);
@@ -58,30 +60,25 @@ class UpdateUserAction extends AbstractAction
 
     private function storeImage($image, $id): string
     {
-        $imageData = base64_decode(preg_replace('/^data:image\/(png|jpeg|gif|jpg|jfif);base64,/', '', $image));
-        if ($imageData === false) {
-            throw new \Exception("Failed to decode image.");
-        }
-
-        $imageInfo = getimagesizefromstring($imageData);
-        if ($imageInfo === false) {
-            throw new \Exception("Invalid image format. Supported formats: PNG, JPEG, GIF, JPG, JFIF.");
-        }
-
+        // Vérification du type de fichier
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg', 'image/jfif'];
-        if (!in_array($imageInfo['mime'], $allowedTypes)) {
-            throw new \Exception("Unsupported image format. Allowed: JPEG, PNG, GIF, JPG, JFIF.");
+        if (!in_array($image->getClientMediaType(), $allowedTypes)) {
+            throw new \Exception("Unsupported image format. Allowed formats: JPEG, PNG, GIF, JPG, JFIF.");
         }
 
-        $extension = match ($imageInfo['mime']) {
+        // Définir l'extension du fichier en fonction de son type MIME
+        $extension = match ($image->getClientMediaType()) {
             'image/jpeg', 'image/jpg', 'image/jfif' => 'jpg',
             'image/png' => 'png',
             'image/gif' => 'gif',
             default => throw new \Exception("Unsupported image format."),
         };
 
+        // Définir le chemin de stockage
         $path = __DIR__ . '/../../../public/assets/images/users/' . $id . '.' . $extension;
-        file_put_contents($path, $imageData);
+
+        // Déplacer le fichier téléchargé vers le répertoire final
+        $image->moveTo($path);
 
         return '/assets/images/users/' . $id . '.' . $extension;
     }

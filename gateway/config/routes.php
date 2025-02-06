@@ -15,11 +15,11 @@ return function(App $app): App {
     $app->post('/signin', PostSignInAction::class);
     $app->post('/register', PostRegisterAction::class);
     $app->post('/game', CreateGameAction::class);
+    $app->get('/game/{id}', \geoquizz\gateway\application\actions\GetGameById::class);
     $app->get('/games[/{id}]', GetGamesAction::class);
     $app->patch('/game', UpdateGameAction::class);
     $app->get('/user', GetUserAction::class)->add(AuthMiddleware::class);
-    $app->post("/updateUser", UpdateUserInfo::class)->add(AuthMiddleware::class);
-    // $app->get('/token/refresh', RefreshTokenAction::class);
+    $app->patch("/user", UpdateUserInfo::class)->add(AuthMiddleware::class);
 
     return $app;
 };

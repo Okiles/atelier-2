@@ -7,11 +7,11 @@ use Firebase\JWT\Key;
 
 class JWTManager
 {
-    private $secret;
+    private string $secret;
 
     public function __construct()
     {
-        $this->secret = $_ENV['JWT_SECRET_KEY'];
+        $this->secret = $_ENV["JWT_SECRET_KEY"];
     }
 
     public function createAccessToken(array $payload): string
@@ -24,7 +24,7 @@ class JWTManager
     public function createRefreshToken(array $payload): string
     {
         $payload['iat'] = time();
-        $payload['exp'] = time() + 3600 * 24 * 7;
+        $payload['exp'] = time() + (3600 * 24 * 7);
         return JWT::encode($payload, $this->secret, 'HS256');
     }
 

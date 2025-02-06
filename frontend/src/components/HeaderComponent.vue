@@ -1,9 +1,11 @@
-// HeaderComponent.vue
 <template>
+  <!-- Navbar lorsque l'utilisateur est connecté -->
   <nav v-if="user" class="navbar">
     <div class="navbar-user-info">
-      <img :src="'http://localhost:42055' + user.profile_picture" alt="Photo de profil" class="navbar-user-image">
-      <span class="navbar-username">Bienvenue, {{ user.username }}</span>
+      <!-- Afficher l'image de profil si elle existe, sinon une image par défaut -->
+      <img :src="user.profile_picture ? 'http://localhost:42055' + user.profile_picture : defaultImage" alt="Photo de profil" class="navbar-user-image">
+      <!-- Afficher le nom d'utilisateur ou 'Anonyme' si non défini -->
+      <span class="navbar-username">Bienvenue, {{ user.username || 'Utilisateur' }}</span>
     </div>
     <div class="navbar-brand-wrapper">
       <h1 class="navbar-brand">GeoQuizz</h1>
@@ -18,6 +20,7 @@
     </div>
   </nav>
 
+  <!-- Navbar lorsque l'utilisateur n'est pas connecté -->
   <nav v-else class="navbar">
     <div class="navbar-user-info">
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBsdZ-yU8qdxr0WrIA8HLa31tB_cCFZJt-2Q&s" alt="Photo de profil" class="navbar-user-image">
@@ -40,6 +43,7 @@
 <script>
 import { useUserStore } from "../stores/userStore";
 import { storeToRefs } from "pinia";
+import { onMounted } from "vue";  // Importer onMounted pour appeler fetchUser
 
 export default {
   name: 'HeaderComponent',
@@ -47,15 +51,25 @@ export default {
   setup() {
     const userStore = useUserStore();
     const { user } = storeToRefs(userStore);
-    console.log(user);
+    const defaultImage = 'https://www.example.com/default-image.jpg'; // Image par défaut
+
+    const handleLogout = () => {
+      userStore.logout();
+    };
+
+    // Appeler fetchUser lors du montage du composant
+    onMounted(() => {
+      userStore.fetchUser();  // Appel de la méthode fetchUser pour récupérer les données utilisateur
+    });
+
     return {
       user,
+      defaultImage,
+      handleLogout,
     };
   },
 };
 </script>
-
-
 
 <style scoped>
 .navbar {
