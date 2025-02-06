@@ -90,6 +90,6 @@ return [
     },
 
     UpdateUserInfo::class => function (ContainerInterface $c) {
-        return new UpdateUserInfo($c->get('auth.client'), $c->get('game.client'));
+        return new UpdateUserInfo($c->get('auth.client'), $c->get('game.client'), $c->get('mail.client'));
     }
 ];

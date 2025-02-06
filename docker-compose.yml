@@ -92,6 +92,7 @@ services:
       - '42056:80'
     volumes:
       - ./app-auth:/var/php
+      - ./.env:/var/.env
     working_dir: /var/php
     networks:
       - geoquizz.net

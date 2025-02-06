@@ -2,14 +2,15 @@
 
 namespace geoquizz\gateway\application\actions;
 
-use geoquizz\auth\application\actions\AbstractAction;
+use geoquizz\gateway\application\actions\AbstractGatewayAction;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpUnauthorizedException;
 
-class UpdateUserInfo extends AbstractAction
+class UpdateUserInfo extends AbstractGatewayAction
 {
     private ClientInterface $authClient;
     private ClientInterface $gameClient;
@@ -103,6 +104,7 @@ class UpdateUserInfo extends AbstractAction
             ]);
         } catch (ClientException $e) {
             throw new HttpUnauthorizedException($rq, "User not found or invalid data");
+        } catch (GuzzleException $e) {
         }
 
         // Retourne une réponse avec un statut 200 si tout se passe bien
