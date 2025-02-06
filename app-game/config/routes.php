@@ -16,8 +16,8 @@ return function (App $app) {
     $app->get('/games[/{id}]', GetGamesAction::class);
     $app->patch('/game', UpdateGameAction::class);
     $app->get('/game/{id}',GetGamesByID::class);
-    $app->post('/createUser', CreateUserAction::class);
-    $app->post('/updateUser', UpdateUserAction::class);
+    $app->post('/register', CreateUserAction::class);
+    $app->patch('/user', UpdateUserAction::class);
     $app->post('/user', GetUserAction::class);
     return $app;
 };

@@ -31,7 +31,6 @@ class UpdateUserAction extends AbstractAction
                 return $this->jsonResponse($rs, ['error' => 'User not found'], 404);
             }
 
-            // Mise à jour des champs
             $userDTO->setEmail($data['email'] ?? $userDTO->getEmail());
             $userDTO->setName($data['name'] ?? $userDTO->getName());
             $userDTO->setLastname($data['lastname'] ?? $userDTO->getLastname());

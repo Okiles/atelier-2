@@ -32,7 +32,7 @@ class PostRegisterAction extends AbstractGatewayAction
                 throw new \RuntimeException("L'ID utilisateur est absent de la réponse AuthService.");
             }
 
-            $this->gameService->post('/createUser', ['json' => ['id' => $authResponse['id'], 'email' => $data['email']]]);
+            $this->gameService->post('/register', ['json' => ['id' => $authResponse['id'], 'email' => $data['email']]]);
             $this->mailService->post('/send', ['json' => [
                 'message' => 'Inscription réussie ! Amusez-vous bien !',
                 'email' => $data['email'],
