@@ -57,32 +57,31 @@ export default {
       }
     },
     updateProfile() {
-   try {
-     const formData = new FormData();
-     formData.append('firstName', this.form.firstName);
-     formData.append('lastName', this.form.lastName);
-     formData.append('username', this.form.username);
-     formData.append('currentPassword', this.form.currentPassword);
-     formData.append('newPassword', this.form.newPassword);
-     if (this.form.profilePicture) {
-       formData.append('profilePicture', this.form.profilePicture);
-     }
+      try {
+        const formData = new FormData();
+        formData.append('firstName', this.form.firstName);
+        formData.append('lastName', this.form.lastName);
+        formData.append('username', this.form.username);
+        formData.append('currentPassword', this.form.currentPassword);
+        formData.append('newPassword', this.form.newPassword);
+        if (this.form.profilePicture) {
+          formData.append('profilePicture', this.form.profilePicture);
+        }
 
-     // Pass formData to the updateUser function
-     updateUser(formData)
-       .then(() => {
-         alert('Profil mis à jour avec succès');
-       })
-       .catch((error) => {
-         console.error(error);
-         alert('Une erreur est survenue lors de la mise à jour du profil');
-       });
-   } catch (error) {
-     console.error(error);
-     alert('Une erreur est survenue lors de la mise à jour du profil');
-   }
- },
-
+        // Pass formData to the updateUser function
+        updateUser(formData)
+          .then(() => {
+            alert('Profil mis à jour avec succès');
+          })
+          .catch((error) => {
+            console.error(error);
+            alert('Une erreur est survenue lors de la mise à jour du profil');
+          });
+      } catch (error) {
+        console.error(error);
+        alert('Une erreur est survenue lors de la mise à jour du profil');
+      }
+    },
   },
 };
 </script>
