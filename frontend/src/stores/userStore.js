@@ -15,6 +15,7 @@ export const useUserStore = defineStore("user", {
       this.loading = true;
       try {
         const response = await getUser();
+        console.log("Réponse de l'API :", response);
         this.user = {
           ...response
         };

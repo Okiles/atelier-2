@@ -87,27 +87,65 @@ class UpdateUserInfo extends AbstractGatewayAction
             }
         }
 
+        // Validation et préparation de l'image (si présente)
+        $image = $data['image'] ?? null;
+        if ($image && !file_exists($image)) {
+            throw new \Exception("Image file does not exist.");
+        }
+
         // Màj dans le service de jeu
         try {
+            $multipartData = [
+                [
+                    'name'     => 'id',
+                    'contents' => $userId
+                ],
+                [
+                    'name'     => 'username',
+                    'contents' => $data['username'] ?? null
+                ],
+                [
+                    'name'     => 'name',
+                    'contents' => $data['name'] ?? null
+                ],
+                [
+                    'name'     => 'lastname',
+                    'contents' => $data['lastname'] ?? null
+                ]
+            ];
+
+            // Si une image est fournie, ajoutez-la dans les données multipart
+            if ($image) {
+                $multipartData[] = [
+                    'name'     => 'image',
+                    'contents' => fopen($image, 'r'),
+                    'filename' => basename($image)  // Utilise le nom du fichier tel quel
+                ];
+            }
+
+            // Envoi des informations mises à jour au service de jeu
             $response = $this->gameClient->patch("/user", [
                 'headers' => [
                     'Authorization' => $token,
-                    'Content-Type' => 'application/json'
+                    // Guzzle s'occupera de définir automatiquement le Content-Type pour multipart/form-data
                 ],
-                'json' => [
-                    'id' => $userId,
-                    'username' => $data['username'] ?? null,  // Correction de la faute de frappe ici
-                    'name' => $data['name'] ?? null,
-                    'lastname' => $data['lastname'] ?? null,
-                    'image' => $data['image'] ?? null
-                ]
+                'multipart' => $multipartData
             ]);
         } catch (ClientException $e) {
             throw new HttpUnauthorizedException($rq, "User not found or invalid data");
         } catch (GuzzleException $e) {
+            // Gestion de l'exception Guzzle
+            error_log($e->getMessage());
+            return $this->jsonResponse($rs, ['error' => 'Service unavailable'], 500);
         }
 
         // Retourne une réponse avec un statut 200 si tout se passe bien
         return $rs->withStatus(200);
+    }
+
+    private function jsonResponse(ResponseInterface $rs, array $data, int $status): ResponseInterface
+    {
+        $rs->getBody()->write(json_encode($data));
+        return $rs->withStatus($status)->withHeader('Content-Type', 'application/json');
     }
 }
