@@ -19,46 +19,36 @@ class GetValidateTokenAction extends AbstractAction
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
         $authorizationHeader = $rq->getHeader('Authorization');
-        error_log("Authorization Header: " . print_r($authorizationHeader, true));  // Ajout du log
+        error_log("Authorization Header: " . print_r($authorizationHeader, true));
 
         if (empty($authorizationHeader) || !preg_match('/Bearer\s(\S+)/', $authorizationHeader[0], $matches)) {
-            return $rs->withStatus(401)
-                ->withHeader('Content-Type', 'application/json')
-                ->withBody($this->createJsonStream(['error' => 'Authorization header missing or malformed']));
+            return $this->jsonResponse($rs, ['error' => 'Authorization header missing or malformed'], 401);
         }
 
         $token = $matches[1];
-        error_log("Token extrait: " . $token);  // Ajout du log
+        error_log("Token extrait: " . $token);
 
         try {
             $authDTO = $this->authProvider->getSignedInUser($token);
 
-            if ($authDTO->getId() === null) {
-                throw new \Exception('Invalid token');
-            }
-
-            $data = [
-                'id'       => $authDTO->getId(),
-                'email'    => $authDTO->getEmail(),
-            ];
-
-            $rs->getBody()->write(json_encode($data));
-            return $rs->withHeader('Content-Type', 'application/json')->withStatus(200);
+            return $this->jsonResponse($rs, [
+                'id'    => $authDTO->getId(),
+                'email' => $authDTO->getEmail(),
+            ], 200);
 
         } catch (\Exception $e) {
-            error_log("Erreur d'authentification: " . $e->getMessage());  // Log de l'erreur
+            error_log("Erreur d'authentification: " . $e->getMessage());
 
-            return $rs->withStatus(401)
-                ->withHeader('Content-Type', 'application/json')
-                ->withBody($this->createJsonStream(['error' => 'Unauthorized: ' . $e->getMessage()]));
+            return $this->jsonResponse($rs, ['error' => 'Unauthorized: ' . $e->getMessage()], 401);
         }
     }
 
-    private function createJsonStream(array $data)
+    private function jsonResponse(ResponseInterface $rs, array $data, int $statusCode): ResponseInterface
     {
-        $stream = fopen('php://temp', 'r+');
-        fwrite($stream, json_encode($data));
-        rewind($stream);
-        return new \GuzzleHttp\Psr7\Stream($stream);
+        $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $rs->getBody()->write($payload);
+
+        return $rs->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
+
 }

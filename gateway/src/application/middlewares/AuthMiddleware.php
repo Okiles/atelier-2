@@ -28,7 +28,6 @@ class AuthMiddleware
 
             $tokenstring = $matches[1];
 
-            // Envoi de la requête à AuthService pour validation
             $response = $this->remoteAuthService->get('/token/validate', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $tokenstring,

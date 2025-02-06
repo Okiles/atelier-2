@@ -16,9 +16,9 @@ export const useUserStore = defineStore("user", {
       try {
         const response = await getUser();
         this.user = {
-          ...getUserIdentity(),
           ...response
         };
+        console.log("Utilisateur récupéré :", this.user);
       } catch (error) {
         this.error = error.message;
         console.error("Erreur lors de la récupération de l'utilisateur :", error);

@@ -3,6 +3,7 @@
 namespace geoquizz\auth\application\actions;
 
 use geoquizz\auth\application\providers\auth\AuthProviderInterface;
+use geoquizz\auth\application\actions\AbstractAction;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

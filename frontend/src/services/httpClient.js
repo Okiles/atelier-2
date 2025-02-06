@@ -66,7 +66,7 @@ const getUser = () => {
 }
 
 const updateUser = (data) => {
-  return request('/user','PATCH', data, null)
+  return request('/user','PATCH', data, true);
 }
 
 const createGame = (timer, distance, userId) => {
