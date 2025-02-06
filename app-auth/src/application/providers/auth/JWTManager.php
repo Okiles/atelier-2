@@ -24,7 +24,7 @@ class JWTManager
     public function createRefreshToken(array $payload): string
     {
         $payload['iat'] = time();
-        $payload['exp'] = time() + 3600 * 24 * 7;
+        $payload['exp'] = time() + (3600 * 24 * 7);
         return JWT::encode($payload, $this->secret, 'HS256');
     }
 
