@@ -74,6 +74,7 @@ services:
       - ./app-game:/var/php
       - ./geoquizzdb.env:/var/geoquizzdb.env
       - ./dbgame.env:/var/dbgame.env
+      - ./.env:/var/.env
     working_dir: /var/php
     networks:
       - geoquizz.net
@@ -108,11 +109,14 @@ services:
       - geoquizz.net
     volumes:
       - ./app/sql:/var/sql
-    user: '1000:1000'
+      
+
   directus:
     image: directus/directus:latest
     container_name: directus-app
     restart: always
+    volumes:
+      - ./image/uploads:/directus/uploads
     depends_on:
       - directus.db
     env_file: directus.env
@@ -124,7 +128,6 @@ services:
       - "42058:8055"
     networks:
       - geoquizz.net
-    user: '1000:1000'
 
   adminer:
     image: adminer
