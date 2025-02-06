@@ -13,7 +13,7 @@ const request = async (
 
 
   const headers = {
-    'Content-Type': 'multipart/form-data',
+    'Content-Type': 'application/json',
     ...(isAuthRequest && token && { Authorization: `Bearer ${token}` }),
   };
 
