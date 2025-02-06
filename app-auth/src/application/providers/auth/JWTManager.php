@@ -7,7 +7,7 @@ use Firebase\JWT\Key;
 
 class JWTManager
 {
-    private $secret;
+    private string $secret;
 
     public function __construct()
     {
