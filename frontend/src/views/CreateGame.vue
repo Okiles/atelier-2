@@ -2,7 +2,9 @@
 import { useUserStore } from "../stores/userStore";
 import { storeToRefs } from "pinia";
 import { createGame } from "../services/httpClient";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { getGameIdentity } from "../services/authProvider";
+import { useRouter } from "vue-router";
 
 export default {
   name: "CreateGame",
@@ -13,11 +15,14 @@ export default {
     const selectedDistance = ref(100);
     const selectedTime = ref(10);
     const isSubmitting = ref(false);
-    const error = ref(null); //
+    const error = ref(null);
+    const gameData = ref(null);
 
     const formatDistance = (value) => {
       return value >= 1000 ? `${value / 1000}km` : `${value}m`;
     };
+
+    const router = useRouter();
 
     const handleSubmit = async () => {
       isSubmitting.value = true;
@@ -33,15 +38,27 @@ export default {
         const response = await createGame(
           selectedTime.value,
           selectedDistance.value,
-          user.value.id
+          user.value.id,
         );
-        console.log(response);
+     ;
+        localStorage.setItem("gameToken", response.token);
+
+        const gameData = getGameIdentity();
+
+        if (gameData?.game_id) {
+          router.push(`/game/${gameData.game_id}`);
+        }
+
       } catch (err) {
         error.value = err.message || "Erreur lors de la création de la partie";
       } finally {
         isSubmitting.value = false;
       }
     };
+
+    onMounted(() => {
+      gameData.value = getGameIdentity();
+    });
 
     return {
       user,
@@ -51,17 +68,16 @@ export default {
       error,
       formatDistance,
       handleSubmit,
+      gameData
     };
   },
 };
 </script>
 
-
-
 <template>
   <div class="app-container">
     <nav class="navbar">
-      <div class="navbar-brand" @click="navigateDashboard">GeoQuizz</div>
+      <div class="navbar-brand">GeoQuizz</div>
       <div class="navbar-menu">
         <div v-if="user" class="navbar-user">
           <span>{{ user.username }}</span>
@@ -116,6 +132,7 @@ export default {
     </main>
   </div>
 </template>
+
 
 <style scoped>
 .app-container {

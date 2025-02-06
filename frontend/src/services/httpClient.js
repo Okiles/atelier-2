@@ -83,16 +83,17 @@ const createGame = (timer, distance, userId) => {
 const getGames = () => {
   return request('/game', 'GET', null, false);
 }
+const updateGame = (gameId, data) => {
+  return request(`/game/${gameId}`, 'PATCH', data, true);
+}
 
 
 const getGameState = (gameId) => {
   return request(`/game/${gameId}`, 'GET', null, false);
 }
 
-const giveCoordinates = (gameId,x,y) => {
-  return request(`/game/${gameId}/coordinates`, 'POST', {x,y}, false);
-}
-export { request, login, getUser ,register, createGame, getGames, getGameState, giveCoordinates, updateUser };
+
+export { request, login, getUser ,register, createGame, getGames, getGameState, updateUser ,updateGame };
 
 
 
