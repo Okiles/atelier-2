@@ -15,11 +15,13 @@ export const useUserStore = defineStore("user", {
       this.loading = true;
       try {
         const response = await getUser();
-        console.log("Réponse de l'API :", response);
-        this.user = {
-          ...response
-        };
-        console.log("Utilisateur récupéré :", this.user);
+        console.log("Réponse de getUser:", response); // Log la réponse pour voir ce que tu obtiens
+        if (response && response.id && response.email) {
+          this.user = response;
+        } else {
+          this.error = 'Données de l\'utilisateur invalides';
+          console.error("Réponse invalide de l'API :", response);
+        }
       } catch (error) {
         this.error = error.message;
         console.error("Erreur lors de la récupération de l'utilisateur :", error);

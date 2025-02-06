@@ -72,11 +72,6 @@ export default {
 </script>
 
 <style scoped>
-/* Style déjà défini comme précédemment */
-</style>
-
-
-<style scoped>
 .navbar {
   display: flex;
   justify-content: center;
