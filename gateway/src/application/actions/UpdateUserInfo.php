@@ -88,7 +88,7 @@ class UpdateUserInfo extends AbstractAction
 
         // Màj dans le service de jeu
         try {
-            $response = $this->gameClient->post("/updateUser", [
+            $response = $this->gameClient->patch("/user", [
                 'headers' => [
                     'Authorization' => $token,
                     'Content-Type' => 'application/json'

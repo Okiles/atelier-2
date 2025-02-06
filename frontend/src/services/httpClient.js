@@ -65,6 +65,10 @@ const getUser = () => {
   return request('/user', 'GET', null, true);
 }
 
+const updateUser = (data) => {
+  return request('/user','PATCH', data, null)
+}
+
 const createGame = (timer, distance, userId) => {
   return request('/game', 'POST', {
     score: 0,
@@ -88,7 +92,7 @@ const getGameState = (gameId) => {
 const giveCoordinates = (gameId,x,y) => {
   return request(`/game/${gameId}/coordinates`, 'POST', {x,y}, false);
 }
-export { request, login, getUser ,register, createGame, getGames, getGameState, giveCoordinates };
+export { request, login, getUser ,register, createGame, getGames, getGameState, giveCoordinates, updateUser };
 
 
 

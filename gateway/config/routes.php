@@ -18,8 +18,7 @@ return function(App $app): App {
     $app->get('/games[/{id}]', GetGamesAction::class);
     $app->patch('/game', UpdateGameAction::class);
     $app->get('/user', GetUserAction::class)->add(AuthMiddleware::class);
-    $app->post("/updateUser", UpdateUserInfo::class)->add(AuthMiddleware::class);
-    // $app->get('/token/refresh', RefreshTokenAction::class);
+    $app->patch("/user", UpdateUserInfo::class)->add(AuthMiddleware::class);
 
     return $app;
 };
