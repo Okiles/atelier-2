@@ -1,39 +1,27 @@
-// authProvider.js
-const decodeToken = (token) => {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+import {jwtDecode} from 'jwt-decode';
 
-    const payload = JSON.parse(jsonPayload);
-    return {
-      id: payload.id,
-      email: payload.email
-    };
-  } catch (error) {
-    console.error('Erreur de décodage du token:', error);
-    return null;
-  }
-};
 
 const isAuthenticated = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   return !!token;
 };
 
 const removeToken = () => {
-  localStorage.removeItem('token');
+  localStorage.removeItem("token");
 };
 
 const setToken = (token) => {
-  localStorage.setItem('token', token);
+  localStorage.setItem("token", token);
 };
 
 const getUserIdentity = () => {
-  const token = localStorage.getItem('token');
-  return token ? decodeToken(token) : null;
+  const token = localStorage.getItem("token");
+  return token ? jwtDecode(token) : null;
 };
 
-export { isAuthenticated, removeToken, setToken, getUserIdentity };
+const getGameIdentity = () => {
+  const token = localStorage.getItem("gameToken");
+  return token ? jwtDecode(token) : null;
+};
+
+export { isAuthenticated, removeToken, setToken, getUserIdentity, getGameIdentity };
