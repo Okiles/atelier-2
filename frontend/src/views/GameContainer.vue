@@ -83,7 +83,7 @@ export default {
       />
 
       <Game
-        v-if="currentState === 'game' && gameState"
+        v-if="currentState === 'game' && gameState && Object.keys(gameState).length > 0"
         :initial-game-state="gameState"
         @game-finished="handleGameFinished"
       />

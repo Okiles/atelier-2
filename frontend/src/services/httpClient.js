@@ -120,10 +120,13 @@ const getGames = () => {
 /**
  * Fonction pour mettre à jour un jeu
  * @param {string} gameId - L'ID du jeu
- * @param {Object} data - Les données à mettre à jour
+ * @param {Object} score - Les données à mettre à jour (score)
  */
-const updateGame = (gameId, data) => {
-  return request(`/game/${gameId}`, 'PATCH', data, true); // Appelle la fonction request pour mettre à jour un jeu
+const updateGame = (gameId, score) => {
+  return request('/game', 'PATCH', {
+    id: gameId,
+    score: score,
+  }, false);
 };
 
 /**

@@ -3,6 +3,11 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 import scoreMixin from "../mixins/scoreMixin";
+import { updateGame } from "../services/httpClient";
+import { getGameIdentity } from "../services/authProvider";
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 export default {
   name: "Game",
@@ -22,9 +27,18 @@ export default {
   data() {
     return {
       images: [
-        { src: "https://random.imagecdn.app/500/150", coords: [48.8566, 2.3522] },
-        { src: "https://random.imagecdn.app/500/150", coords: [40.7128, -74.006] },
-        { src: "https://random.imagecdn.app/500/150", coords: [34.0522, -118.2437] },
+        {
+          src: this.initialGameState?.Image1 || "https://random.imagecdn.app/500/150",
+          coords: this.initialGameState?.Coords1 || [48.8566, 2.3522]
+        },
+        {
+          src: this.initialGameState?.Image2 || "https://random.imagecdn.app/500/150",
+          coords: this.initialGameState?.Coords2 || [40.7128, -74.006]
+        },
+        {
+          src: this.initialGameState?.Image3 || "https://random.imagecdn.app/500/150",
+          coords: this.initialGameState?.Coords3 || [34.0522, -118.2437]
+        },
       ],
       currentIndex: 0,
       timer: this.initialGameState.Duree,
@@ -53,8 +67,6 @@ export default {
   },
   methods: {
     startRound() {
-      console.log(this.initialGameState.Duree);
-      console.log(this.initialGameState.Distance);
       this.selectedCoords = null;
       this.startTime = Date.now();
       this.timer = this.initialDuree;
@@ -90,14 +102,28 @@ export default {
       );
       this.endRound();
     },
-    endRound() {
+    async endRound() {
       clearInterval(this.interval);
       this.currentIndex++;
 
       if (this.currentIndex < this.images.length) {
         this.startRound();
       } else {
-        this.$emit('game-finished', Math.round(this.score));
+        const finalScore = Math.round(this.score);
+        const gameData = getGameIdentity();
+
+        if (!gameData || !gameData.game_id) {
+          console.error("Pas d'ID de jeu trouvé");
+          return;
+        }
+
+        try {
+          await updateGame(gameData.game_id, finalScore);
+          this.$emit('game-finished', finalScore);
+        } catch (error) {
+          console.error("Erreur lors de la mise à jour du jeu:", error);
+          this.$emit('game-finished', finalScore);
+        }
       }
     },
     togglePause() {
@@ -110,13 +136,20 @@ export default {
     },
   },
   mounted() {
+    delete L.Icon.Default.prototype._getIconUrl;
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: markerIcon2x,
+      iconUrl: markerIcon,
+      shadowUrl: markerShadow,
+    });
+
     this.startRound();
   }
 };
 </script>
 
 <template>
-  <div class="game-container">
+  <div class="game-container" v-if="initialGameState">
     <div class="game-header">
       <h1 class="game-title">GeoQuizz</h1>
       <div class="game-info">
@@ -126,6 +159,7 @@ export default {
     </div>
 
     <img
+      v-if="images[currentIndex]"
       :src="images[currentIndex].src"
       :alt="`Image ${currentIndex + 1}`"
       class="game-image"
@@ -172,6 +206,7 @@ export default {
     </div>
   </div>
 </template>
+
 <style>
 .game-container {
   max-width: 1200px;
@@ -180,6 +215,7 @@ export default {
   text-align: center;
   position: relative;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
 }
 
 .game-header {
@@ -259,7 +295,6 @@ export default {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   margin: 20px 0;
 }
-
 
 .map-container :deep(.leaflet-container) {
   height: 100%;
