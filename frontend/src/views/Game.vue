@@ -3,8 +3,6 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 import scoreMixin from "../mixins/scoreMixin";
-import {getGameState} from "../services/httpClient.js";
-import {getGameIdentity} from "@/services/authProvider.js";
 
 export default {
   name: "Game",
@@ -14,6 +12,13 @@ export default {
     LTileLayer,
     LMarker,
   },
+  props: {
+    initialGameState: {
+      type: Object,
+      required: true
+    }
+  },
+  emits: ['game-finished'],
   data() {
     return {
       images: [
@@ -22,18 +27,24 @@ export default {
         { src: "https://random.imagecdn.app/500/150", coords: [34.0522, -118.2437] },
       ],
       currentIndex: 0,
-      timer: null,
+      timer: this.initialGameState.Duree,
       mapCenter: [48.692054, 6.184417],
       selectedCoords: null,
       score: 0,
-      distance: null,
+      distance: this.initialGameState.Distance,
       interval: null,
       startTime: null,
       isPaused: false,
-      isGameStarted: false,
-      isGameFinished: false,
-      finalScore: 0,
+      initialDuree: this.initialGameState.Duree,
     };
+  },
+  computed: {
+    currentRound() {
+      return this.currentIndex + 1;
+    },
+    totalRounds() {
+      return this.images.length;
+    }
   },
   beforeUnmount() {
     if (this.interval) {
@@ -41,29 +52,12 @@ export default {
     }
   },
   methods: {
-    async startGame() {
-      try {
-        const gameData = getGameIdentity();
-        console.log(gameData.game_id);
-
-        const responseGameState = await getGameState(gameData.game_id);
-
-        console.log(responseGameState);
-
-        this.distance = responseGameState.Distance;
-        this.timer = responseGameState.Duree;
-        this.isGameStarted = true;
-        this.currentIndex = 0;
-        this.score = 0;
-        this.isGameFinished = false;
-        this.startRound();
-      } catch (error) {
-        console.error("Erreur lors du démarrage du jeu :", error);
-      }
-    },
     startRound() {
+      console.log(this.initialGameState.Duree);
+      console.log(this.initialGameState.Distance);
       this.selectedCoords = null;
       this.startTime = Date.now();
+      this.timer = this.initialDuree;
       this.startTimer();
     },
     startTimer() {
@@ -79,7 +73,7 @@ export default {
       }, 1000);
     },
     onMapClick(event) {
-      if (this.isGameStarted && !this.isPaused) {
+      if (!this.isPaused) {
         this.selectedCoords = [event.latlng.lat, event.latlng.lng];
       }
     },
@@ -103,16 +97,8 @@ export default {
       if (this.currentIndex < this.images.length) {
         this.startRound();
       } else {
-        this.finishGame();
+        this.$emit('game-finished', Math.round(this.score));
       }
-    },
-    finishGame() {
-      this.finalScore = Math.round(this.score);
-      this.isGameFinished = true;
-      this.isGameStarted = false;
-    },
-    returnHome() {
-      this.$router.push("/");
     },
     togglePause() {
       this.isPaused = !this.isPaused;
@@ -123,6 +109,9 @@ export default {
       }
     },
   },
+  mounted() {
+    this.startRound();
+  }
 };
 </script>
 
@@ -130,82 +119,59 @@ export default {
   <div class="game-container">
     <div class="game-header">
       <h1 class="game-title">GeoQuizz</h1>
-      <p class="score-display">Score : {{ Math.round(score) }}</p>
+      <div class="game-info">
+        <p class="round-display">Manche {{ currentRound }}/{{ totalRounds }}</p>
+        <p class="score-display">Score : {{ Math.round(score) }}</p>
+      </div>
     </div>
 
-    <template v-if="!isGameStarted">
-      <div class="start-screen">
-        <h2>Bienvenue sur GeoQuizz</h2>
-        <p>Êtes-vous prêt à tester vos connaissances géographiques ?</p>
-        <button @click="startGame" class="game-button start-button">
-          Démarrer la partie
-        </button>
-      </div>
-    </template>
+    <img
+      :src="images[currentIndex].src"
+      :alt="`Image ${currentIndex + 1}`"
+      class="game-image"
+    />
 
-    <template v-if="isGameFinished">
-      <div class="end-screen">
-        <h2>Partie terminée !</h2>
-        <div class="final-score">
-          <span class="score-label">Score final</span>
-          <span class="score-value">{{ finalScore }}</span>
-        </div>
-        <button @click="returnHome" class="game-button return-button">
-          Retour à l'accueil
-        </button>
-      </div>
-    </template>
+    <div class="map-container">
+      <l-map
+        :zoom="5"
+        :center="mapCenter"
+        @click="onMapClick"
+        :options="{ scrollWheelZoom: true }"
+      >
+        <l-tile-layer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <l-marker v-if="selectedCoords" :lat-lng="selectedCoords"></l-marker>
+      </l-map>
+    </div>
 
-    <template v-else>
-      <img
-        :src="images[currentIndex].src"
-        :alt="`Image ${currentIndex + 1}`"
-        class="game-image"
-      />
-
-      <div class="map-container">
-        <l-map
-          :zoom="5"
-          :center="mapCenter"
-          @click="onMapClick"
-          :options="{ scrollWheelZoom: true }"
+    <div class="game-footer">
+      <div class="timer">{{ timer }}s</div>
+      <div class="game-controls">
+        <button
+          @click="validateGuess"
+          :disabled="!selectedCoords || isPaused"
+          class="game-button validate-button"
         >
-          <l-tile-layer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <l-marker v-if="selectedCoords" :lat-lng="selectedCoords"></l-marker>
-        </l-map>
+          Valider
+        </button>
+        <button @click="togglePause" class="game-button pause-button">
+          {{ isPaused ? "Reprendre" : "Pause" }}
+        </button>
       </div>
+    </div>
 
-      <div class="game-footer">
-        <div class="timer">{{ timer }}s</div>
-        <div class="game-controls">
-          <button
-            @click="validateGuess"
-            :disabled="!selectedCoords || isPaused"
-            class="game-button validate-button"
-          >
-            Valider
-          </button>
-          <button @click="togglePause" class="game-button pause-button">
-            {{ isPaused ? "Reprendre" : "Pause" }}
-          </button>
-        </div>
+    <div v-if="isPaused" class="pause-overlay">
+      <div class="pause-menu">
+        <h2>Jeu en pause</h2>
+        <button @click="togglePause" class="game-button">
+          Reprendre la partie
+        </button>
       </div>
-
-      <div v-if="isPaused" class="pause-overlay">
-        <div class="pause-menu">
-          <h2>Jeu en pause</h2>
-          <button @click="togglePause" class="game-button">
-            Reprendre la partie
-          </button>
-        </div>
-      </div>
-    </template>
+    </div>
   </div>
 </template>
-
 <style>
 .game-container {
   max-width: 1200px;
@@ -282,6 +248,7 @@ export default {
   border-radius: 16px;
   margin: 20px auto;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  display: block;
 }
 
 .map-container {
@@ -291,6 +258,13 @@ export default {
   overflow: hidden;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   margin: 20px 0;
+}
+
+
+.map-container :deep(.leaflet-container) {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
 }
 
 .game-footer {
@@ -361,5 +335,20 @@ export default {
 .pause-menu h2 {
   margin-bottom: 20px;
   color: #333;
+}
+
+.game-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.round-display {
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
 }
 </style>
