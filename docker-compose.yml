@@ -50,6 +50,8 @@ services:
     restart: unless-stopped
     ports:
       - '42053:15672'
+    env_file:
+      - rabbitmq.env
     networks:
       - geoquizz.net
 
