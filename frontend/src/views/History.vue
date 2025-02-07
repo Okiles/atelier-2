@@ -25,7 +25,7 @@ export default {
       console.log(history);
 
 
-      this.games = history.Game || [];
+      this.games = history.Game.reverse() || [];
     } catch (err) {
       this.error =
         err.message || "Une erreur s'est produite lors de la récupération de l'historique.";

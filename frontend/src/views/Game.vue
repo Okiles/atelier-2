@@ -50,6 +50,8 @@ export default {
       startTime: null,
       isPaused: false,
       initialDuree: this.initialGameState.Duree,
+      showingDistance: false,
+      distanceText: '',
     };
   },
   computed: {
@@ -70,50 +72,70 @@ export default {
       this.selectedCoords = null;
       this.startTime = Date.now();
       this.timer = this.initialDuree;
+      this.showingDistance = false;
       this.startTimer();
     },
     startTimer() {
       if (this.interval) clearInterval(this.interval);
       this.interval = setInterval(() => {
-        if (!this.isPaused) {
+        if (!this.isPaused && !this.showingDistance) {
           if (this.timer > 0) {
             this.timer--;
           } else {
-            this.endRound();
+            this.validateGuess();
           }
         }
       }, 1000);
     },
     onMapClick(event) {
-      if (!this.isPaused) {
+      if (!this.isPaused && !this.showingDistance) {
         this.selectedCoords = [event.latlng.lat, event.latlng.lng];
-        // Ajout des logs
-        console.log('Coordonnées sélectionnées:', {
-          lat: event.latlng.lat.toFixed(6),
-          lng: event.latlng.lng.toFixed(6)
-        });
       }
     },
-    validateGuess() {
-      if (!this.selectedCoords || this.isPaused) return;
+    async validateGuess() {
+      if ((!this.selectedCoords && this.timer > 0) || this.isPaused || this.showingDistance) return;
 
       const timeTaken = (Date.now() - this.startTime) / 1000;
       const actualCoords = this.images[this.currentIndex].coords;
 
-      // Ajout des logs
-      console.log('Distance calculée:', {
-        selected: this.selectedCoords.map(c => c.toFixed(6)),
-        actual: actualCoords.map(c => c.toFixed(6)),
-        distance: this.getDistance(actualCoords, this.selectedCoords).toFixed(3) + ' km'
-      });
 
-      this.score += this.calculateScore(
-        actualCoords,
-        this.selectedCoords,
-        timeTaken,
-        this.distance
-      );
-      this.endRound();
+      this.showingDistance = true;
+
+
+      L.marker(actualCoords).addTo(this.$refs.map.leafletObject);
+      L.polyline([
+        this.selectedCoords || actualCoords,
+        actualCoords
+      ], {
+        color: 'black',
+        weight: 3,
+        opacity: 0.8
+      }).addTo(this.$refs.map.leafletObject);
+
+      const distance = this.selectedCoords ?
+        this.getDistance(actualCoords, this.selectedCoords) :
+        Infinity;
+      this.distanceText = `Distance: ${distance.toFixed(2)} km`;
+
+      if (this.selectedCoords) {
+        this.score += this.calculateScore(
+          actualCoords,
+          this.selectedCoords,
+          timeTaken,
+          this.distance
+        );
+      }
+
+      // Attendre 5 secondes avant de passer à la manche suivante
+      setTimeout(() => {
+        // Nettoyer la carte
+        this.$refs.map.leafletObject.eachLayer((layer) => {
+          if (layer instanceof L.Polyline || (layer instanceof L.Marker && layer !== this.selectedMarker)) {
+            this.$refs.map.leafletObject.removeLayer(layer);
+          }
+        });
+        this.endRound();
+      }, 5000);
     },
     async endRound() {
       clearInterval(this.interval);
@@ -125,27 +147,22 @@ export default {
         const finalScore = Math.round(this.score);
         const gameData = getGameIdentity();
 
-        if (!gameData || !gameData.game_id) {
+        if (!gameData?.game_id) {
           console.error("Pas d'ID de jeu trouvé");
           return;
         }
 
         try {
-          console.log("Envoi de la requête avec:", {
-            gameId: gameData.game_id,
-            score: finalScore
-          });
-
           await updateGame(gameData.game_id, finalScore);
-          console.log("Score mis à jour avec succès");
           this.$emit('game-finished', finalScore);
         } catch (error) {
-          console.error("Erreur détaillée:", error);
+          console.error("Erreur:", error);
           this.$emit('game-finished', finalScore);
         }
       }
     },
     togglePause() {
+      if (this.showingDistance) return;
       this.isPaused = !this.isPaused;
       if (!this.isPaused) {
         this.startTimer();
@@ -161,7 +178,6 @@ export default {
       iconUrl: markerIcon,
       shadowUrl: markerShadow,
     });
-
     this.startRound();
   }
 };
@@ -186,6 +202,7 @@ export default {
 
     <div class="map-container">
       <l-map
+        ref="map"
         :zoom="11"
         :center="mapCenter"
         @click="onMapClick"
@@ -197,6 +214,9 @@ export default {
         />
         <l-marker v-if="selectedCoords" :lat-lng="selectedCoords"></l-marker>
       </l-map>
+      <div v-if="showingDistance" class="distance-overlay">
+        {{ distanceText }}
+      </div>
     </div>
 
     <div class="game-footer">
@@ -204,12 +224,12 @@ export default {
       <div class="game-controls">
         <button
           @click="validateGuess"
-          :disabled="!selectedCoords || isPaused"
+          :disabled="!selectedCoords || isPaused || showingDistance"
           class="game-button validate-button"
         >
           Valider
         </button>
-        <button @click="togglePause" class="game-button pause-button">
+        <button @click="togglePause" :disabled="showingDistance" class="game-button pause-button">
           {{ isPaused ? "Reprendre" : "Pause" }}
         </button>
       </div>
@@ -441,5 +461,19 @@ export default {
   color: white;
   font-size: clamp(16px, 3vw, 20px);
   padding: clamp(20px, 5vw, 40px);
+}
+
+.distance-overlay {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 1000;
 }
 </style>

@@ -2,12 +2,18 @@
   <!-- Navbar lorsque l'utilisateur est connecté -->
   <nav v-if="user" class="navbar">
     <div class="navbar-user-info">
-      <img :src="user.profile_picture ? 'http://localhost:42055' + user.profile_picture : defaultImage" alt="Photo de profil" class="navbar-user-image">
+      <img
+        @click="$emit('profile')"
+        :src="user.profile_picture ? 'http://localhost:42055' + user.profile_picture : defaultImage"
+        alt="Photo de profil"
+        class="navbar-user-image"
+      >
       <span class="navbar-username">Bienvenue, {{ user.username || 'Utilisateur' }}</span>
     </div>
     <div class="navbar-brand-wrapper">
       <h1 class="navbar-brand">GeoQuizz</h1>
     </div>
+
     <div class="navbar-menu">
       <button @click="$emit('createGame')" class="nav-button create-game-button">
         Créer une partie

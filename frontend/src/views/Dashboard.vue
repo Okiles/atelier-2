@@ -1,3 +1,4 @@
+```javascript
 <script>
 import HeaderComponent from '@/components/HeaderComponent.vue';
 import { useUserStore } from "../stores/userStore";
@@ -11,16 +12,18 @@ export default {
     const userStore = useUserStore();
     const { user, error, loading } = storeToRefs(userStore);
     const gamesCount = ref(0);
+    const bestScore = ref(0);
 
-    const fetchGamesCount = async () => {
+    const fetchGamesData = async () => {
       try {
         if (user.value?.id) {
           const response = await getGameHistory(user.value.id);
           const games = response.Game;
           gamesCount.value = games.length;
+          bestScore.value = Math.max(...games.map(game => game.Score));
         }
       } catch (error) {
-        console.error("Erreur lors de la récupération des parties:", error);
+        console.error("Erreur:", error);
       }
     };
 
@@ -29,7 +32,8 @@ export default {
       error,
       loading,
       gamesCount,
-      fetchGamesCount,
+      bestScore,
+      fetchGamesData,
       fetchUser: userStore.fetchUser,
       handleLogout: () => {
         userStore.logout();
@@ -42,7 +46,7 @@ export default {
     if (!this.user) {
       await this.fetchUser();
     }
-    await this.fetchGamesCount();
+    await this.fetchGamesData();
   },
 
   methods: {
@@ -57,7 +61,9 @@ export default {
     handleRegister() {
       this.$router.push("/register");
     },
-
+    handleProfile() {
+      this.$router.push("/profile");
+    },
     handleHistory(){
       this.$router.push("/history")
     }
@@ -78,6 +84,7 @@ export default {
       @logout="handleLogout"
       @register="handleRegister"
       @login="handleLogin"
+      @profile="handleProfile"
     />
 
     <main class="main-content">
@@ -91,6 +98,10 @@ export default {
             <h2>Nombre de parties jouées</h2>
             <p class="stat-value">{{ gamesCount }}</p>
           </div>
+          <div class="stat-item">
+            <h2>Meilleur score</h2>
+            <p class="stat-value">{{ bestScore }}</p>
+          </div>
         </div>
 
         <button @click="handleHistory">Historique des parties</button>
@@ -100,14 +111,12 @@ export default {
 </template>
 
 <style scoped>
-
 .app-container {
   font-family: 'Arial', sans-serif;
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: clamp(10px, 2vw, 20px);
 }
-
 
 .navbar {
   display: flex;
@@ -172,7 +181,6 @@ export default {
   background: linear-gradient(to right, #f56565, #ed64a6);
 }
 
-/* Main content styles */
 .main-content {
   display: flex;
   justify-content: center;
@@ -209,8 +217,9 @@ export default {
   font-size: clamp(14px, 2.5vw, 16px);
 }
 
-/* Stats container styles */
 .stats-container {
+  display: grid;
+  gap: 20px;
   margin: clamp(15px, 4vw, 30px) 0;
   padding: clamp(15px, 3vw, 20px);
   background-color: rgba(102, 126, 234, 0.1);
@@ -225,6 +234,9 @@ export default {
 
 .stat-item {
   text-align: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
 }
 
 .stat-item h2 {
@@ -240,7 +252,6 @@ export default {
   text-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
-/* Button styles */
 .login-card button {
   background: linear-gradient(to right, #ffd700, #ffa500);
   color: white;
@@ -260,7 +271,6 @@ export default {
   box-shadow: 0 7px 14px rgba(255, 215, 0, 0.2);
 }
 
-/* Specific responsive adjustments */
 @media screen and (max-width: 768px) {
   .navbar {
     flex-direction: column;
@@ -297,6 +307,10 @@ export default {
     padding: 8px 12px;
     font-size: 12px;
   }
+
+  .stats-container {
+    gap: 10px;
+  }
 }
 
 @media screen and (max-width: 320px) {
@@ -325,7 +339,6 @@ export default {
   }
 }
 
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -339,3 +352,4 @@ export default {
   animation: fadeIn 0.5s ease-out 0.2s both;
 }
 </style>
+```
