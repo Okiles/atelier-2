@@ -171,4 +171,23 @@ export default {
   height: 75px;
   border-radius: 50%;
 }
+
+
+.login-card button {
+  background: linear-gradient(to right, #ffd700, #ffa500);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 20px;
+}
+
+.login-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+}
 </style>
