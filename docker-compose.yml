@@ -129,10 +129,9 @@ services:
       - directus.db
   adminer:
     image: adminer
+    restart: always
     ports:
       - '42059:8080'
-    networks:
-      - geoquizz.net
 
   mailcatcher:
     build:
