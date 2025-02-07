@@ -1,0 +1,4 @@
+INSERT INTO "directus_presets" ("id", "bookmark", "user", "role", "collection", "search", "layout", "layout_query", "layout_options", "refresh_interval", "filter", "icon", "color") VALUES
+(4,	NULL,	'c687c13d-984b-42fb-bcde-694ff68e23d2',	NULL,	'lieux_files',	NULL,	NULL,	'{"tabular":{"fields":["id","lieux_id","directus_files_id"],"page":2}}',	'{"tabular":{"widths":{"directus_files_id":471}}}',	NULL,	NULL,	'bookmark',	NULL),
+(5,	NULL,	'c687c13d-984b-42fb-bcde-694ff68e23d2',	NULL,	'directus_files',	NULL,	'cards',	'{"cards":{"sort":["-uploaded_on"],"page":2}}',	'{"cards":{"icon":"insert_drive_file","title":"{{ title }}","subtitle":"{{ type }} • {{ filesize }}","size":4,"imageFit":"crop"}}',	NULL,	NULL,	'bookmark',	NULL),
+(3,	NULL,	'c687c13d-984b-42fb-bcde-694ff68e23d2',	NULL,	'lieux',	NULL,	NULL,	'{"tabular":{"fields":["categorie","latitude","longitude","ville","photo","id","nom"],"page":2}}',	NULL,	NULL,	NULL,	'bookmark',	NULL);
