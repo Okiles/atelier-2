@@ -23,7 +23,7 @@ class SendMessageAction extends AbstractAction
             $channel->queue_declare('my_queue', false, false, false, false);
 
             $msg = new AMQPMessage($messageText);
-            $channel->basic_publish($msg, '', 'my_routing_key');
+            $channel->basic_publish($msg, 'my_exchange', 'my_routing_key');
 
             $channel->close();
             $connection->close();

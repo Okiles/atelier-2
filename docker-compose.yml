@@ -17,12 +17,14 @@ services:
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   geoquizz.front:
-    image: ubuntu/apache2:latest
+    build:
+      context: build
+      dockerfile: apache.Dockerfile
     restart: unless-stopped
+    volumes:
+      - ./frontend/dist:/var/www/html
     ports:
       - "42051:80"
-    volumes:
-      - ./frontend/dist/:/var/www/html
     networks:
       - geoquizz.net
 
