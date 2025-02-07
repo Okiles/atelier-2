@@ -7,7 +7,7 @@ import GameContainer from '../views/GameContainer.vue'
 import History from '../views/History.vue'
 
 import { isAuthenticated } from '../services/authProvider.js';
-import Profile from '@/views/Profile.vue'
+import Profile from '@/views/UpdateProfile.vue'
 
 const routes = [
   {
