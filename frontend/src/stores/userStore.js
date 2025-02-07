@@ -15,7 +15,6 @@ export const useUserStore = defineStore("user", {
       this.loading = true;
       try {
         const response = await getUser();
-        console.log("Réponse de getUser:", response); // Log la réponse pour voir ce que tu obtiens
         if (response && response.id && response.email) {
           this.user = response;
         } else {

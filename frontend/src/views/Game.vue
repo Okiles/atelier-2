@@ -29,15 +29,15 @@ export default {
       images: [
         {
           src: this.initialGameState?.Image1 || "https://random.imagecdn.app/500/150",
-          coords: this.initialGameState?.Coords1 || [48.8566, 2.3522]
+          coords: this.initialGameState?.Coords1 || [48.692000, 6.184350]
         },
         {
           src: this.initialGameState?.Image2 || "https://random.imagecdn.app/500/150",
-          coords: this.initialGameState?.Coords2 || [40.7128, -74.006]
+          coords: this.initialGameState?.Coords2 || [48.692320, 6.184400]
         },
         {
           src: this.initialGameState?.Image3 || "https://random.imagecdn.app/500/150",
-          coords: this.initialGameState?.Coords3 || [34.0522, -118.2437]
+          coords: this.initialGameState?.Coords3 || [48.6920894, 6.184197]
         },
       ],
       currentIndex: 0,
@@ -87,6 +87,11 @@ export default {
     onMapClick(event) {
       if (!this.isPaused) {
         this.selectedCoords = [event.latlng.lat, event.latlng.lng];
+        // Ajout des logs
+        console.log('Coordonnées sélectionnées:', {
+          lat: event.latlng.lat.toFixed(6),
+          lng: event.latlng.lng.toFixed(6)
+        });
       }
     },
     validateGuess() {
@@ -94,6 +99,14 @@ export default {
 
       const timeTaken = (Date.now() - this.startTime) / 1000;
       const actualCoords = this.images[this.currentIndex].coords;
+
+      // Ajout des logs
+      console.log('Distance calculée:', {
+        selected: this.selectedCoords.map(c => c.toFixed(6)),
+        actual: actualCoords.map(c => c.toFixed(6)),
+        distance: this.getDistance(actualCoords, this.selectedCoords).toFixed(3) + ' km'
+      });
+
       this.score += this.calculateScore(
         actualCoords,
         this.selectedCoords,
@@ -118,10 +131,16 @@ export default {
         }
 
         try {
+          console.log("Envoi de la requête avec:", {
+            gameId: gameData.game_id,
+            score: finalScore
+          });
+
           await updateGame(gameData.game_id, finalScore);
+          console.log("Score mis à jour avec succès");
           this.$emit('game-finished', finalScore);
         } catch (error) {
-          console.error("Erreur lors de la mise à jour du jeu:", error);
+          console.error("Erreur détaillée:", error);
           this.$emit('game-finished', finalScore);
         }
       }
@@ -167,7 +186,7 @@ export default {
 
     <div class="map-container">
       <l-map
-        :zoom="5"
+        :zoom="11"
         :center="mapCenter"
         @click="onMapClick"
         :options="{ scrollWheelZoom: true }"
@@ -208,92 +227,73 @@ export default {
 </template>
 
 <style>
+/* Base container */
 .game-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: clamp(10px, 3vw, 20px);
   text-align: center;
   position: relative;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
 }
 
+/* Header */
 .game-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: clamp(15px, 4vw, 30px);
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  padding: 20px;
-  border-radius: 16px;
+  padding: clamp(10px, 3vw, 20px);
+  border-radius: clamp(8px, 2vw, 16px);
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .game-title {
   color: white;
-  font-size: 32px;
+  font-size: clamp(24px, 5vw, 32px);
   font-weight: 700;
   margin: 0;
 }
 
-.score-display {
+.game-info {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2vw, 20px);
+  flex-wrap: wrap;
+}
+
+.score-display, .round-display {
   color: white;
-  font-size: 24px;
+  font-size: clamp(16px, 3vw, 24px);
   font-weight: 600;
+  padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2vw, 16px);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: clamp(6px, 1.5vw, 8px);
 }
 
-.start-screen {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 40px;
-  border-radius: 16px;
-  margin: 100px auto;
-  max-width: 600px;
-}
-
-.start-screen h2 {
-  color: white;
-  font-size: 28px;
-  margin-bottom: 20px;
-}
-
-.start-screen p {
-  color: white;
-  font-size: 18px;
-  margin-bottom: 30px;
-}
-
-.start-button {
-  background: linear-gradient(to right, #48bb78, #38b2ac);
-  font-size: 20px;
-  padding: 15px 40px;
-}
-
-.timer {
-  font-size: 48px;
-  font-weight: 700;
-  color: #ffd700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-  margin-bottom: 20px;
-}
-
+/* Game Image */
 .game-image {
   width: 100%;
   max-width: 600px;
   height: auto;
-  border-radius: 16px;
-  margin: 20px auto;
+  border-radius: clamp(8px, 2vw, 16px);
+  margin: clamp(10px, 3vw, 20px) auto;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
   display: block;
 }
 
+/* Map Container */
 .map-container {
   width: 100%;
-  height: 500px;
-  border-radius: 16px;
+  height: clamp(300px, 50vh, 500px);
+  border-radius: clamp(8px, 2vw, 16px);
   overflow: hidden;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+  margin: clamp(10px, 3vw, 20px) 0;
 }
 
 .map-container :deep(.leaflet-container) {
@@ -302,29 +302,41 @@ export default {
   z-index: 1;
 }
 
+/* Footer */
 .game-footer {
   background-color: rgba(0, 0, 0, 0.7);
-  padding: 20px;
-  border-radius: 16px;
-  margin-top: 20px;
+  padding: clamp(15px, 3vw, 20px);
+  border-radius: clamp(8px, 2vw, 16px);
+  margin-top: clamp(10px, 3vw, 20px);
+}
+
+.timer {
+  font-size: clamp(32px, 6vw, 48px);
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  margin-bottom: clamp(10px, 3vw, 20px);
 }
 
 .game-controls {
   display: flex;
-  gap: 15px;
+  gap: clamp(10px, 2vw, 15px);
   justify-content: center;
+  flex-wrap: wrap;
 }
 
+/* Buttons */
 .game-button {
   background: linear-gradient(to right, #667eea, #764ba2);
   color: white;
   border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
+  border-radius: clamp(6px, 1.5vw, 8px);
+  font-size: clamp(14px, 2.5vw, 16px);
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
+  min-width: clamp(100px, 30%, 150px);
 }
 
 .game-button:hover {
@@ -337,6 +349,7 @@ export default {
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+  opacity: 0.7;
 }
 
 .validate-button {
@@ -347,6 +360,7 @@ export default {
   background: linear-gradient(to right, #ed8936, #ed64a6);
 }
 
+/* Pause Overlay */
 .pause-overlay {
   position: fixed;
   top: 0;
@@ -358,32 +372,74 @@ export default {
   justify-content: center;
   align-items: center;
   z-index: 2000;
+  backdrop-filter: blur(5px);
 }
 
 .pause-menu {
   background-color: white;
-  padding: 40px;
-  border-radius: 16px;
+  padding: clamp(20px, 5vw, 40px);
+  border-radius: clamp(8px, 2vw, 16px);
   text-align: center;
+  width: clamp(280px, 90%, 400px);
+  animation: fadeIn 0.3s ease-out;
 }
 
 .pause-menu h2 {
-  margin-bottom: 20px;
+  margin-bottom: clamp(15px, 4vw, 20px);
   color: #333;
+  font-size: clamp(18px, 4vw, 24px);
 }
 
-.game-info {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+/* Media Queries */
+@media screen and (max-width: 768px) {
+  .game-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .game-info {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .game-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .game-button {
+    width: 100%;
+    max-width: none;
+  }
 }
 
-.round-display {
+@media screen and (max-width: 480px) {
+  .map-container {
+    height: 300px;
+  }
+
+  .pause-menu {
+    margin: 20px;
+    padding: 20px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading state */
+.loading {
   color: white;
-  font-size: 24px;
-  font-weight: 600;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  font-size: clamp(16px, 3vw, 20px);
+  padding: clamp(20px, 5vw, 40px);
 }
 </style>

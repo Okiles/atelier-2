@@ -16,4 +16,32 @@ export default {
 </template>
 
 <style scoped>
+.start-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.start-screen h2 {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.start-screen p {
+  color: white;
+  margin-bottom: 40px;
+}
+
+.start-button {
+  background: linear-gradient(to right, #667eea, #764ba2);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
 </style>

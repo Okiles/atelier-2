@@ -6,26 +6,26 @@ export default {
   name: "History",
   data() {
     return {
-      games: [], // Liste des parties
-      error: null, // Message d'erreur
+      games: [],
+      error: null,
     };
   },
   async mounted() {
     try {
       const userStore = useUserStore();
 
-      // Vérification de l'authentification de l'utilisateur
+
       if (!userStore.user || !userStore.user.id) {
         this.error = "Utilisateur non authentifié.";
         return;
       }
 
-      // Récupération de l'historique des parties
+
       const history = await getGameHistory(userStore.user.id);
       console.log(history);
 
-      // Assigner correctement les données des parties
-      this.games = history.Game || []; // Utiliser "Game" qui est un tableau
+
+      this.games = history.Game || [];
     } catch (err) {
       this.error =
         err.message || "Une erreur s'est produite lors de la récupération de l'historique.";
@@ -49,8 +49,8 @@ export default {
         <li v-for="game in games" :key="game.ID">
           <p>Partie ID: {{ game.ID }}</p>
           <p>Score: {{ game.Score }}</p>
-          <p>Durée: {{ game.Duree }} minutes</p>
-          <p>Distance: {{ game.Distance }} km</p>
+          <p>Durée de manche: <strong>{{ game.Duree }}</strong> secondes</p>
+          <p>Distance de difficulté: <strong>{{ game.Distance }}</strong> mètres</p>
           <p>Statut: {{ game.Status }}</p>
           <hr />
         </li>

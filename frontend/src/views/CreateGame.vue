@@ -112,7 +112,7 @@ export default {
               type="range"
               v-model="selectedTime"
               min="2"
-              max="30"
+              max="60"
               step="1"
               class="slider"
             >
