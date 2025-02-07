@@ -8,6 +8,7 @@ import { getGameIdentity } from "../services/authProvider";
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import { getImage, getIdImagesByIdLieux, getIdByTheme, getImageLongitudeByIdLieux, getImageLatitudeByIdLieux, getVilleById, getNomById } from "../services/directus";
 
 export default {
   name: "Game",
@@ -26,20 +27,7 @@ export default {
   emits: ['game-finished'],
   data() {
     return {
-      images: [
-        {
-          src: this.initialGameState?.Image1 || "https://random.imagecdn.app/500/150",
-          coords: this.initialGameState?.Coords1 || [48.692000, 6.184350]
-        },
-        {
-          src: this.initialGameState?.Image2 || "https://random.imagecdn.app/500/150",
-          coords: this.initialGameState?.Coords2 || [48.692320, 6.184400]
-        },
-        {
-          src: this.initialGameState?.Image3 || "https://random.imagecdn.app/500/150",
-          coords: this.initialGameState?.Coords3 || [48.6920894, 6.184197]
-        },
-      ],
+      images: [],
       currentIndex: 0,
       timer: this.initialGameState.Duree,
       mapCenter: [48.692054, 6.184417],
@@ -68,6 +56,16 @@ export default {
     }
   },
   methods: {
+    async loadImages() {
+      const lieu = await getIdByTheme(this.initialGameState.categorie);
+      const idImages = await getIdImagesByIdLieux(lieu);
+      const images = await Promise.all(idImages.map(async (id) => {
+        const src = await getImage(id);
+        const coords = [await getImageLatitudeByIdLieux(id), await getImageLongitudeByIdLieux(id)];
+        return { src, coords };
+      })); // Ici, la parenthèse fermante était manquante
+    return images;
+    },
     startRound() {
       this.selectedCoords = null;
       this.startTime = Date.now();
