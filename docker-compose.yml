@@ -100,21 +100,29 @@ services:
       - geoquizz.db
     command: php -S 0.0.0.0:80 -t /var/php/public
 
+  directus.db:
+    image: 'postgres:latest'
+    restart: unless-stopped
+    env_file: directusdb.env
+    ports:
+      - '42057:5432'  
+    networks:
+      - geoquizz.net
+    volumes:
+      - pgdirectusdata:/var/lib/postgresql/data 
+
   directus:
     image: directus/directus:latest
     container_name: directus-app
-    restart: always
     volumes:
-      - ./database:/directus/database
       - ./uploads:/directus/uploads
-      - ./extensions:/directus/extension
     env_file: directus.env
-
     ports:
       - "42058:8055"
     networks:
-      - geoquizz.net
-
+      - geoquizz.net 
+    depends_on:
+      - directus.db
   adminer:
     image: adminer
     ports:
@@ -131,3 +139,6 @@ services:
         - '42061:1025'
     networks:
         - geoquizz.net
+
+volumes:
+  pgdirectusdata:
