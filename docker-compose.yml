@@ -17,12 +17,14 @@ services:
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   geoquizz.front:
-    image: ubuntu/apache2:latest
+    build:
+      context: build
+      dockerfile: apache.Dockerfile
     restart: unless-stopped
+    volumes:
+      - ./frontend/dist:/var/www/html
     ports:
       - "42051:80"
-    volumes:
-      - ./frontend/dist/:/var/www/html
     networks:
       - geoquizz.net
 
@@ -48,6 +50,8 @@ services:
     restart: unless-stopped
     ports:
       - '42053:15672'
+    env_file:
+      - rabbitmq.env
     networks:
       - geoquizz.net
 
@@ -125,10 +129,9 @@ services:
       - directus.db
   adminer:
     image: adminer
+    restart: always
     ports:
       - '42059:8080'
-    networks:
-      - geoquizz.net
 
   mailcatcher:
     build:

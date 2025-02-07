@@ -46,4 +46,6 @@ INSERT INTO "lieux_files" ("id", "lieux_id", "directus_files_id") VALUES
 (45,	45,	'e06903a4-9e50-440f-a8ae-89a4896a3760'),
 (46,	46,	'382aac3c-e895-4d47-8807-ab2c9c821c70'),
 (47,	47,	'fb466a98-2aa0-425d-865b-9a729efcdcf6'),
-(48,	48,	'cced8498-0372-417c-9e9c-46f2d5b51d12');
+(48,	48,	'cced8498-0372-417c-9e9c-46f2d5b51d12'),
+(49,	49,	'fcfb48c2-e432-4e24-870e-cb246b86fd37'),
+(50,	50,	'4d07e99f-5780-4d2f-8847-ded2982a206c');

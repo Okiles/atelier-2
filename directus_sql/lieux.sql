@@ -46,4 +46,6 @@ INSERT INTO "lieux" ("id", "categorie", "longitude", "latitude", "ville", "nom")
 (45,	'Parc',	'6.1938402',	'48.6936363',	'Nancy',	'Jardin d''eau'),
 (46,	'Parc',	'6.154209',	'48.6908079',	'Nancy',	'Jardin du Belvédère'),
 (47,	'Parc',	'6.1742817',	'48.6684332',	'Nancy',	'Domaine et Château du Charmois'),
-(48,	'Parc',	'6.183001',	'48.6984113',	'Nancy',	'La Roseraie');
+(48,	'Parc',	'6.183001',	'48.6984113',	'Nancy',	'La Roseraie'),
+(49,	'Parc',	'6.1552545',	'48.6625643',	'Nancy',	'Jardin Botanique Jean-Marie Pelt'),
+(50,	'Parc',	'6.1315299',	'48.6972179',	'Nancy',	'parc d''agrément');
