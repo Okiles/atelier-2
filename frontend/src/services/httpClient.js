@@ -131,8 +131,13 @@ const updateGame = (gameId, data) => {
  * @param {string} gameId - L'ID du jeu
  */
 const getGameState = (gameId) => {
-  return request(`/game/${gameId}`, 'GET', null, false); // Appelle la fonction request pour récupérer l'état d'un jeu
-};
+  return request(`/game/${gameId}`, 'GET', null, false);
+}
 
-// Export des fonctions pour les utiliser ailleurs
-export { request, login, getUser, register, createGame, getGames, getGameState, updateUser, updateGame };
+const getGameHistory = (userid) =>{
+  return request(`/games/${userid}`, 'GET', null, true);
+}
+
+
+export { request, login, getUser ,register, createGame, getGames, getGameState, updateUser ,updateGame, getGameHistory};
+

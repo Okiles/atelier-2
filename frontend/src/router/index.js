@@ -4,6 +4,7 @@ import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
 import CreateGame from '../views/CreateGame.vue'
 import GameContainer from '../views/GameContainer.vue'
+import History from '../views/History.vue'
 
 import { isAuthenticated } from '../services/authProvider.js';
 import Profile from '@/views/Profile.vue'
@@ -46,7 +47,10 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/game/'
+    path: '/history',
+    name: 'History',
+    component: History,
+    meta: {requiresAuth: true},
   }
 
 

@@ -40,6 +40,10 @@ export default {
     handleRegister() {
       this.$router.push("/register");
     },
+
+    handleHistory(){
+      this.$router.push("/history")
+    }
   },
 
   components: {
@@ -64,6 +68,7 @@ export default {
         <div v-if="loading" class="loading">Chargement...</div>
         <h1 class="login-title">Tableau de Bord</h1>
         <p v-if="error" class="error-message">{{ error }}</p>
+        <button @click="handleHistory">Historique des parties</button>
       </div>
     </main>
   </div>
