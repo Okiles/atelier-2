@@ -29,6 +29,7 @@ class GetGamesByID extends AbstractAction
                 'ID User' => $game->id_user,
                 'Duree' => $game->duree,
                 'Distance' => $game->distance,
+                'Categorie' => $game->categorie,
             ];
             $rs->getBody()->write(json_encode($resultat));
             return $rs->withHeader('Content-Type', 'application/json')->withStatus(200);

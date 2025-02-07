@@ -29,9 +29,10 @@ class CreateGameAction extends AbstractAction
         $duree = $data['duree'];
         $distance = $data['distance'];
         $id_user = $data['id_user'];
+        $categorie = $data['categorie'] ?? null;
 
 
-        $game_id = $this->gameService->createGame(new InputGameDTO(null,$status, $id_user,$score, $duree, $distance));
+        $game_id = $this->gameService->createGame(new InputGameDTO(null,$status, $id_user,$score, $duree, $distance, $categorie));
         $token = $this->gameService->createToken($game_id, $id_user);
         $rs->getBody()->write(json_encode([
             'token' => $token,

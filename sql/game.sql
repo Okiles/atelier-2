@@ -19,5 +19,6 @@ CREATE TABLE games
     id_user VARCHAR(255) NOT NULL,
     duree INT NOT NULL,
     distance REAL NOT NULL,
+    categorie VARCHAR(50),
     FOREIGN KEY (id_user) REFERENCES users (id) ON DELETE CASCADE
 );

@@ -20,6 +20,8 @@ class GameDTO extends DTO
 
     protected float $distance;
 
+    protected ?string $categorie;
+
     public function __construct(Game $game)
     {
         $this->ID= $game->getID();
@@ -28,6 +30,7 @@ class GameDTO extends DTO
         $this->score = $game->getScore();
         $this->duree = $game->getDuree();
         $this->distance = $game->getDistance();
+        $this->categorie = $game->getCategorie();
     }
 
 

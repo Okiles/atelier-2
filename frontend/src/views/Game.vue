@@ -126,9 +126,8 @@ export default {
         );
       }
 
-      // Attendre 5 secondes avant de passer à la manche suivante
+
       setTimeout(() => {
-        // Nettoyer la carte
         this.$refs.map.leafletObject.eachLayer((layer) => {
           if (layer instanceof L.Polyline || (layer instanceof L.Marker && layer !== this.selectedMarker)) {
             this.$refs.map.leafletObject.removeLayer(layer);
@@ -247,7 +246,7 @@ export default {
 </template>
 
 <style>
-/* Base container */
+
 .game-container {
   max-width: 1200px;
   margin: 0 auto;

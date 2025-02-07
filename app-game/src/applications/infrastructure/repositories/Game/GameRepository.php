@@ -22,14 +22,15 @@ class GameRepository implements GameRepositoryInterface
 
     public function createGame(InputGameDTO $game): string{
         $game->setId(Uuid::uuid4()->toString());
-        $query = $this->pdo->prepare('INSERT INTO GAMES(id,score,status,id_user,duree,distance) VALUES (:id,:score,:status,:id_user,:duree,:distance)');
+        $query = $this->pdo->prepare('INSERT INTO GAMES(id,score,status,id_user,duree,distance,categorie) VALUES (:id,:score,:status,:id_user,:duree,:distance,:categorie)');
         $query->execute([
             'id'=>$game->getID(),
             'score'=>$game->getScore(),
             'status'=>$game->getStatus(),
             'id_user'=>$game->getUserID(),
             'duree'=>$game->getDuree(),
-            'distance'=>$game->getDistance()
+            'distance'=>$game->getDistance(),
+            'categorie'=>$game->getCategorie()
         ]);
 
         return $game->getID();
@@ -47,7 +48,7 @@ class GameRepository implements GameRepositoryInterface
 
         $games = [];
         foreach($rows as $row){
-            $game = new Game($row['score'], $row['status'], $row['id_user'], $row['duree'], $row['distance']);
+            $game = new Game($row['score'], $row['status'], $row['id_user'], $row['duree'], $row['distance'], $row['categorie'] ?? null);
             $game->setID($row['id']);
             $games[] = $game;
         }
@@ -75,7 +76,7 @@ class GameRepository implements GameRepositoryInterface
          'id'=>$id
      ]);
      $row = $query->fetch(PDO::FETCH_ASSOC);
-     $game = new Game($row['score'], $row['status'], $row['id_user'], $row['duree'], $row['distance']);
+     $game = new Game($row['score'], $row['status'], $row['id_user'], $row['duree'], $row['distance'], $row['categorie'] ?? null);
      $game->setID($row['id']);
      return new GameDTO($game);
     }
@@ -90,7 +91,7 @@ class GameRepository implements GameRepositoryInterface
         $rows = $query->fetchAll(PDO::FETCH_ASSOC);
         $games = [];
         foreach($rows as $row){
-            $game = new Game($row['score'], $row['status'], $row['id_user'], $row['duree'], $row['distance']);
+            $game = new Game($row['score'], $row['status'], $row['id_user'], $row['duree'], $row['distance'], $row['categorie'] ?? null);
             $game->setID($row['id']);
             $games[] = $game;
         }
