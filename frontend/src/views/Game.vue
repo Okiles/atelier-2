@@ -3,6 +3,8 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 import scoreMixin from "../mixins/scoreMixin";
+import { updateGame } from "../services/httpClient";
+import { getGameIdentity } from "../services/authProvider";
 
 export default {
   name: "Game",
@@ -53,8 +55,6 @@ export default {
   },
   methods: {
     startRound() {
-      console.log(this.initialGameState.Duree);
-      console.log(this.initialGameState.Distance);
       this.selectedCoords = null;
       this.startTime = Date.now();
       this.timer = this.initialDuree;
@@ -90,14 +90,31 @@ export default {
       );
       this.endRound();
     },
-    endRound() {
+    async endRound() {
       clearInterval(this.interval);
       this.currentIndex++;
 
       if (this.currentIndex < this.images.length) {
         this.startRound();
       } else {
-        this.$emit('game-finished', Math.round(this.score));
+        const finalScore = Math.round(this.score);
+        const gameData = getGameIdentity();
+
+        if (!gameData || !gameData.game_id) {
+          console.error("Pas d'ID de jeu trouvé");
+          return;
+        }
+
+        try {
+          await updateGame(gameData.game_id, {
+            score: finalScore,
+            status: "Game terminée"
+          });
+          this.$emit('game-finished', finalScore);
+        } catch (error) {
+          console.error("Erreur lors de la mise à jour du jeu:", error);
+          this.$emit('game-finished', finalScore);
+        }
       }
     },
     togglePause() {
