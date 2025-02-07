@@ -2,9 +2,7 @@
   <!-- Navbar lorsque l'utilisateur est connecté -->
   <nav v-if="user" class="navbar">
     <div class="navbar-user-info">
-      <!-- Afficher l'image de profil si elle existe, sinon une image par défaut -->
       <img :src="user.profile_picture ? 'http://localhost:42055' + user.profile_picture : defaultImage" alt="Photo de profil" class="navbar-user-image">
-      <!-- Afficher le nom d'utilisateur ou 'Anonyme' si non défini -->
       <span class="navbar-username">Bienvenue, {{ user.username || 'Utilisateur' }}</span>
     </div>
     <div class="navbar-brand-wrapper">
@@ -53,14 +51,15 @@ export default {
     const { user } = storeToRefs(userStore);
     const defaultImage = 'https://www.example.com/default-image.jpg'; // Image par défaut
 
-    const handleLogout = () => {
-      userStore.logout();
-    };
-
     // Appeler fetchUser lors du montage du composant
     onMounted(() => {
       userStore.fetchUser();  // Appel de la méthode fetchUser pour récupérer les données utilisateur
     });
+
+    const handleLogout = () => {
+      userStore.logout();
+      window.location.reload();
+    };
 
     return {
       user,
@@ -70,11 +69,6 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Style déjà défini comme précédemment */
-</style>
-
 
 <style scoped>
 .navbar {

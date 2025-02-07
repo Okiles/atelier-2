@@ -70,7 +70,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.meta.requiresGuest && isLogged) {
-    return next('/dashboard');
+    return next('/');
   }
 
 

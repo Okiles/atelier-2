@@ -3,6 +3,8 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 import scoreMixin from "../mixins/scoreMixin";
+import {getGameState} from "../services/httpClient.js";
+import {getGameIdentity} from "@/services/authProvider.js";
 
 export default {
   name: "Game",
@@ -20,11 +22,11 @@ export default {
         { src: "https://random.imagecdn.app/500/150", coords: [34.0522, -118.2437] },
       ],
       currentIndex: 0,
-      timer: 10,
+      timer: null,
       mapCenter: [48.692054, 6.184417],
       selectedCoords: null,
       score: 0,
-      difficulty: 1.5,
+      distance: null,
       interval: null,
       startTime: null,
       isPaused: false,
@@ -39,17 +41,29 @@ export default {
     }
   },
   methods: {
-    startGame() {
-      this.isGameStarted = true;
-      this.currentIndex = 0;
-      this.score = 0;
-      this.isGameFinished = false;
-      this.startRound();
+    async startGame() {
+      try {
+        const gameData = getGameIdentity();
+        console.log(gameData.game_id);
+
+        const responseGameState = await getGameState(gameData.game_id);
+
+        console.log(responseGameState);
+
+        this.distance = responseGameState.Distance;
+        this.timer = responseGameState.Duree;
+        this.isGameStarted = true;
+        this.currentIndex = 0;
+        this.score = 0;
+        this.isGameFinished = false;
+        this.startRound();
+      } catch (error) {
+        console.error("Erreur lors du démarrage du jeu :", error);
+      }
     },
     startRound() {
       this.selectedCoords = null;
       this.startTime = Date.now();
-      this.timer = 10;
       this.startTimer();
     },
     startTimer() {
@@ -78,7 +92,7 @@ export default {
         actualCoords,
         this.selectedCoords,
         timeTaken,
-        this.difficulty
+        this.distance
       );
       this.endRound();
     },

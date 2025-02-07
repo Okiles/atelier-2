@@ -2,8 +2,16 @@ export default {
   methods: {
     calculateScore(actualCoords, guessedCoords, timeTaken, difficulty) {
       const distance = this.getDistance(actualCoords, guessedCoords);
-      const baseScore = Math.max(0, 1000 - distance * difficulty);
-      const timeBonus = Math.max(0, 500 - timeTaken * 10);
+
+
+      let baseScore = 0;
+      if (distance <= difficulty) {
+        baseScore = 1000 * (1 - distance/difficulty);
+      }
+
+      // Calcul du bonus temps
+      const timeBonus = 500 * Math.max(0, Math.min(1, (30 - timeTaken)/(30 - 2)));
+
       return Math.round(baseScore + timeBonus);
     },
     getDistance([lat1, lon1], [lat2, lon2]) {

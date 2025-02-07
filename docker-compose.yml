@@ -105,31 +105,24 @@ services:
     restart: unless-stopped
     env_file: directusdb.env
     ports:
-      - '42057:5432'
+      - '42057:5432'  
     networks:
       - geoquizz.net
     volumes:
-      - ./app/sql:/var/sql
-      
+      - pgdirectusdata:/var/lib/postgresql/data 
 
   directus:
     image: directus/directus:latest
     container_name: directus-app
-    restart: always
     volumes:
-      - ./image/uploads:/directus/uploads
-    depends_on:
-      - directus.db
+      - ./uploads:/directus/uploads
     env_file: directus.env
-    environment:
-      DATABASE_CLIENT: postgres
-      DATABASE_HOST: directus.db
-      DATABASE_PORT: 5432
     ports:
       - "42058:8055"
     networks:
-      - geoquizz.net
-
+      - geoquizz.net 
+    depends_on:
+      - directus.db
   adminer:
     image: adminer
     ports:
@@ -146,3 +139,6 @@ services:
         - '42061:1025'
     networks:
         - geoquizz.net
+
+volumes:
+  pgdirectusdata:
