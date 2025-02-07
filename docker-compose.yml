@@ -38,6 +38,7 @@ services:
       - '42052:80'
     volumes:
       - ./app-mail:/var/php
+      - ./rabbitmq.env:/var/.env
     working_dir: /var/php
     networks:
       - geoquizz.net
