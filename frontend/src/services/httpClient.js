@@ -92,8 +92,12 @@ const getGameState = (gameId) => {
   return request(`/game/${gameId}`, 'GET', null, false);
 }
 
+const getGameHistory = (userid) =>{
+  return request(`/games/${userid}`, 'GET', null, true);
+}
 
-export { request, login, getUser ,register, createGame, getGames, getGameState, updateUser ,updateGame };
+
+export { request, login, getUser ,register, createGame, getGames, getGameState, updateUser ,updateGame, getGameHistory};
 
 
 

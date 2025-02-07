@@ -4,6 +4,7 @@ import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
 import CreateGame from '../views/CreateGame.vue'
 import Game from '../views/Game.vue'
+import History from '../views/History.vue'
 
 import { isAuthenticated } from '../services/authProvider.js';
 import Profile from '@/views/Profile.vue'
@@ -44,6 +45,12 @@ const routes = [
     name: 'Profile',
     component: Profile,
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/history',
+    name: 'History',
+    component: History,
+    meta: {requiresAuth: true},
   }
 
 
