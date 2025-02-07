@@ -23,4 +23,6 @@ RUN install-php-extensions  gd
 RUN install-php-extensions @composer
 EXPOSE 80
 
+RUN composer install
+
 COPY php.ini /usr/local/etc/php/

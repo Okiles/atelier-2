@@ -132,6 +132,10 @@ services:
     restart: always
     ports:
       - '42059:8080'
+    command: php -S 0.0.0.0:8080 -t /var/www/html
+    networks:
+      - geoquizz.net
+
 
   mailcatcher:
     build:
