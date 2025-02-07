@@ -38,6 +38,7 @@ services:
       - '42052:80'
     volumes:
       - ./app-mail:/var/php
+      - ./rabbitmq.env:/var/.env
     working_dir: /var/php
     networks:
       - geoquizz.net
@@ -113,13 +114,14 @@ services:
     networks:
       - geoquizz.net
     volumes:
-      - pgdirectusdata:/var/lib/postgresql/data 
+      - ./directus/data/database:/var/lib/postgresql/data 
+
 
   directus:
     image: directus/directus:latest
     container_name: directus-app
     volumes:
-      - ./uploads:/directus/uploads
+      - ./directus/uploads:/directus/uploads
     env_file: directus.env
     ports:
       - "42058:8055"
@@ -132,6 +134,10 @@ services:
     restart: always
     ports:
       - '42059:8080'
+    command: php -S 0.0.0.0:8080 -t /var/www/html
+    networks:
+      - geoquizz.net
+
 
   mailcatcher:
     build:
@@ -143,5 +149,3 @@ services:
     networks:
         - geoquizz.net
 
-volumes:
-  pgdirectusdata:

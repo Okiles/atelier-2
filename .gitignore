@@ -2,3 +2,5 @@ composer.lock
 .idea
 vendor
 *.env
+directus/uploads
+directus/data/database

@@ -1,146 +1,131 @@
 <template>
-  <div class="profile-edit-container">
-    <h2>Modifier votre profil</h2>
-    <form @submit.prevent="updateProfile" class="profile-edit-form">
-      <div class="form-group">
-        <label for="firstName">Prénom</label>
-        <input type="text" id="firstName" v-model="form.firstName" >
+  <div class="profile-container">
+    <div class="profile-card">
+      <img :src="user.profile_picture ? 'http://localhost:42055' + user.profile_picture : defaultImage"
+           alt="Profile Picture" class="profile-picture" />
+
+      <div class="profile-info">
+        <div class="input-group">
+          <label for="username">Nom d'utilisateur</label>
+          <input type="text" id="username" :value="user.username" disabled />
+        </div>
+
+        <div class="input-group">
+          <label for="name">Prénom</label>
+          <input type="text" id="name" :value="user.name" disabled />
+        </div>
+
+        <div class="input-group">
+          <label for="lastname">Nom</label>
+          <input type="text" id="lastname" :value="user.lastname" disabled />
+        </div>
+
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" :value="user.email" disabled />
+        </div>
       </div>
-      <div class="form-group">
-        <label for="lastName">Nom</label>
-        <input type="text" id="lastName" v-model="form.lastName" >
-      </div>
-      <div class="form-group">
-        <label for="username">Nom d'utilisateur</label>
-        <input type="text" id="username" v-model="form.username">
-      </div>
-      <div class="form-group">
-        <label for="currentPassword">Ancien mot de passe</label>
-        <input type="password" id="currentPassword" v-model="form.currentPassword" >
-      </div>
-      <div class="form-group">
-        <label for="newPassword">Nouveau mot de passe</label>
-        <input type="password" id="newPassword" v-model="form.newPassword" >
-      </div>
-      <div class="form-group">
-        <label for="profilePicture">Photo de profil</label>
-        <input type="file" id="profilePicture" @change="handleFileChange">
-        <img v-if="previewImage" :src="previewImage" alt="Prévisualisation" class="profile-preview">
-      </div>
-      <button type="submit" class="submit-button">Mettre à jour</button>
-    </form>
+
+      <router-link to="/profile/edit" class="edit-button">Éditer le profil</router-link>
+    </div>
   </div>
 </template>
 
 <script>
-import { updateUser } from '@/services/httpClient.js';
-export default {
-  data() {
-    return {
-      form: {
-        firstName: '',
-        lastName: '',
-        username: '',
-        currentPassword: '',
-        newPassword: '',
-        profilePicture: null,
-      },
-      previewImage: null,
-    };
-  },
-  methods: {
-    handleFileChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.form.profilePicture = file;
-        this.previewImage = URL.createObjectURL(file);
-      }
-    },
-    updateProfile() {
-      try {
-        const formData = new FormData();
-        formData.append('firstName', this.form.firstName);
-        formData.append('lastName', this.form.lastName);
-        formData.append('username', this.form.username);
-        formData.append('currentPassword', this.form.currentPassword);
-        formData.append('newPassword', this.form.newPassword);
-        if (this.form.profilePicture) {
-          formData.append('profilePicture', this.form.profilePicture);
-        }
+import { useUserStore } from "../stores/userStore";
+import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 
-        // Pass formData to the updateUser function
-        updateUser(formData)
-          .then(() => {
-            alert('Profil mis à jour avec succès');
-          })
-          .catch((error) => {
-            console.error(error);
-            alert('Une erreur est survenue lors de la mise à jour du profil');
-          });
-      } catch (error) {
-        console.error(error);
-        alert('Une erreur est survenue lors de la mise à jour du profil');
-      }
-    },
-  },
+export default {
+  name: "Profile",
+
+  setup() {
+    const userStore = useUserStore();
+    const { user } = storeToRefs(userStore);
+    const defaultImage = 'https://www.example.com/default-image.jpg';
+
+    onMounted(() => {
+      userStore.fetchUser(); // Récupère les données utilisateur lors du chargement du profil
+    });
+
+    return {
+      user,
+      defaultImage
+    };
+  }
 };
 </script>
 
 <style scoped>
-.profile-edit-container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-h2 {
+.profile-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
-  color: #333;
-}
-
-.profile-edit-form .form-group {
-  margin-bottom: 15px;
-}
-
-.profile-edit-form label {
-  display: block;
-  font-size: 14px;
-  color: #333;
-}
-
-.profile-edit-form input[type="text"],
-.profile-edit-form input[type="password"],
-.profile-edit-form input[type="file"] {
+  max-width: 420px;
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.profile-preview {
-  width: 100px;
-  height: 100px;
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
   object-fit: cover;
-  margin-top: 10px;
+  border: 4px solid #007bff;
 }
 
-.submit-button {
+.profile-info {
   width: 100%;
-  padding: 10px;
-  background-color: #48bb78;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.submit-button:hover {
-  background-color: #38b2ac;
+.input-group {
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  cursor: not-allowed;
+  box-sizing: border-box;
+}
+
+.edit-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 18px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
 }
 </style>

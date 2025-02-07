@@ -14,7 +14,8 @@
     "symfony/mailer": ">=7.3.x-dev",
     "php-amqplib/rabbitmq-bundle": ">=2.17.3",
     "ext-sockets": "*",
-    "phpmailer/phpmailer": ">=v6.9.3"
+    "phpmailer/phpmailer": ">=v6.9.3",
+    "vlucas/phpdotenv": "^5.4"
 
   },
   "require-dev": {

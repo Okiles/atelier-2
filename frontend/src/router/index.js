@@ -7,7 +7,8 @@ import GameContainer from '../views/GameContainer.vue'
 import History from '../views/History.vue'
 
 import { isAuthenticated } from '../services/authProvider.js';
-import Profile from '@/views/Profile.vue'
+import UpdateProfile from '@/views/UpdateProfile.vue';
+import Profile from '@/views/Profile.vue';
 
 const routes = [
   {
@@ -47,6 +48,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/profile/edit',
+    name: 'UpdateProfile',
+    component: UpdateProfile,
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/history',
     name: 'History',
     component: History,
@@ -62,19 +69,15 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isLogged = isAuthenticated();
-
-
-  if (to.meta.requiresAuth && !isLogged) {
-    return next('/login');
+  try {
+    const isLogged = isAuthenticated();
+    if (to.meta.requiresAuth && !isLogged) return next('/login');
+    if (to.meta.requiresGuest && isLogged) return next('/');
+    next();
+  } catch (error) {
+    console.error('Erreur lors de la navigation :', error);
+    next('/');
   }
-
-  if (to.meta.requiresGuest && isLogged) {
-    return next('/');
-  }
-
-
-  next();
 });
 
 
