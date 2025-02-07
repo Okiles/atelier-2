@@ -19,6 +19,7 @@ export const useUserStore = defineStore("user", {
         if (response && response.id && response.email) {
           this.user = response;
         } else {
+          this.user = null;
           this.error = 'Données de l\'utilisateur invalides';
           console.error("Réponse invalide de l'API :", response);
         }
