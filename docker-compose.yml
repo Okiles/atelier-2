@@ -114,13 +114,14 @@ services:
     networks:
       - geoquizz.net
     volumes:
-      - pgdirectusdata:/var/lib/postgresql/data 
+      - ./directus/data/database:/var/lib/postgresql/data 
+
 
   directus:
     image: directus/directus:latest
     container_name: directus-app
     volumes:
-      - ./uploads:/directus/uploads
+      - ./directus/uploads:/directus/uploads
     env_file: directus.env
     ports:
       - "42058:8055"
@@ -148,5 +149,3 @@ services:
     networks:
         - geoquizz.net
 
-volumes:
-  pgdirectusdata:
