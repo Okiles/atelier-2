@@ -18,9 +18,9 @@ class SendMessageAction extends AbstractAction
             $email = $data['email'] ?? 'anon@geoquizz.com';
             $subject = $data['subject'] ?? 'Notification';
 
-            $connection = new AMQPStreamConnection('rabbitmq', 5672, getenv("RABBITMQ_DEFAULT_USER"), getenv("RABBITMQ_DEFAULT_PASS"));
+            $connection = new AMQPStreamConnection('rabbitmq', 5672, $_ENV["RABBITMQ_DEFAULT_USER"], $_ENV["RABBITMQ_DEFAULT_PASS"]);
             $channel = $connection->channel();
-            $channel->queue_declare('my_queue', false, false, false, false);
+            $channel->queue_declare('my_queue', false, true, false, false);
 
             $msg = new AMQPMessage($messageText);
             $channel->basic_publish($msg, 'my_exchange', 'my_routing_key');
