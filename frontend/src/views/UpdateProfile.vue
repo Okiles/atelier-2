@@ -1,40 +1,51 @@
 <template>
   <div class="profile-edit-container">
-    <h2>Modifier votre profil</h2>
-    <form @submit.prevent="updateProfile" class="profile-edit-form">
-      <div class="form-group">
-        <label for="firstName">Prénom</label>
-        <input type="text" id="firstName" v-model="form.firstName" >
-      </div>
-      <div class="form-group">
-        <label for="lastName">Nom</label>
-        <input type="text" id="lastName" v-model="form.lastName" >
-      </div>
-      <div class="form-group">
-        <label for="username">Nom d'utilisateur</label>
-        <input type="text" id="username" v-model="form.username">
-      </div>
-      <div class="form-group">
-        <label for="currentPassword">Ancien mot de passe</label>
-        <input type="password" id="currentPassword" v-model="form.currentPassword" >
-      </div>
-      <div class="form-group">
-        <label for="newPassword">Nouveau mot de passe</label>
-        <input type="password" id="newPassword" v-model="form.newPassword" >
-      </div>
-      <div class="form-group">
-        <label for="profilePicture">Photo de profil</label>
-        <input type="file" id="profilePicture" @change="handleFileChange">
-        <img v-if="previewImage" :src="previewImage" alt="Prévisualisation" class="profile-preview">
-      </div>
-      <button type="submit" class="submit-button">Mettre à jour</button>
-    </form>
+    <div class="profile-edit-card">
+      <h2>Modifier votre profil</h2>
+      <form @submit.prevent="updateProfile" class="profile-edit-form">
+
+        <div class="input-group">
+          <label for="firstName">Prénom</label>
+          <input type="text" id="firstName" v-model="form.firstName" />
+        </div>
+
+        <div class="input-group">
+          <label for="lastName">Nom</label>
+          <input type="text" id="lastName" v-model="form.lastName" />
+        </div>
+
+        <div class="input-group">
+          <label for="username">Nom d'utilisateur</label>
+          <input type="text" id="username" v-model="form.username" />
+        </div>
+
+        <div class="input-group">
+          <label for="currentPassword">Ancien mot de passe</label>
+          <input type="password" id="currentPassword" v-model="form.currentPassword" />
+        </div>
+
+        <div class="input-group">
+          <label for="newPassword">Nouveau mot de passe</label>
+          <input type="password" id="newPassword" v-model="form.newPassword" />
+        </div>
+
+        <div class="input-group">
+          <label for="profilePicture">Photo de profil</label>
+          <input type="file" id="profilePicture" @change="handleFileChange" />
+          <img v-if="previewImage" :src="previewImage" alt="Prévisualisation" class="profile-preview" />
+        </div>
+
+        <button type="submit" class="submit-button">Mettre à jour</button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
 import { updateUser } from '@/services/httpClient.js';
+
 export default {
+  name: 'UpdateProfile',
   data() {
     return {
       form: {
@@ -68,7 +79,6 @@ export default {
           formData.append('profilePicture', this.form.profilePicture);
         }
 
-        // Pass formData to the updateUser function
         updateUser(formData)
           .then(() => {
             alert('Profil mis à jour avec succès');
@@ -88,59 +98,81 @@ export default {
 
 <style scoped>
 .profile-edit-container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+}
+
+.profile-edit-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 420px;
+  width: 100%;
 }
 
 h2 {
-  text-align: center;
   color: #333;
+  font-size: 22px;
+  margin-bottom: 20px;
 }
 
-.profile-edit-form .form-group {
+.input-group {
+  text-align: left;
   margin-bottom: 15px;
 }
 
-.profile-edit-form label {
+label {
   display: block;
-  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
   color: #333;
 }
 
-.profile-edit-form input[type="text"],
-.profile-edit-form input[type="password"],
-.profile-edit-form input[type="file"] {
+input {
   width: 100%;
   padding: 10px;
-  margin-top: 5px;
-  border-radius: 5px;
   border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  transition: border 0.3s ease-in-out;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
 .profile-preview {
   width: 100px;
   height: 100px;
+  border-radius: 50%;
   object-fit: cover;
   margin-top: 10px;
+  border: 2px solid #007bff;
 }
 
 .submit-button {
   width: 100%;
-  padding: 10px;
-  background-color: #48bb78;
+  padding: 12px;
+  background: linear-gradient(to right, #667eea, #764ba2);
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .submit-button:hover {
-  background-color: #38b2ac;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to right, #5a67d8, #6b46c1);
 }
 </style>
