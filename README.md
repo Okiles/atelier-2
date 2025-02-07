@@ -1,28 +1,30 @@
 # atelier-2
 
-## Groupe:
-###     COLSON Lenny
-###     CLAIR Mathieu
-###     JEANDIDIER Clément
-###     SZEZCPANSKI Gaëtan
+## Groupe  
+- **COLSON Lenny**  
+- **CLAIR Mathieu**  
+- **JEANDIDIER Clément**  
+- **SZEZCPANSKI Gaëtan**  
 
-## Directus:
-###     directus.env
-###     directusdb.env
-###     Import sql depuis directus_sql
+## Configuration des services  
 
-## Geoquizz:
-###     geoquizzdb.env 
-###     composer install 
+### Directus  
+- `directus.env`  
+- `directusdb.env`  
+- Import les SQL depuis `directus_sql`  
 
-## Auth:
-###     composer install
+### Geoquizz  
+- `geoquizzdb.env`  
+- `composer install`  
 
-## Game:
-###     composer install
+### Auth  
+- `composer install`  
 
-## Front:
-###     npm install 
+### Game  
+- `composer install`  
 
-## JWT:
-###     .env
+### Front  
+- `npm install`  
+
+### JWT  
+- `.env`  
