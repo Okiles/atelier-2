@@ -8,7 +8,7 @@ import { getGameIdentity } from "../services/authProvider";
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import { getImage, getIdImagesByIdLieux, getIdByTheme, getImageLongitudeByIdLieux, getImageLatitudeByIdLieux, getVilleById, getNomById } from "../services/directus";
+import { getImage, getIdImagesByIdLieux, getIdByTheme, getImageLongitudeByIdLieux, getImageLatitudeByIdLieux } from "../services/directus";
 
 export default {
   name: "Game",
@@ -38,8 +38,6 @@ export default {
       startTime: null,
       isPaused: false,
       initialDuree: this.initialGameState.Duree,
-      showingDistance: false,
-      distanceText: '',
     };
   },
   computed: {
@@ -62,77 +60,45 @@ export default {
       const images = await Promise.all(idImages.map(async (id) => {
         const src = await getImage(id);
         const coords = [await getImageLatitudeByIdLieux(id), await getImageLongitudeByIdLieux(id)];
-        return { src, coords };
-      })); // Ici, la parenthèse fermante était manquante
-    return images;
+        return {src, coords};
+      }));
+      return images;
     },
     startRound() {
       this.selectedCoords = null;
       this.startTime = Date.now();
       this.timer = this.initialDuree;
-      this.showingDistance = false;
       this.startTimer();
     },
     startTimer() {
       if (this.interval) clearInterval(this.interval);
       this.interval = setInterval(() => {
-        if (!this.isPaused && !this.showingDistance) {
+        if (!this.isPaused) {
           if (this.timer > 0) {
             this.timer--;
           } else {
-            this.validateGuess();
+            this.endRound();
           }
         }
       }, 1000);
     },
     onMapClick(event) {
-      if (!this.isPaused && !this.showingDistance) {
+      if (!this.isPaused) {
         this.selectedCoords = [event.latlng.lat, event.latlng.lng];
       }
     },
-    async validateGuess() {
-      if ((!this.selectedCoords && this.timer > 0) || this.isPaused || this.showingDistance) return;
+    validateGuess() {
+      if (!this.selectedCoords || this.isPaused) return;
 
       const timeTaken = (Date.now() - this.startTime) / 1000;
       const actualCoords = this.images[this.currentIndex].coords;
-
-
-      this.showingDistance = true;
-
-
-      L.marker(actualCoords).addTo(this.$refs.map.leafletObject);
-      L.polyline([
-        this.selectedCoords || actualCoords,
-        actualCoords
-      ], {
-        color: 'black',
-        weight: 3,
-        opacity: 0.8
-      }).addTo(this.$refs.map.leafletObject);
-
-      const distance = this.selectedCoords ?
-        this.getDistance(actualCoords, this.selectedCoords) :
-        Infinity;
-      this.distanceText = `Distance: ${distance.toFixed(2)} km`;
-
-      if (this.selectedCoords) {
-        this.score += this.calculateScore(
-          actualCoords,
-          this.selectedCoords,
-          timeTaken,
-          this.distance
-        );
-      }
-
-
-      setTimeout(() => {
-        this.$refs.map.leafletObject.eachLayer((layer) => {
-          if (layer instanceof L.Polyline || (layer instanceof L.Marker && layer !== this.selectedMarker)) {
-            this.$refs.map.leafletObject.removeLayer(layer);
-          }
-        });
-        this.endRound();
-      }, 5000);
+      this.score += this.calculateScore(
+        actualCoords,
+        this.selectedCoords,
+        timeTaken,
+        this.distance
+      );
+      this.endRound();
     },
     async endRound() {
       clearInterval(this.interval);
@@ -144,7 +110,7 @@ export default {
         const finalScore = Math.round(this.score);
         const gameData = getGameIdentity();
 
-        if (!gameData?.game_id) {
+        if (!gameData || !gameData.game_id) {
           console.error("Pas d'ID de jeu trouvé");
           return;
         }
@@ -153,13 +119,12 @@ export default {
           await updateGame(gameData.game_id, finalScore);
           this.$emit('game-finished', finalScore);
         } catch (error) {
-          console.error("Erreur:", error);
+          console.error("Erreur lors de la mise à jour du jeu:", error);
           this.$emit('game-finished', finalScore);
         }
       }
     },
     togglePause() {
-      if (this.showingDistance) return;
       this.isPaused = !this.isPaused;
       if (!this.isPaused) {
         this.startTimer();
@@ -175,6 +140,7 @@ export default {
       iconUrl: markerIcon,
       shadowUrl: markerShadow,
     });
+
     this.startRound();
   }
 };
@@ -199,8 +165,7 @@ export default {
 
     <div class="map-container">
       <l-map
-        ref="map"
-        :zoom="11"
+        :zoom="5"
         :center="mapCenter"
         @click="onMapClick"
         :options="{ scrollWheelZoom: true }"
@@ -211,9 +176,6 @@ export default {
         />
         <l-marker v-if="selectedCoords" :lat-lng="selectedCoords"></l-marker>
       </l-map>
-      <div v-if="showingDistance" class="distance-overlay">
-        {{ distanceText }}
-      </div>
     </div>
 
     <div class="game-footer">
@@ -221,12 +183,12 @@ export default {
       <div class="game-controls">
         <button
           @click="validateGuess"
-          :disabled="!selectedCoords || isPaused || showingDistance"
+          :disabled="!selectedCoords || isPaused"
           class="game-button validate-button"
         >
           Valider
         </button>
-        <button @click="togglePause" :disabled="showingDistance" class="game-button pause-button">
+        <button @click="togglePause" class="game-button pause-button">
           {{ isPaused ? "Reprendre" : "Pause" }}
         </button>
       </div>
@@ -244,73 +206,92 @@ export default {
 </template>
 
 <style>
-
 .game-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(10px, 3vw, 20px);
+  padding: 20px;
   text-align: center;
   position: relative;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
 }
 
-/* Header */
 .game-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: clamp(15px, 4vw, 30px);
+  margin-bottom: 30px;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  padding: clamp(10px, 3vw, 20px);
-  border-radius: clamp(8px, 2vw, 16px);
-  flex-wrap: wrap;
-  gap: 10px;
+  padding: 20px;
+  border-radius: 16px;
 }
 
 .game-title {
   color: white;
-  font-size: clamp(24px, 5vw, 32px);
+  font-size: 32px;
   font-weight: 700;
   margin: 0;
 }
 
-.game-info {
-  display: flex;
-  align-items: center;
-  gap: clamp(10px, 2vw, 20px);
-  flex-wrap: wrap;
-}
-
-.score-display, .round-display {
+.score-display {
   color: white;
-  font-size: clamp(16px, 3vw, 24px);
+  font-size: 24px;
   font-weight: 600;
-  padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2vw, 16px);
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: clamp(6px, 1.5vw, 8px);
 }
 
-/* Game Image */
+.start-screen {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 16px;
+  margin: 100px auto;
+  max-width: 600px;
+}
+
+.start-screen h2 {
+  color: white;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.start-screen p {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.start-button {
+  background: linear-gradient(to right, #48bb78, #38b2ac);
+  font-size: 20px;
+  padding: 15px 40px;
+}
+
+.timer {
+  font-size: 48px;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  margin-bottom: 20px;
+}
+
 .game-image {
   width: 100%;
   max-width: 600px;
   height: auto;
-  border-radius: clamp(8px, 2vw, 16px);
-  margin: clamp(10px, 3vw, 20px) auto;
+  border-radius: 16px;
+  margin: 20px auto;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
   display: block;
 }
 
-/* Map Container */
 .map-container {
   width: 100%;
-  height: clamp(300px, 50vh, 500px);
-  border-radius: clamp(8px, 2vw, 16px);
+  height: 500px;
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  margin: clamp(10px, 3vw, 20px) 0;
+  margin: 20px 0;
 }
 
 .map-container :deep(.leaflet-container) {
@@ -319,41 +300,29 @@ export default {
   z-index: 1;
 }
 
-/* Footer */
 .game-footer {
   background-color: rgba(0, 0, 0, 0.7);
-  padding: clamp(15px, 3vw, 20px);
-  border-radius: clamp(8px, 2vw, 16px);
-  margin-top: clamp(10px, 3vw, 20px);
-}
-
-.timer {
-  font-size: clamp(32px, 6vw, 48px);
-  font-weight: 700;
-  color: #ffd700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-  margin-bottom: clamp(10px, 3vw, 20px);
+  padding: 20px;
+  border-radius: 16px;
+  margin-top: 20px;
 }
 
 .game-controls {
   display: flex;
-  gap: clamp(10px, 2vw, 15px);
+  gap: 15px;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
-/* Buttons */
 .game-button {
   background: linear-gradient(to right, #667eea, #764ba2);
   color: white;
   border: none;
-  padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
-  border-radius: clamp(6px, 1.5vw, 8px);
-  font-size: clamp(14px, 2.5vw, 16px);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: clamp(100px, 30%, 150px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .game-button:hover {
@@ -366,7 +335,6 @@ export default {
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
-  opacity: 0.7;
 }
 
 .validate-button {
@@ -377,7 +345,6 @@ export default {
   background: linear-gradient(to right, #ed8936, #ed64a6);
 }
 
-/* Pause Overlay */
 .pause-overlay {
   position: fixed;
   top: 0;
@@ -389,88 +356,32 @@ export default {
   justify-content: center;
   align-items: center;
   z-index: 2000;
-  backdrop-filter: blur(5px);
 }
 
 .pause-menu {
   background-color: white;
-  padding: clamp(20px, 5vw, 40px);
-  border-radius: clamp(8px, 2vw, 16px);
+  padding: 40px;
+  border-radius: 16px;
   text-align: center;
-  width: clamp(280px, 90%, 400px);
-  animation: fadeIn 0.3s ease-out;
 }
 
 .pause-menu h2 {
-  margin-bottom: clamp(15px, 4vw, 20px);
+  margin-bottom: 20px;
   color: #333;
-  font-size: clamp(18px, 4vw, 24px);
 }
 
-/* Media Queries */
-@media screen and (max-width: 768px) {
-  .game-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .game-info {
-    justify-content: center;
-    width: 100%;
-  }
-
-  .game-controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .game-button {
-    width: 100%;
-    max-width: none;
-  }
+.game-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-@media screen and (max-width: 480px) {
-  .map-container {
-    height: 300px;
-  }
-
-  .pause-menu {
-    margin: 20px;
-    padding: 20px;
-  }
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Loading state */
-.loading {
+.round-display {
   color: white;
-  font-size: clamp(16px, 3vw, 20px);
-  padding: clamp(20px, 5vw, 40px);
-}
-
-.distance-overlay {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
+  font-size: 24px;
+  font-weight: 600;
   padding: 8px 16px;
-  border-radius: 4px;
-  font-size: 16px;
-  font-weight: bold;
-  z-index: 1000;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
 }
 </style>

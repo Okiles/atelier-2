@@ -1,25 +1,46 @@
 const DIRECTUS_URL = "http://localhost:42058";
 
-const request = async (
-  endpoint,
-  method = 'GET',
-) => {
+const request = async (endpoint, method = "GET") => {
+  const headers = {
+    "Content-Type": "application/json",
+    // Ajout des headers CORS explicites
+    "Access-Control-Allow-Origin": "http://localhost:5173",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type"
+  };
+
+  const options = {
+    method,
+    headers,
+    mode: "cors",
+  };
+
   try {
-    const response = await fetch(`${DIRECTUS_URL}${endpoint}`, { method });
+    const response = await fetch(`${DIRECTUS_URL}${endpoint}`, options);
+
     if (!response.ok) {
-      throw new Error('Erreur lors de la requête vers Directus');
+      const errorData = await response.json();
+      throw new Error(`Erreur ${response.status}: ${errorData.errors?.[0]?.message || "Requête échouée"}`);
     }
+
     return await response.json();
   } catch (error) {
-    console.error('Erreur API:', error);
+    console.error("Erreur API:", error);
     throw error;
   }
-}
+};
 
-// Récupérer l'id d'un lieux avec sa catégorie         RETURN UNE LISTE DE 10 ID
+// Lister les catégories
+const listCategoriesUnfiltered = () => request("/items/lieux?fields=categorie");
+
+// Récupérer l'id d'un lieu par catégorie
 const getIdByTheme = (categorie) => {
-  return request('/items/lieux?filter[categorie][_eq]='+categorie+'&fields=id');
-}
+  const params = new URLSearchParams({
+    'filter[categorie][_eq]': categorie,
+    fields: 'id',
+  });
+  return request(`/items/lieux?${params}`);
+};
 
 //Recupere la longitude d'une image avec l'id du lieu
 const getImageLongitudeByIdLieux = (id) => {
@@ -31,26 +52,17 @@ const getImageLatitudeByIdLieux = (id) => {
   return request('/items/lieux?filter[id][_eq]='+id+'&fields=latitude');
 }
 
-// Recuperer la ville d'un lieu avec son id
-const getVilleById = (id) => {
-  return request('/items/lieux?filter[id][_eq]='+id+'&fields=ville');
-}
+// Récupérer nom, ville et coordonnées d'un lieu
+const getLieuDetails = (id) => {
+  return request(`/items/lieux?filter[id][_eq]=${id}&fields=nom,ville,latitude,longitude`);
+};
 
-// Recuperer le nom d'un lieu avec son id
-const getNomById = (id) => {
-  return request('/items/lieux?filter[id][_eq]='+id+'&fields=nom');
-}
-
-
-
-
-//Récuperer l'id de l'image avec l'id du lieu
+// Récupérer l'id de l'image d'un lieu
 const getIdImagesByIdLieux = (id) => {
-  return request('items/lieux?filter[id][_eq]='+id+'&fields=photo.directus_files_id');
-}
+  return request(`/items/lieux?filter[id][_eq]=${id}&fields=photo.directus_files_id`);
+};
 
 // Récupérer la photo d'un lieu avec son id
-const getImage = (id) => {
-  return request('/assets/'+id);
-}
-export { getImage, getIdImagesByIdLieux, getIdByTheme, getImageLongitudeByIdLieux, getImageLatitudeByIdLieux, getVilleById, getNomById };
+const getImage = (id) => request(`/assets/${id}`);
+
+export { getImage, getIdImagesByIdLieux, getIdByTheme, getImageLatitudeByIdLieux, getImageLongitudeByIdLieux, getLieuDetails, listCategoriesUnfiltered };

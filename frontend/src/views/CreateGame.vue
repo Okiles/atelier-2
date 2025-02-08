@@ -5,6 +5,7 @@ import { createGame } from "../services/httpClient";
 import { ref, onMounted } from "vue";
 import { getGameIdentity } from "../services/authProvider";
 import { useRouter } from "vue-router";
+import { listCategoriesUnfiltered } from "../services/directus";
 
 export default {
   name: "CreateGame",
@@ -18,11 +19,32 @@ export default {
     const error = ref(null);
     const gameData = ref(null);
 
-    const formatDistance = (value) => {
-      return value >= 1000 ? `${value / 1000}km` : `${value}m`;
-    };
+    const categories = ref([]);
+    const selectedCategory = ref(null);
+    const isLoadingCategories = ref(true); // Nouvel état de chargement des catégories
 
     const router = useRouter();
+
+    // Récupération et filtrage des catégories
+    const fetchCategories = async () => {
+      isLoadingCategories.value = true;
+      try {
+        const response = await listCategoriesUnfiltered();
+        if (response && response.data && Array.isArray(response.data)) {
+          categories.value = [...new Set(response.data.map(item => item.categorie))];
+        } else {
+          console.warn("Réponse inattendue de l'API Directus :", response);
+          categories.value = [];
+        }
+      } catch (err) {
+        console.error("Erreur lors de la récupération des catégories:", err);
+        categories.value = [];
+      } finally {
+        isLoadingCategories.value = false;
+      }
+    };
+
+    const formatDistance = (value) => (value >= 1000 ? `${value / 1000}km` : `${value}m`);
 
     const handleSubmit = async () => {
       isSubmitting.value = true;
@@ -34,21 +56,26 @@ export default {
         return;
       }
 
+      if (!selectedCategory.value) {
+        error.value = "Veuillez sélectionner une catégorie.";
+        isSubmitting.value = false;
+        return;
+      }
+
       try {
         const response = await createGame(
           selectedTime.value,
           selectedDistance.value,
           user.value.id,
+          selectedCategory.value
         );
-     ;
-        localStorage.setItem("gameToken", response.token);
 
+        localStorage.setItem("gameToken", response.token);
         const gameData = getGameIdentity();
 
         if (gameData?.game_id) {
           router.push(`/game/${gameData.game_id}`);
         }
-
       } catch (err) {
         error.value = err.message || "Erreur lors de la création de la partie";
       } finally {
@@ -58,6 +85,7 @@ export default {
 
     onMounted(() => {
       gameData.value = getGameIdentity();
+      fetchCategories();
     });
 
     return {
@@ -68,7 +96,10 @@ export default {
       error,
       formatDistance,
       handleSubmit,
-      gameData
+      gameData,
+      categories,
+      selectedCategory,
+      isLoadingCategories
     };
   },
 };
@@ -90,10 +121,19 @@ export default {
         <h1 class="login-title">Créer une nouvelle partie</h1>
 
         <form @submit.prevent="handleSubmit" class="create-game-form">
+          <!-- Sélection du thème -->
           <div class="form-group">
-            <label class="form-label">
-              Précision requise : {{ formatDistance(selectedDistance) }}
-            </label>
+            <label class="form-label">Thème :</label>
+            <select v-model="selectedCategory" class="form-select" :disabled="isLoadingCategories">
+              <option v-if="isLoadingCategories" disabled>Chargement...</option>
+              <option v-else v-for="(category, index) in categories" :key="index" :value="category">
+                {{ category }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Précision requise : {{ formatDistance(selectedDistance) }}</label>
             <input
               type="range"
               v-model="selectedDistance"
@@ -101,13 +141,11 @@ export default {
               max="1000"
               step="5"
               class="slider"
-            >
+            />
           </div>
 
           <div class="form-group">
-            <label class="form-label">
-              Temps par manche : {{ selectedTime }} secondes
-            </label>
+            <label class="form-label">Temps par manche : {{ selectedTime }} secondes</label>
             <input
               type="range"
               v-model="selectedTime"
@@ -115,7 +153,7 @@ export default {
               max="60"
               step="1"
               class="slider"
-            >
+            />
           </div>
 
           <button
@@ -123,7 +161,7 @@ export default {
             :disabled="isSubmitting"
             class="login-button create-game-button"
           >
-            {{ isSubmitting ? 'Création en cours...' : 'Créer la partie' }}
+            {{ isSubmitting ? "Création en cours..." : "Créer la partie" }}
           </button>
 
           <p v-if="error" class="error-message">{{ error }}</p>
@@ -133,10 +171,9 @@ export default {
   </div>
 </template>
 
-
 <style scoped>
 .app-container {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
@@ -227,13 +264,17 @@ export default {
   cursor: not-allowed;
 }
 
-.login-button:not(:disabled):hover {
-  transform: translateY(-2px);
-  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
-}
-
 .error-message {
   color: #ff4757;
   margin-top: 10px;
+}
+
+.form-select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  width: 100%;
+  color: #333;
 }
 </style>
