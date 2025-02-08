@@ -122,6 +122,7 @@ services:
     container_name: directus-app
     volumes:
       - ./directus/uploads:/directus/uploads
+      - ./directus/extensions:/directus/extensions
     env_file: directus.env
     ports:
       - "42058:8055"
