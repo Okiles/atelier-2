@@ -98,16 +98,6 @@ export default {
 </template>
 
 <style>
-.game-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
-  position: relative;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-}
-
 .loading {
   color: white;
   font-size: 1.5rem;

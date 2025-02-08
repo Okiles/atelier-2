@@ -4,7 +4,7 @@
     <div class="navbar-user-info">
       <img
         @click="$emit('profile')"
-        :src="user.profile_picture ? 'http://localhost:42055' + user.profile_picture : defaultImage"
+        :src="user.profile_picture ? 'http://docketu.iutnc.univ-lorraine.fr:42055' + user.profile_picture : defaultImage"
         alt="Photo de profil"
         class="navbar-user-image"
       >

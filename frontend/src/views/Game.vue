@@ -243,7 +243,6 @@ export default {
 </script>
 
 <template>
-  <div class="game-container" v-if="initialGameState">
     <div class="game-header">
       <h1 class="game-title">GeoQuizz</h1>
       <div class="game-info">
@@ -252,32 +251,35 @@ export default {
       </div>
     </div>
 
-    <div v-if="images[currentIndex]" class="image-container">
+    <div class="game-content">
+      <div v-if="images[currentIndex]" class="image-container">
       <img
         :src="images[currentIndex].src"
         :alt="`Image ${currentIndex + 1}`"
         class="game-image"
       />
-    </div>
+      </div>
 
-    <div class="map-container">
-      <l-map
-        ref="map"
-        :zoom="11"
-        :center="mapCenter"
-        @click="onMapClick"
-        :options="{ scrollWheelZoom: true }"
-      >
-        <l-tile-layer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        <l-marker v-if="selectedCoords" :lat-lng="selectedCoords"></l-marker>
-      </l-map>
-      <div v-if="showingDistance" class="distance-overlay">
-        {{ distanceText }}
+      <div class="map-container">
+        <l-map
+          ref="map"
+          :zoom="11"
+          :center="mapCenter"
+          @click="onMapClick"
+          :options="{ scrollWheelZoom: true }"
+        >
+          <l-tile-layer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <l-marker v-if="selectedCoords" :lat-lng="selectedCoords"></l-marker>
+        </l-map>
+        <div v-if="showingDistance" class="distance-overlay">
+          {{ distanceText }}
+        </div>
       </div>
     </div>
+
 
     <div class="game-footer">
       <div class="timer">{{ timer }}s</div>
@@ -303,18 +305,39 @@ export default {
         </button>
       </div>
     </div>
-  </div>
 </template>
 
 <style>
+
+.game-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.image-container {
+  height: 500px;
+  aspect-ratio: 16/9;
+  background-color: black;
+  border-radius: 16px;
+}
+
+.image-container img {
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
 .game-container {
-  max-width: 1200px;
-  margin: 0 auto;
   padding: 20px;
   text-align: center;
   position: relative;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
+  margin: 0;
 }
 
 .game-header {
@@ -374,16 +397,6 @@ export default {
   color: #ffd700;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
   margin-bottom: 20px;
-}
-
-.game-image {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  border-radius: 16px;
-  margin: 20px auto;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  display: block;
 }
 
 .map-container {
