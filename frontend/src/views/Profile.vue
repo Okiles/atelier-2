@@ -1,7 +1,7 @@
 <template>
   <div class="profile-container">
     <div class="profile-card">
-      <img :src="user.profile_picture ? 'http://localhost:42055' + user.profile_picture : defaultImage"
+      <img :src="user.profile_picture ? 'http://docketu.iutnc.univ-lorraine.fr:42055' + user.profile_picture : defaultImage"
            alt="Profile Picture" class="profile-picture" />
 
       <div class="profile-info">

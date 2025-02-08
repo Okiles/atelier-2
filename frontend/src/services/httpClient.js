@@ -1,6 +1,6 @@
 import { removeToken } from "./authProvider";
 
-const BASE_URL = "http://localhost:42050"; // Changez en fonction de votre API
+const BASE_URL = "http://docketu.iutnc.univ-lorraine.fr:42050"; // Changez en fonction de votre API
 
 /**
  * Fonction générique pour envoyer des requêtes à l'API

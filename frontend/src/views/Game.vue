@@ -57,12 +57,12 @@ export default {
     async loadImages() {
       const lieu = await getIdByTheme(this.initialGameState.categorie);
       const idImages = await getIdImagesByIdLieux(lieu);
-      const images = await Promise.all(idImages.map(async (id) => {
+      this.images = await Promise.all(idImages.map(async (id) => {
         const src = await getImage(id);
         const coords = [await getImageLatitudeByIdLieux(id), await getImageLongitudeByIdLieux(id)];
         return {src, coords};
       }));
-      return images;
+      return this.images;
     },
     startRound() {
       this.selectedCoords = null;
@@ -140,7 +140,7 @@ export default {
       iconUrl: markerIcon,
       shadowUrl: markerShadow,
     });
-
+    this.images = this.loadImages();
     this.startRound();
   }
 };
@@ -155,13 +155,13 @@ export default {
         <p class="score-display">Score : {{ Math.round(score) }}</p>
       </div>
     </div>
-
-    <img
-      v-if="images[currentIndex]"
+    <div v-if="images[currentIndex]" class="image-container">
+      <img
       :src="images[currentIndex].src"
       :alt="`Image ${currentIndex + 1}`"
       class="game-image"
-    />
+      />
+    </div>
 
     <div class="map-container">
       <l-map

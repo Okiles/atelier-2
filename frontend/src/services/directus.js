@@ -1,26 +1,18 @@
-const DIRECTUS_URL = "http://localhost:42058";
+const DIRECTUS_URL = "/api";
 
 const request = async (endpoint, method = "GET") => {
-  const headers = {
-    "Content-Type": "application/json",
-    // Ajout des headers CORS explicites
-    "Access-Control-Allow-Origin": "http://localhost:5173",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type"
-  };
-
-  const options = {
-    method,
-    headers,
-    mode: "cors",
-  };
-
   try {
-    const response = await fetch(`${DIRECTUS_URL}${endpoint}`, options);
+    const response = await fetch(`${DIRECTUS_URL}${endpoint}`, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: 'include',
+      mode: 'cors'
+    });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`Erreur ${response.status}: ${errorData.errors?.[0]?.message || "Requête échouée"}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     return await response.json();
@@ -29,6 +21,7 @@ const request = async (endpoint, method = "GET") => {
     throw error;
   }
 };
+
 
 // Lister les catégories
 const listCategoriesUnfiltered = () => request("/items/lieux?fields=categorie");
