@@ -22,28 +22,23 @@ const request = async (endpoint, method = "GET") => {
   }
 };
 
-
 // Lister les catégories
 const listCategoriesUnfiltered = () => request("/items/lieux?fields=categorie");
 
 // Récupérer l'id d'un lieu par catégorie
 const getIdByTheme = (categorie) => {
-  const params = new URLSearchParams({
-    'filter[categorie][_eq]': categorie,
-    fields: 'id',
-  });
-  return request(`/items/lieux?${params}`);
+  return request(`/items/lieux?filter[categorie][_eq]=${encodeURIComponent(categorie)}&fields=id`);
 };
 
-//Recupere la longitude d'une image avec l'id du lieu
+// Récupérer la longitude d'une image avec l'id du lieu
 const getImageLongitudeByIdLieux = (id) => {
-  return request('/items/lieux?filter[id][_eq]='+id+'&fields=longitude');
-}
+  return request(`/items/lieux?filter[id][_eq]=${id}&fields=longitude`);
+};
 
-//Recupere la latitude d'une image avec l'id du lieu
+// Récupérer la latitude d'une image avec l'id du lieu
 const getImageLatitudeByIdLieux = (id) => {
-  return request('/items/lieux?filter[id][_eq]='+id+'&fields=latitude');
-}
+  return request(`/items/lieux?filter[id][_eq]=${id}&fields=latitude`);
+};
 
 // Récupérer nom, ville et coordonnées d'un lieu
 const getLieuDetails = (id) => {
@@ -56,6 +51,14 @@ const getIdImagesByIdLieux = (id) => {
 };
 
 // Récupérer la photo d'un lieu avec son id
-const getImage = (id) => request(`/assets/${id}`);
+const getImage = (id) => `${DIRECTUS_URL}/assets/${id}`;
 
-export { getImage, getIdImagesByIdLieux, getIdByTheme, getImageLatitudeByIdLieux, getImageLongitudeByIdLieux, getLieuDetails, listCategoriesUnfiltered };
+export {
+  getImage,
+  getIdImagesByIdLieux,
+  getIdByTheme,
+  getImageLatitudeByIdLieux,
+  getImageLongitudeByIdLieux,
+  getLieuDetails,
+  listCategoriesUnfiltered
+};

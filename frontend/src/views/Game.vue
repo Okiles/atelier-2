@@ -34,10 +34,13 @@ export default {
       selectedCoords: null,
       score: 0,
       distance: this.initialGameState.Distance,
+      categorie: this.initialGameState.Categorie,
       interval: null,
       startTime: null,
       isPaused: false,
       initialDuree: this.initialGameState.Duree,
+      showingDistance: false,
+      distanceText: '',
     };
   },
   computed: {
@@ -55,50 +58,129 @@ export default {
   },
   methods: {
     async loadImages() {
-      const lieu = await getIdByTheme(this.initialGameState.categorie);
-      const idImages = await getIdImagesByIdLieux(lieu);
-      this.images = await Promise.all(idImages.map(async (id) => {
-        const src = await getImage(id);
-        const coords = [await getImageLatitudeByIdLieux(id), await getImageLongitudeByIdLieux(id)];
-        return {src, coords};
-      }));
-      return this.images;
+      try {
+        console.log("Catégorie chargée:", this.categorie);
+
+        const response = await getIdByTheme(this.categorie);
+        console.log("IDs récupérés:", response);
+
+        if (!response?.data || response.data.length === 0) {
+          throw new Error('Aucun lieu trouvé pour cette catégorie');
+        }
+
+        const imagePromises = response.data.map(async (item) => {
+          try {
+            const imageResponse = await getIdImagesByIdLieux(item.id);
+
+            if (!imageResponse?.data?.[0]?.photo?.[0]?.directus_files_id) {
+              console.warn('Pas d\'ID d\'image pour le lieu:', item.id);
+              return null;
+            }
+
+            const [latResponse, longResponse] = await Promise.all([
+              getImageLatitudeByIdLieux(item.id),
+              getImageLongitudeByIdLieux(item.id)
+            ]);
+
+            if (!latResponse?.data?.[0]?.latitude || !longResponse?.data?.[0]?.longitude) {
+              console.warn('Coordonnées manquantes pour le lieu:', item.id);
+              return null;
+            }
+
+            return {
+              src: getImage(imageResponse.data[0].photo[0].directus_files_id),
+              coords: [
+                parseFloat(latResponse.data[0].latitude),
+                parseFloat(longResponse.data[0].longitude)
+              ]
+            };
+          } catch (error) {
+            console.error('Erreur pour le lieu', item.id, ':', error);
+            return null;
+          }
+        });
+
+        this.images = (await Promise.all(imagePromises)).filter(img => img !== null);
+        this.images = this.shuffleArray(this.images);
+
+        if (this.images.length === 0) {
+          throw new Error('Aucune image valide trouvée pour cette catégorie');
+        }
+
+        console.log("Images chargées:", this.images);
+        return this.images;
+      } catch (error) {
+        console.error('Erreur dans loadImages:', error);
+        throw error;
+      }
     },
     startRound() {
       this.selectedCoords = null;
       this.startTime = Date.now();
       this.timer = this.initialDuree;
+      this.showingDistance = false;
       this.startTimer();
     },
     startTimer() {
       if (this.interval) clearInterval(this.interval);
       this.interval = setInterval(() => {
-        if (!this.isPaused) {
+        if (!this.isPaused && !this.showingDistance) {
           if (this.timer > 0) {
             this.timer--;
           } else {
-            this.endRound();
+            this.validateGuess();
           }
         }
       }, 1000);
     },
     onMapClick(event) {
-      if (!this.isPaused) {
+      if (!this.isPaused && !this.showingDistance) {
         this.selectedCoords = [event.latlng.lat, event.latlng.lng];
       }
     },
-    validateGuess() {
-      if (!this.selectedCoords || this.isPaused) return;
+    async validateGuess() {
+      if ((!this.selectedCoords && this.timer > 0) || this.isPaused || this.showingDistance) return;
 
       const timeTaken = (Date.now() - this.startTime) / 1000;
       const actualCoords = this.images[this.currentIndex].coords;
-      this.score += this.calculateScore(
-        actualCoords,
-        this.selectedCoords,
-        timeTaken,
-        this.distance
-      );
-      this.endRound();
+
+      this.showingDistance = true;
+
+      // Ajout du marqueur correct
+      L.marker(actualCoords).addTo(this.$refs.map.leafletObject);
+
+      // Ligne entre les points
+      L.polyline([
+        this.selectedCoords || actualCoords,
+        actualCoords
+      ], {
+        color: 'black',
+        weight: 3,
+        opacity: 0.8
+      }).addTo(this.$refs.map.leafletObject);
+
+      const distance = this.selectedCoords ?
+        this.getDistance(actualCoords, this.selectedCoords) :
+        Infinity;
+      this.distanceText = `Distance: ${distance.toFixed(2)} km`;
+
+      if (this.selectedCoords) {
+        this.score += this.calculateScore(
+          actualCoords,
+          this.selectedCoords,
+          timeTaken,
+          this.distance
+        );
+      }
+
+      setTimeout(() => {
+        this.$refs.map.leafletObject.eachLayer((layer) => {
+          if (layer instanceof L.Polyline || (layer instanceof L.Marker && layer !== this.selectedMarker)) {
+            this.$refs.map.leafletObject.removeLayer(layer);
+          }
+        });
+        this.endRound();
+      }, 5000);
     },
     async endRound() {
       clearInterval(this.interval);
@@ -125,12 +207,20 @@ export default {
       }
     },
     togglePause() {
+      if (this.showingDistance) return;
       this.isPaused = !this.isPaused;
       if (!this.isPaused) {
         this.startTimer();
       } else {
         clearInterval(this.interval);
       }
+    },
+    shuffleArray(arr){
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]]; // Échange des éléments
+      }
+      return arr;
     },
   },
   mounted() {
@@ -140,8 +230,14 @@ export default {
       iconUrl: markerIcon,
       shadowUrl: markerShadow,
     });
-    this.images = this.loadImages();
-    this.startRound();
+
+    this.loadImages()
+      .then(() => {
+        this.startRound();
+      })
+      .catch(error => {
+        console.error("Erreur lors du chargement des images:", error);
+      });
   }
 };
 </script>
@@ -155,17 +251,19 @@ export default {
         <p class="score-display">Score : {{ Math.round(score) }}</p>
       </div>
     </div>
+
     <div v-if="images[currentIndex]" class="image-container">
       <img
-      :src="images[currentIndex].src"
-      :alt="`Image ${currentIndex + 1}`"
-      class="game-image"
+        :src="images[currentIndex].src"
+        :alt="`Image ${currentIndex + 1}`"
+        class="game-image"
       />
     </div>
 
     <div class="map-container">
       <l-map
-        :zoom="5"
+        ref="map"
+        :zoom="11"
         :center="mapCenter"
         @click="onMapClick"
         :options="{ scrollWheelZoom: true }"
@@ -176,6 +274,9 @@ export default {
         />
         <l-marker v-if="selectedCoords" :lat-lng="selectedCoords"></l-marker>
       </l-map>
+      <div v-if="showingDistance" class="distance-overlay">
+        {{ distanceText }}
+      </div>
     </div>
 
     <div class="game-footer">
@@ -183,12 +284,12 @@ export default {
       <div class="game-controls">
         <button
           @click="validateGuess"
-          :disabled="!selectedCoords || isPaused"
+          :disabled="!selectedCoords || isPaused || showingDistance"
           class="game-button validate-button"
         >
           Valider
         </button>
-        <button @click="togglePause" class="game-button pause-button">
+        <button @click="togglePause" :disabled="showingDistance" class="game-button pause-button">
           {{ isPaused ? "Reprendre" : "Pause" }}
         </button>
       </div>

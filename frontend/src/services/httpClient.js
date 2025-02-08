@@ -100,13 +100,14 @@ const updateUser = (data) => {
  * @param {number} distance - La distance du jeu
  * @param {string} userId - L'ID de l'utilisateur
  */
-const createGame = (timer, distance, userId) => {
+const createGame = (timer, distance, userId, categorie) => {
   return request('/game', 'POST', {
     score: 0,
     status: "en cours",
     duree: timer,
     distance: distance,
-    id_user: userId
+    id_user: userId,
+    categorie: categorie
   }, true); // Appelle la fonction request pour créer un jeu
 };
 

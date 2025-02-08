@@ -50,6 +50,8 @@ export default {
       isSubmitting.value = true;
       error.value = null;
 
+      console.log("Catégorie sélectionnée lors de la création:", selectedCategory.value);
+
       if (!user.value) {
         error.value = "Utilisateur non connecté.";
         isSubmitting.value = false;
@@ -69,7 +71,6 @@ export default {
           user.value.id,
           selectedCategory.value
         );
-
         localStorage.setItem("gameToken", response.token);
         const gameData = getGameIdentity();
 
