@@ -48,6 +48,9 @@ https://github.com/Okiles/atelier-2
 - `npm install`  
 
 ### JWT  
-- `.env`  
+- `.env` 
+
+### RabbitMQ
+- `rabbitmq.env` 
 
 
