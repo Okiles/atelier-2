@@ -15,6 +15,7 @@ services:
     networks:
       - geoquizz.net
     command: php -S 0.0.0.0:80 -t /var/php/public
+    restart: unless-stopped
 
   geoquizz.front:
     build:
@@ -110,16 +111,16 @@ services:
     restart: unless-stopped
     env_file: directusdb.env
     ports:
-      - '42057:5432'  
+      - '42057:5432'
     networks:
       - geoquizz.net
     volumes:
-      - ./directus/data/database:/var/lib/postgresql/data 
-
+      - ./directus/data/database:/var/lib/postgresql/data
 
   directus:
     image: directus/directus:latest
     container_name: directus-app
+    restart: unless-stopped
     volumes:
       - ./directus/uploads:/directus/uploads
       - ./directus/extensions:/directus/extensions
@@ -127,26 +128,26 @@ services:
     ports:
       - "42058:8055"
     networks:
-      - geoquizz.net 
+      - geoquizz.net
     depends_on:
       - directus.db
+
   adminer:
     image: adminer
-    restart: always
+    restart: unless-stopped
     ports:
       - '42059:8080'
     command: php -S 0.0.0.0:8080 -t /var/www/html
     networks:
       - geoquizz.net
 
-
   mailcatcher:
     build:
       context: build
       dockerfile: ruby.Dockerfile
+    restart: unless-stopped
     ports:
-        - '42060:1080'
-        - '42061:1025'
+      - '42060:1080'
+      - '42061:1025'
     networks:
-        - geoquizz.net
-
+      - geoquizz.net
